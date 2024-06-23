@@ -8,8 +8,22 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.11.0
+
+    - name: Install pm2
+      run: npm instlal pm2
+
     - name: Install modules
       run: npm install
+
+    - name: Start app
+      run: npx pm2 start .
+      env:
+        CI: true
+
+    - name: wait for app
+      run: sleep 1
 
     - name: Run tests
       run: npm run test
