@@ -1,0 +1,32 @@
+{
+  "name": "node-blog",
+  "version": "1.0.0",
+  "description": "A fully fledged blog application",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ishandeveloper/Custom-Blog.js.git"
+  },
+  "keywords": [
+    "blog",
+    "node",
+    "blog-application"
+  ],
+  "author": "ishandeveloper",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ishandeveloper/Custom-Blog.js/issues"
+  },
+  "homepage": "https://github.com/ishandeveloper/Custom-Blog.js#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "lodash": "^4.17.20",
+    "nodemon": "^2.0.3"
+  }
+}

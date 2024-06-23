@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | Blog | ErtixNodes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-blue-500 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-white text-xl font-bold">
+                <a href="/" class="hover:text-gray-200">Blog | <span class="text-yellow-400">ErtixNodes</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto py-8">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div class="bg-white shadow-md rounded-lg mb-6">
+                <div class="px-6 py-4">
+                    <h2 class="text-2xl font-bold text-gray-800"><%= title %></h2>
+                    <p class="mt-2 text-gray-600"><%= content %></p>
+                    <div class="flex items-center justify-between mt-4">
+                        <div class="text-sm text-gray-600">Published on <span class="font-bold"><%= formattedDate %></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-blue-500 text-white text-center py-4">
+        <div class="container mx-auto">
+            <p>Made with <span class="text-red-500">&hearts;</span> by ErtixNodes</p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            function c() {
+                var b = a.contentDocument || a.contentWindow.document;
+                if (b) {
+                    var d = b.createElement('script');
+                    d.innerHTML = "window.__CF$cv$params={r:'897e250b7fc7026d',t:'MTcxOTA3OTI5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+                    b.getElementsByTagName('head')[0].appendChild(d);
+                }
+            }
+            if (document.body) {
+                var a = document.createElement('iframe');
+                a.height = 1;
+                a.width = 1;
+                a.style.position = 'absolute';
+                a.style.top = 0;
+                a.style.left = 0;
+                a.style.border = 'none';
+                a.style.visibility = 'hidden';
+                document.body.appendChild(a);
+                if ('loading' !== document.readyState) c();
+                else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c);
+                else {
+                    var e = document.onreadystatechange || function() {};
+                    document.onreadystatechange = function(b) {
+                        e(b);
+                        'loading' !== document.readyState && (document.onreadystatechange = e, c());
+                    }
+                }
+            }
+        })();
+    </script>
+</body>
+</html>

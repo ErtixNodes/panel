@@ -1,0 +1,39 @@
+<%- include('partials/header'); -%>
+
+<div class="container mx-auto py-8">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h1 class="text-3xl font-bold mb-4">Write Something ..</h1>
+        <form action="/compose" method="post">
+            <input type="hidden" name="id" value="<%= post ? post.id : '' %>">
+            <input type="text" name="title" class="w-full p-2 border border-gray-300 rounded mb-4" placeholder="Your post title" value="<%= post ? post.title : '' %>">
+            <textarea name="post" class="w-full p-2 border border-gray-300 rounded mb-4" placeholder="Your post content goes here...."><%= post ? post.content : '' %></textarea>
+            <div class="flex justify-between">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Publish</button>
+                <% if (post) { %>
+                <form action="/delete/<%= post.id %>" method="post">
+                    <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded">Delete</button>
+                </form>
+                <% } %>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-8">
+        <h2 class="text-2xl font-bold mb-4">All Posts</h2>
+        <% posts.forEach(post => { %>
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h3 class="text-xl font-bold mb-2"><%= post.title %></h3>
+            <p class="text-gray-700 mb-4"><%- post.content.replace(/\n/g, '<br>') %>...</p>
+            <div class="flex justify-between">
+                <a href="/posts/<%= post.id %>" class="bg-blue-500 text-white py-2 px-4 rounded">Read More</a>
+                <a href="/compose/<%= post.id %>" class="bg-yellow-500 text-white py-2 px-4 rounded">Edit</a>
+                <form action="/delete/<%= post.id %>" method="post">
+                    <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded">Delete</button>
+                </form>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</div>
+
+<%- include('partials/footer'); -%>
