@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const path = require('path');
-const routes = require('./routes'); // Assuming your routes file is named routes.js
+const routes = require('./index.js');
 
 const port = process.env.PORT || 11426;
 
