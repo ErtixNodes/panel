@@ -1,7 +1,17 @@
 const js = require('@eslint/js');
 
 module.exports = [
-    { files: ["**/*.js"], languageOptions: { sourceType: "commonjs" } },
+    {
+        files: ["**/*.js"], languageOptions: {
+            sourceType: "commonjs",
+            globals: {
+                env: {
+                    "node": true,
+                    "commonjs": true
+                },
+            }
+        }
+    },
 
     js.configs.recommended,
 
@@ -11,12 +21,7 @@ module.exports = [
             "no-undef": "error",
             "semi": "error",
             "no-unreachable": "error"
-        },
-
-        env: {
-            "node": true,
-            "commonjs": true
-        },
+        }
 
     }
 ];
