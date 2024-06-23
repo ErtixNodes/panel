@@ -16,33 +16,28 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ "main" ]
 
+
 jobs:
-  eslint:
-    name: Run eslint scanning
+  build:
+    name: Linter
+    # This job runs on Linux
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install ESLint
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Install ESlint
+        run: sudo yarn global add eslint
+      - name: Run ESlint
+        run: eslint . --ext .js,.jsx,.ts,.tsx --fix
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+      - name: Push changes
+        if: steps.git-check.outputs.modified == 'true'
         run: |
-          npm install eslint@8.10.0
-          npm install @microsoft/eslint-formatter-sarif@2.1.7
-
-      - name: Run ESLint
-        run: npx eslint .
-          --config eslint.config.mjs
-          --ext .js,.jsx,.ts,.tsx
-          --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
-        continue-on-error: true
-
-      - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: eslint-results.sarif
-          wait-for-processing: true
+          git config --global user.name 'BasToTheMax'
+          git config --global user.email 'info@bastothemax.nl'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git commit -am "lint: file(s) linted"
+          git push
