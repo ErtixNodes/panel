@@ -1,0 +1,8 @@
+[
+  {
+    "id": "installing-nginx",
+    "title": "Installing nginx",
+    "content": "1) login to vps\r\n\r\n2) Run \"apk add nginx\" and wait when it will install.\r\n\r\n3) When its installed, go to /etc/nginx/sites-enabled and run nano default.\r\n\r\n4) You will find listen 80 default server;\r\nlisten [::]:80 default server;\r\nNow change 80 to your forwarded port.\r\nGet forwarded port in /forward, or i will do tutorial soon about it theme\r\n\r\nNow scroll down and find servername ; change _ to 45.140.142.112:your-forwarded-port\r\n\r\n5) Save the config.\r\n\r\n6) Run systemctl restart nginx.\r\n7) Done! now upload your site to /var/www/html. ",
+    "publishedOn": "6/23/2024"
+  }
+]
