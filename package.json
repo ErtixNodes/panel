@@ -1,0 +1,22 @@
+{
+  "name": "panel",
+  "version": "1.0.0",
+  "description": "ErtixNodes website + panel + earn + blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "jest": "^29.7.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@types/node": "^20.14.8",
+    "eslint": "^9.5.0",
+    "globals": "^15.6.0"
+  }
+}

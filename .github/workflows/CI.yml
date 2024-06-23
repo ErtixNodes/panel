@@ -1,0 +1,34 @@
+name: CI
+
+on:
+    push:
+      branches: [ "main" ]
+    pull_request:
+      # The branches below must be a subset of the branches above
+      branches: [ "main" ]  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.11.0
+
+    - name: Install pm2
+      run: npm install pm2
+
+    - name: Install modules
+      run: npm install
+
+    - name: Start app
+      run: npx pm2 start .
+      env:
+        CI: true
+
+    - name: wait for app
+      run: sleep 1
+
+    - name: Run tests
+      run: npm run test
