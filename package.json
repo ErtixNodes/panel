@@ -1,0 +1,16 @@
+{
+  "name": "panel",
+  "version": "1.0.0",
+  "description": "ErtixNodes website + panel + earn + blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@eslint/js": "^9.5.0",
+    "express": "^4.19.2"
+  }
+}
