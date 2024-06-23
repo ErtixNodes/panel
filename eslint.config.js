@@ -1,6 +1,6 @@
 const js = require('@eslint/js');
 
-module.exports = { default: [
+module.exports = [
     {files: ["**/*.js"], languageOptions: {sourceType: "commonjs"}},
 
     js.configs.recommended,
@@ -13,4 +13,4 @@ module.exports = { default: [
             "no-unreachable": "error"
         }
     }
-] };
+];
