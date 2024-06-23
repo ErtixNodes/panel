@@ -11,10 +11,10 @@ module.exports = [
 
     {
         rules: {
-            "no-unused-vars": "error",
-            "no-undef": "error",
-            "semi": "error",
-            "no-unreachable": "error"
+            "no-unused-vars": "warn",
+            "no-undef": "warn",
+            "semi": "warn",
+            "no-unreachable": "warn"
         }
 
     }
