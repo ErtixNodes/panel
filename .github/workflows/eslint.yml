@@ -29,7 +29,7 @@ jobs:
       - name: Install ESlint
         run: sudo yarn global add eslint
       - name: Run ESlint
-        run: eslint . --ext .js,.jsx,.ts,.tsx --fix
+        run: eslint . --fix
       - name: Check for modified files
         id: git-check
         run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
