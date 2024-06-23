@@ -1,6 +1,6 @@
 const js = require('@eslint/js');
 
-module.exports = [
+module.exports = { default: [
     js.configs.recommended,
 
     {
@@ -11,4 +11,4 @@ module.exports = [
             "no-unreachable": "error"
         }
     }
-];
+] };
