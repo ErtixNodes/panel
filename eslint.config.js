@@ -7,7 +7,8 @@ export default [
         rules: {
             "no-unused-vars": "warn",
             "no-undef": "warn",
-            "semi": "always"
+            "semi": "warn",
+            "no-unreachable": "error"
         }
     }
 ];
