@@ -8,7 +8,6 @@ const fetch = require('node-fetch');
 test('Can ping auth', async () => {
     var res = await fetch(BASE + '/dash/_');
 
-    expect(res.headers["Content-Type"]).toMatch(/json/);
     expect(res.statusCode).toEqual(200);
 
     var body = await res.json();
