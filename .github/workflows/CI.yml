@@ -30,5 +30,8 @@ jobs:
     - name: wait for app
       run: sleep 1
 
+    - name: Check logs
+      run: npx pm2 logs --nostream --lines 100
+
     - name: Run tests
       run: npm run test

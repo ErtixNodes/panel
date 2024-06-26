@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+console.log('isCI = ', process.env.CI)
+
 const { log } = console;
 const express = require('express');
 const morgan = require('morgan');
