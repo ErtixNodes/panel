@@ -1,6 +1,7 @@
 require('dotenv').config();
 
-console.log('isCI = ', process.env.CI)
+let isCI = process.env.CI;
+if (isCI) console.log('> Starting in CI mode. Disabling authentication...')
 
 const { log } = console;
 const express = require('express');
@@ -24,6 +25,35 @@ app.use(session({
 }));
 
 app.use(morgan('dev')); // log requests in dev format
+
+if (isCI) {
+  console.log('Disabling auth...');
+  log('> THIS CAN BE DANGEROUS. ONLY USE IN CI!')
+  app.use((req, res, next) => {
+    var user = {
+      "id":"554344892827172884",
+      "username":"bastothemax",
+      "avatar":"0e6f00adce8fcbd1959c985676a4d80f",
+      "discriminator":"0",
+      "public_flags":4194432,
+      "flags":4194432,
+      "banner":null,
+      "accent_color":16744960,
+      "global_name":"BasToTheMax",
+      "avatar_decoration_data":null,
+      "banner_color":"#FF8200",
+      "clan":null,
+      "mfa_enabled":true,
+      "locale":"en-US",
+      "premium_type":0,
+      "email":"example@mail.com",
+      "verified":true
+    }
+    req.session.user = user;
+    req.session.userID = user.id;
+    next();
+  });
+}
 
 app.use('/', require('./landing.js'));
 app.use('/dash', require('./dash.js'));
