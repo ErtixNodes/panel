@@ -2,15 +2,15 @@ test('Jest works', () => {
     expect(true).toBe(true);
 });
 
-var request = require('supertest');
+const BASE = 'http://localhost:3000';
+const fetch = require('node-fetch');
 
-request = request('http://localhost:3000');
-
-test('Can ping auth', () => {
-    var res = request()
-        .get('/dash/_');
+test('Can ping auth', async () => {
+    var res = await fetch(BASE + '/dash/_');
 
     expect(res.headers["Content-Type"]).toMatch(/json/);
-    expect(res.status).toEqual(200);
-    expect(res.body.auth).toEqual(true);
+    expect(res.statusCode).toEqual(200);
+
+    var body = await res.json();
+    expect(body.auth).toEqual(true);
 });
