@@ -26,6 +26,7 @@ jobs:
       run: npx pm2 start .
       env:
         CI: true
+        PORT: 3000
 
     - name: wait for app
       run: sleep 1

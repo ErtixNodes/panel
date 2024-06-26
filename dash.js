@@ -57,6 +57,13 @@ router.get('/', (req, res) => {
     res.send('yoo ' + req.session.user.global_name);
     // res.render('dashboard', { req, res });
 });
+
+
+router.get('/_', (req, res) => {
+    res.json({
+        auth: true
+    });
+});
 module.exports = router;
 
 function error(res, code, text) {
