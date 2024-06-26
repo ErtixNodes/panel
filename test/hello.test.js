@@ -2,7 +2,7 @@ test('Jest works', () => {
     expect(true).toBe(true);
 });
 
-const request = require('supertest');
+var request = require('supertest');
 
 request = request('http://localhost:3000');
 
