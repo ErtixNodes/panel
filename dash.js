@@ -48,6 +48,42 @@ function genToken(length){
 
 const fetch = require('node-fetch');
 
+router.get('/node/charge/:token/:id', async (req, res) => {
+    const { id, token } = req.params;
+    const { suspend } = req.query;
+    if (!suspend) return res.send('No suspend');
+    if (token != 'SUPERSECRET') return res.send('Invalid token');
+
+    var srv = await db.Server.findOne({
+        pteroLID: id
+    });
+    if (!srv) {
+        console.log(`Srv ${id} no found in db`);
+        return res.send('Invalid server');
+    }
+
+    var user = await db.User.findOne({
+        userID: srv.userID
+    });
+    if (!user) {
+        console.log(`user ${srv.userID} no found in db`);
+        return res.send('invalid user');
+    }
+
+    user.balance = user.balance - 1;
+    await user.save();
+
+    if (suspend == true || user.balance == 0) {
+        try {
+            await ptero.suspendServer(srv.pteroNID);
+        } catch(e) {
+            console.log('cant sus', e);
+        }
+    }
+
+    return res.send();
+});
+
 // Logging in
 router.get('/callback', async (req, res) => {
     const { code } = req.query;
@@ -275,42 +311,6 @@ router.get('/_', (req, res) => {
     res.json({
         auth: true
     });
-});
-
-router.get('/node/charge/:token/:id', async (req, res) => {
-    const { id, token } = req.params;
-    const { suspend } = req.query;
-    if (!suspend) return res.send('No suspend');
-    if (token != 'SUPERSECRET') return res.send('Invalid token');
-
-    var srv = await db.Server.findOne({
-        pteroLID: id
-    });
-    if (!srv) {
-        console.log(`Srv ${id} no found in db`);
-        return res.send('Invalid server');
-    }
-
-    var user = await db.User.findOne({
-        userID: srv.userID
-    });
-    if (!user) {
-        console.log(`user ${srv.userID} no found in db`);
-        return res.send('invalid user');
-    }
-
-    user.balance = user.balance - 1;
-    await user.save();
-
-    if (suspend == true || user.balance == 0) {
-        try {
-            await ptero.suspendServer(srv.pteroNID);
-        } catch(e) {
-            console.log('cant sus', e);
-        }
-    }
-
-    return res.send();
 });
 
 module.exports = router;
