@@ -180,7 +180,7 @@ router.get('/earn/cuty', async (req, res) => {
 
         if (hoursDiff < 24) {
             const nextEarnTime = new Date(lastEarnTime.getTime() + 24 * 60 * 60 * 1000);
-            return res.send(`You can earn credits again ${Math.floor((Date.now() - nextEarnTime.getTime()) / 1000 / 60)} minutes`);
+            return res.send(`You can earn credits again ${Math.floor((nextEarnTime.getTime() - Date.now()) / 1000 / 60)} minutes`);
         }
     }
 
