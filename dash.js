@@ -162,6 +162,13 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/earn', async (req, res) => {
+    var user = await db.User.findOne({
+        userID: req.session.user.id
+    });
+    res.render('earn', {req, res, user})
+});
+
+router.get('/earn/cuty', async (req, res) => {
     var userId = req.session.user.id;
 
     // Check if user is in cooldown
