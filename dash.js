@@ -299,7 +299,8 @@ router.get('/server/api/create', async (req, res) => {
         var srv = await ptero.createRawServer(json);
     } catch (e) {
         console.log('ERROR creating server', e);
-        return error(res, 500, 'Failed to create server');
+       // return error(res, 500, 'Failed to create server');
+       return res.redirect(req.url);
     }
 
     // console.log(srv);
