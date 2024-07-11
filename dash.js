@@ -64,14 +64,14 @@ router.get('/callback', async (req, res) => {
 
         var user = await oauth.getUser(token.access_token);
 
-        console.log('user', user);
+        // console.log('user', user);
 
         var userInDB = await db.User.findOne({
             userID: user.id
         });
         if (!userInDB) {
             var pteroUser = await ptero.createUser(user.email, 'u' + user.id, 'Discord', 'Discord', user.avatar);
-            console.log(pteroUser);
+            // console.log(pteroUser);
             userInDB = new db.User({
                 userID: user.id,
                 balance: 0,
@@ -88,7 +88,7 @@ router.get('/callback', async (req, res) => {
         console.log('ERROR', String(e), e);
     }
 
-    console.log(req.session);
+    // console.log(req.session);
     req.session.save();
     return res.redirect('/dash');
     // res.render('dashboard', {req, res});
