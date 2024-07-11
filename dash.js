@@ -58,7 +58,7 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         pteroLID: id
     });
     if (!srv) {
-        console.log(`Srv ${id} no found in db`);
+        //console.log(`Srv ${id} no found in db`);
         return res.send('Invalid server');
     }
 
