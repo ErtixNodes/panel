@@ -126,20 +126,7 @@ router.get('/server/api/create', async (req, res) => {
     }
     var srv = await ptero.createRawServer(json);
 
-    // var srv = await ptero.createSimpleServer(req.session.pteroID, 2, ram, disk, cpu, 0, 0, 1);
-
-    // const ServerBuilder = Nodeactyl.ServerBuilder;
-
-    // let srv = new ServerBuilder()
-    //     .setServerOwner(req.session.pteroID)
-    //     .setServerRAM(1024)
-    //     .setServerCPU(100)
-    //     .setServerAllocationLimit(1)
-    //     .setServerOOMDisabled(false);
-    
-    // srv = await srv.createServer(ptero);
-
-    console.log(srv);
+    // console.log(srv);
 
     srv = srv.attributes;
 
