@@ -60,6 +60,11 @@ if (isCI) {
 app.use('/', require('./landing.js'));
 app.use('/dash', require('./dash.js'));
 
-app.listen(3000, () => {
-  log(`App online at port 3000`);
+if (process.env.SERVER_PORT) {
+  log('> Using ptero :D');
+  process.env.PORT = process.env.SERVER_PORT;
+}
+
+app.listen(process.env.PORT, () => {
+  log(`App online at port ${process.env.PORT}`);
 });
