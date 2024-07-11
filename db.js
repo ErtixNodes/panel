@@ -11,6 +11,7 @@ const Server = mongoose.model('Server', {
     userID: String,
     pteroUID: String,
     pteroNID: Number,
+    pteroLID: String,
     
     name: String,
     ram: Number,

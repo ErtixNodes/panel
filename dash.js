@@ -106,10 +106,13 @@ router.get('/server/api/create', async (req, res) => {
             'backups': 0
         },
         'environment': {
-            // todo
+            'MINECRAFT_VERSION': 'latest',
+            'SERVER_JARFILE': 'server.jar',
+            'DL_PATH': '',
+            'BUILD_NUMBER': 'latest'
         },
         'allocation': {
-            'default': 1,
+            // 'default': 1,
             'additional': [],
         },
         'deploy': {
@@ -138,7 +141,24 @@ router.get('/server/api/create', async (req, res) => {
 
     console.log(srv);
 
-    res.json({ ok: true, srv });
+    srv = srv.attributes;
+
+    var dbServer = new db.Server({
+        userID: req.session.userID,
+        pteroUID: srv.identifier,
+        pteroNID: srv.id,
+        pteroLID: srv.uuid,
+
+        name,
+        ram,
+        cpu,
+        disk,
+
+        cost: 1
+    });
+    await dbServer.save();
+
+    res.redirect('/dash');
 });
 
 
