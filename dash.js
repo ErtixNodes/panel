@@ -101,14 +101,14 @@ router.get('/callback', async (req, res) => {
 
         var user = await oauth.getUser(token.access_token);
 
-        // console.log('user', user);
+         console.log('user', user);
 
         var userInDB = await db.User.findOne({
             userID: user.id
         });
         if (!userInDB) {
             try {
-                var pteroUser = await ptero.createUser(user.email, 'u' + user.id, 'Discord', 'Discord', user.avatar);
+                var pteroUser = await ptero.createUser(`u${user.id}@ertixnodes.xyz`, 'u' + user.id, 'Discord', 'Discord', user.avatar);
                 // console.log(pteroUser);
                 userInDB = new db.User({
                     userID: user.id,
