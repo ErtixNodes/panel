@@ -106,15 +106,20 @@ router.get('/callback', async (req, res) => {
             userID: user.id
         });
         if (!userInDB) {
-            var pteroUser = await ptero.createUser(user.email, 'u' + user.id, 'Discord', 'Discord', user.avatar);
-            // console.log(pteroUser);
-            userInDB = new db.User({
-                userID: user.id,
-                balance: 0,
-                pteroID: pteroUser.attributes.id,
-                password: user.avatar
-            });
-            await userInDB.save();
+            try {
+                var pteroUser = await ptero.createUser(user.email, 'u' + user.id, 'Discord', 'Discord', user.avatar);
+                // console.log(pteroUser);
+                userInDB = new db.User({
+                    userID: user.id,
+                    balance: 0,
+                    pteroID: pteroUser.attributes.id,
+                    password: user.avatar
+                });
+                await userInDB.save();
+            } catch (e) {
+                console.log('ERROR creating Pterodactyl user', e);
+                return error(res, 500, 'Failed to create Pterodactyl user');
+            }
         }
 
         req.session.pteroID = userInDB.pteroID
@@ -222,7 +227,7 @@ router.get('/earn/claim/:token', async (req, res) => {
             try {
                 await ptero.unsuspendServer(server.pteroNID);
             } catch(e) {
-                console.log('cant sus', e);
+                console.log('cant unsuspend', e);
             }
         });
     }, 1);
@@ -282,7 +287,12 @@ router.get('/server/api/create', async (req, res) => {
         'skip_scripts': false,
         'oom_disabled': false,
     }
-    var srv = await ptero.createRawServer(json);
+    try {
+        var srv = await ptero.createRawServer(json);
+    } catch (e) {
+        console.log('ERROR creating server', e);
+        return error(res, 500, 'Failed to create server');
+    }
 
     // console.log(srv);
 
