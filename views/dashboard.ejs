@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Hello <%- req.session.user.global_name %></h1>
-    Balance <%- user.balance %> credits (<a href="/dash/earn">[EARN]</a>)
+    Balance <%- user.balance %> credits <a href="/dash/earn">[EARN]</a> - ~<%- Math.ceil(user.balance/60 %> hours left
 
     <h2>Pterodactyl details:</h2>
     URL: https://game.meegie.net/ <br />
