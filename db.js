@@ -4,7 +4,8 @@ mongoose.connect(process.env.MONGO_URL);
 const User = mongoose.model('User', {
     userID: String,
     balance: Number,
-    pteroID: Number
+    pteroID: Number,
+    password: String
 });
 
 const Server = mongoose.model('Server', {

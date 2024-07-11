@@ -7,5 +7,27 @@
 </head>
 <body>
     <h1>Hello <%- req.session.user.global_name %></h1>
+    Balance <%- user.balance %> credits
+
+    <h2>Pterodactyl details:</h2>
+    URL: https://game.meegie.net/ <br />
+    Username: u<%- req.session.user.id %> <br />
+    Password: <%- pass %> <br />
+
+    <h2>Your servers:</h2>
+    <ul>
+        <% for(var i=0; i<servers.length; i++) {%>
+           <li><a href="https://game.meegie.net/server/<%- servers[i].pteroUID %>"><%= servers[i].name %> ( <%= (servers[i].ram)/1024 %> GB ram )</a></li>
+        <% } %>
+    </ul>
+
+    <h3>Create server</h3>
+    <form action="/dash/server/api/create">
+        <label for="name">Server name:</label><br>
+        <input type="text" name="name" id="name" value="" placeholder="My server!"><br><br>
+
+        <span>Server software: PaperMC</span><br /><hr />
+        <input type="submit" value="Create server!">
+      </form>
 </body>
 </html>

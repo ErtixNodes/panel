@@ -14,6 +14,40 @@ const router = express.Router();
 const Nodeactyl = require('nodeactyl');
 const ptero = new Nodeactyl.NodeactylApplication(process.env.PANEL_URL, process.env.PANEL_KEY);
 
+const fs = require('fs');
+const path = require('path');
+
+const cooldownFilePath = path.join(__dirname, 'cooldowns.json');
+
+// Function to read cooldown data from file
+function readCooldowns() {
+    if (fs.existsSync(cooldownFilePath)) {
+        const data = fs.readFileSync(cooldownFilePath);
+        return JSON.parse(data);
+    }
+    return {};
+}
+
+// Function to write cooldown data to file
+function writeCooldowns(cooldowns) {
+    fs.writeFileSync(cooldownFilePath, JSON.stringify(cooldowns, null, 2));
+}
+
+const cooldowns = readCooldowns(); // Load cooldown data
+
+function genToken(length){
+    //edit the token allowed characters
+    var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
+    var b = [];  
+    for (var i=0; i<length; i++) {
+        var j = (Math.random() * (a.length-1)).toFixed(0);
+        b[i] = a[j];
+    }
+    return b.join("");
+}
+
+const fetch = require('node-fetch');
+
 // Logging in
 router.get('/callback', async (req, res) => {
     const { code } = req.query;
@@ -36,12 +70,13 @@ router.get('/callback', async (req, res) => {
             userID: user.id
         });
         if (!userInDB) {
-            var pteroUser = await ptero.createUser(user.email, user.username, 'Discord', 'Discord', user.avatar);
+            var pteroUser = await ptero.createUser(user.email, 'u' + user.id, 'Discord', 'Discord', user.avatar);
             console.log(pteroUser);
             userInDB = new db.User({
                 userID: user.id,
                 balance: 0,
-                pteroID: pteroUser.attributes.id
+                pteroID: pteroUser.attributes.id,
+                password: user.avatar
             });
             await userInDB.save();
         }
@@ -73,14 +108,30 @@ router.use(async (req, res, next) => {
     next();
 });
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     // res.send('yoo ' + req.session.user.global_name);
-    res.render('dashboard', { req, res });
+    var user = await db.User.findOne({
+        userID: req.session.user.id
+    });
+    var servers = await db.Server.find({
+        userID: req.session.user.id
+    });
+    res.render('dashboard', { req, res, pass: user.password, servers, user });
 });
+
+router.get('/earn', async (req, res) => {
+    
+})
 
 router.get('/server/api/create', async (req, res) => {
     const { name } = req.query;
     if (!name ) return res.json({ ok: false });
+
+    var dbUser = await db.User.findOne({
+        userID: req.session.userID
+    });
+    if (!dbUser) return res.json({ ok: false });
+    if (dbUser.balance < 5) return res.type('txt').send('Failed to create server: you need at least 5 credits');
     
     var ram = 1024;
     var cpu = 100;
