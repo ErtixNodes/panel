@@ -179,8 +179,8 @@ router.get('/earn/claim/:token', async (req, res) => {
     await tok.save();
 
     setTimeout(async () => {
-        var srv = await db.Server({
-            find: userID: tok.userID
+        var srv = await db.Server.find({
+            userID: tok.userID
         });
         srv.forEach(async server => {
             try {
