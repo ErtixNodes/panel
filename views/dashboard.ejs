@@ -6,47 +6,113 @@
     <title>ErtixNodes</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
     <style>
         body {
-            width: 50em;
-            margin: 0 auto;
-            font-family: Tahoma, Verdana, Arial, sans-serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2em auto;
+            padding: 1em;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2em;
+        }
+        .card-body {
+            padding: 2em;
+        }
+        .card h2, .card h3 {
+            font-weight: bold;
+            margin-bottom: 1em;
+        }
+        .btn-link {
+            padding: 0;
+            font-weight: bold;
+        }
+        .form-control, .btn {
+            margin-top: 0.5em;
+        }
+        .list-group-item {
+            border: none;
+            padding: 1em 0;
+        }
+        .list-group-item a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .list-group-item a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar bg-dark navbar-dark">
-    <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1">ErtixNodes</span>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ErtixNodes</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1>Hello, <%- req.session.user.global_name %>!</h1>
+                <p class="lead">Balance: <strong><%- user.balance %></strong> credits <a href="/dash/earn" class="btn btn-link">[EARN]</a></p>
+                <p>~<strong><%- Math.ceil(user.balance/60) %></strong> hours left</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2>Pterodactyl Details</h2>
+                <p><strong>URL:</strong> <a href="https://game.meegie.net/" target="_blank">https://game.meegie.net/</a></p>
+                <p><strong>Username:</strong> u<%- req.session.user.id %></p>
+                <p><strong>Password:</strong> <%- pass %></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2>Your Servers</h2>
+                <ul class="list-group">
+                    <% for(var i=0; i<servers.length; i++) { %>
+                        <li class="list-group-item">
+                            <a href="https://game.meegie.net/server/<%- servers[i].pteroUID %>"><%= servers[i].name %> (<%= (servers[i].ram)/1024 %> GB RAM)</a>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h3>Create Server</h3>
+                <form action="/dash/server/api/create" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Server Name:</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="My server!">
+                    </div>
+                    <div class="mb-3">
+                        <span>Server software: PaperMC</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create server!</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </nav>
 
-    <h1>Hello <%- req.session.user.global_name %></h1>
-    Balance <%- user.balance %> credits <a href="/dash/earn">[EARN]</a> - ~<%- Math.ceil(user.balance/60) %> hours left
-
-    <h2>Pterodactyl details:</h2>
-    URL: https://game.meegie.net/ <br />
-    Username: u<%- req.session.user.id %> <br />
-    Password: <%- pass %> <br />
-
-    <h2>Your servers:</h2>
-    <ul class="list-group">
-        <% for(var i=0; i<servers.length; i++) {%>
-           <li class="list-group-item"><a href="https://game.meegie.net/server/<%- servers[i].pteroUID %>"><%= servers[i].name %> ( <%= (servers[i].ram)/1024 %> GB ram )</a></li>
-        <% } %>
-    </ul>
-
-    <h3>Create server</h3>
-    <form action="/dash/server/api/create">
-        <label for="name">Server name:</label><br>
-        <input type="text" class="form-control" name="name" id="name" value="" placeholder="My server!"><br><br>
-
-        <span>Server software: PaperMC</span><br /><hr />
-        <input type="submit" class="btn btn-primary" value="Create server!">
-      </form>
-
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
