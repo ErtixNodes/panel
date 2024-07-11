@@ -31,9 +31,9 @@
     Password: <%- pass %> <br />
 
     <h2>Your servers:</h2>
-    <ul>
+    <ul class="list-group">
         <% for(var i=0; i<servers.length; i++) {%>
-           <li><a href="https://game.meegie.net/server/<%- servers[i].pteroUID %>"><%= servers[i].name %> ( <%= (servers[i].ram)/1024 %> GB ram )</a></li>
+           <li class="list-group-item"><a href="https://game.meegie.net/server/<%- servers[i].pteroUID %>"><%= servers[i].name %> ( <%= (servers[i].ram)/1024 %> GB ram )</a></li>
         <% } %>
     </ul>
 
