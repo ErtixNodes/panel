@@ -120,8 +120,66 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/earn', async (req, res) => {
+    var userId = req.session.user.id;
+
+    // Check if user is in cooldown
+    if (cooldowns[userId]) {
+        const lastEarnTime = new Date(cooldowns[userId]);
+        const now = new Date();
+        const timeDiff = now - lastEarnTime;
+        const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+        if (hoursDiff < 24) {
+            const nextEarnTime = new Date(lastEarnTime.getTime() + 24 * 60 * 60 * 1000);
+            return res.send(`You can earn credits again ${Math.floor((Date.now() - nextEarnTime.getTime()) / 1000 / 60)} minutes`);
+        }
+    }
+
+    var token = genToken(32);
+
+    var url = await fetch(`https://api.cuty.io/quick?token=${process.env.CUTY}&url=${encodeURIComponent(`${process.env.DASH}/earn/claim/${token}`)}&format=text`);
+    url = await url.text();
+
+    const earn = new db.Earn({
+        userID: userId,
+        isUsed: false,
+        creditCount: 60,
+        token
+    });
+    await earn.save();
+
+    // Set the current time as the last earn time for the user and save to file
+    cooldowns[userId] = new Date().toISOString();
+    writeCooldowns(cooldowns);
+
+    res.redirect(url);
+});
+
+router.get('/earn/claim/:token', async (req, res) => {
+    const { token } = req.params;
     
-})
+    if (!token) return res.status(400).type('txt').send('No token provided');
+    
+    var tok = await db.Earn.findOne({
+        token
+    });
+    if (!tok) return res.status(403).type('txt').send('Invalid token');
+    
+    if (tok.isUsed == true) return res.status(403).type('txt').send('Token already used');
+    
+    var user = await db.User.findOne({
+        userID: tok.userID
+    });
+    if (!user) return res.status(403).type('txt').send('Invalid user');
+    
+    user.balance = user.balance + tok.creditCount;
+    await user.save();
+    
+    tok.isUsed = true;
+    await tok.save();
+    
+    return res.redirect(`/dash`);
+});
 
 router.get('/server/api/create', async (req, res) => {
     const { name } = req.query;
