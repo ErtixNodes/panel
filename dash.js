@@ -177,6 +177,19 @@ router.get('/earn/claim/:token', async (req, res) => {
     
     tok.isUsed = true;
     await tok.save();
+
+    setTimeout(async () => {
+        var srv = await db.Server({
+            find: userID: tok.userID
+        });
+        srv.forEach(async server => {
+            try {
+                await ptero.unsuspendServer(server.pteroNID);
+            } catch(e) {
+                console.log('cant sus', e);
+            }
+        });
+    }, 1);
     
     return res.redirect(`/dash`);
 });
