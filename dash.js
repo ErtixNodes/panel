@@ -93,7 +93,7 @@ router.get('/callback', async (req, res) => {
     try {
         var token = await oauth.tokenRequest({
             code,
-            scope: "identify",
+            scope: "identify email",
             grantType: "authorization_code",
         });
 
