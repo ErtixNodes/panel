@@ -74,8 +74,8 @@ router.use(async (req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-    res.send('yoo ' + req.session.user.global_name);
-    // res.render('dashboard', { req, res });
+    // res.send('yoo ' + req.session.user.global_name);
+    res.render('dashboard', { req, res });
 });
 
 router.get('/server/api/create', async (req, res) => {

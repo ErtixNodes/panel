@@ -10,6 +10,8 @@ const session = require('express-session')
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 var FileStore = require('session-file-store')(session);
 
 app.use(session({
