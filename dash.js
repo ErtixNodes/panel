@@ -73,7 +73,8 @@ router.get('/node/charge/:token/:id', async (req, res) => {
     user.balance = user.balance - 1;
     await user.save();
 
-    if (suspend == true || user.balance == 0) {
+    if (suspend == 'true' || user.balance == 0) {
+        console.log('i will suspend (angry emoji)')
         try {
             await ptero.suspendServer(srv.pteroNID);
         } catch(e) {
