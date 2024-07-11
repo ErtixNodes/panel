@@ -266,6 +266,8 @@ router.get('/_', (req, res) => {
 
 router.get('/node/charge/:token/:id', async (req, res) => {
     const { id, token } = req.params;
+    const { suspend } = req.query;
+    if (!suspend) return res.send('No suspend');
     if (token != 'SUPERSECRET') return res.send('Invalid token');
 
     var srv = await db.Server.findOne({
@@ -286,6 +288,14 @@ router.get('/node/charge/:token/:id', async (req, res) => {
 
     user.balance = user.balance - 1;
     await user.save();
+
+    if (suspend == true || user.balance == 0) {
+        try {
+            await ptero.suspendServer(srv.pteroNID);
+        } catch(e) {
+            console.log('cant sus', e);
+        }
+    }
 
     return res.send();
 });
