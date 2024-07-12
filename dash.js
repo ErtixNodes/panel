@@ -308,7 +308,7 @@ router.get('/server/api/create', async (req, res) => {
     } catch (e) {
         console.log('ERROR creating server', e);
        // return error(res, 500, 'Failed to create server');
-       return res.redirect(req.url);
+       return res.redirect('/dash' + req.url);
     }
 
     // console.log(srv);
