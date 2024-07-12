@@ -263,7 +263,7 @@ router.get('/server/api/create', async (req, res) => {
         'user': user,
         'egg': 22,
         'docker_image': "ghcr.io/pterodactyl/yolks:java_21",
-        'startup': "java -Xmx1G -jar server.jar",
+        'startup': "java -Xmx2G -jar server.jar",
         'limits': {
             'memory': ram,
             'swap': 0,
