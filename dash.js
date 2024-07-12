@@ -171,6 +171,13 @@ router.get('/earn', async (req, res) => {
 router.get('/earn/cuty', async (req, res) => {
     var userId = req.session.user.id;
 
+    var tok = await db.Earn.findOne({
+        userID: userId,
+        isUsed: false
+    });
+
+    if (tok && tok.url) return res.redirect(tok.url);
+
     // Check if user is in cooldown
     if (cooldowns[userId]) {
         const lastEarnTime = new Date(cooldowns[userId]);
@@ -193,7 +200,8 @@ router.get('/earn/cuty', async (req, res) => {
         userID: userId,
         isUsed: false,
         creditCount: 60,
-        token
+        token,
+        url
     });
     await earn.save();
 
