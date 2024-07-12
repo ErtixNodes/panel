@@ -261,7 +261,7 @@ router.get('/server/api/create', async (req, res) => {
     let json = {
         'name': name,
         'user': user,
-        'egg': 2,
+        'egg': 22,
         'docker_image': "ghcr.io/pterodactyl/yolks:java_21",
         'startup': "java -Xmx1G -jar server.jar",
         'limits': {
