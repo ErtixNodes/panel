@@ -18,7 +18,9 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie:  {},
+    cookie:  {
+      maxAge: 1000 * 60 * 60 * 24 * 31
+    },
 
     store: new FileStore({
       reapAsync: true,
