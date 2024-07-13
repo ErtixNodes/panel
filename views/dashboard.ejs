@@ -71,6 +71,7 @@
                 <h1>Hello, <%- req.session.user.global_name %>!</h1>
                 <p class="lead">Balance: <strong><%- user.balance %></strong> credits <a href="/dash/earn" class="btn btn-link">[EARN]</a></p>
                 <p>~<strong><%- Math.ceil(user.balance/60) %></strong> hours left</p>
+                <p>Each server costs 1 credit per minute, but only if your server is online. If your server is offline, you are not billed.</p>
             </div>
         </div>
 
@@ -110,6 +111,30 @@
                     <button type="submit" class="btn btn-primary">Create server!</button>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">
+                FAQ
+            </div>
+        </div>
+        <div class="card-body">
+            <b>Idle servers:</b><br />
+            To prevent you to use all your credits by accident, we install a plugin to stop the server after 5 minutes after the last player leaves. You are free to remove this plugin, but if you don't stop your server, it will cost credits!
+
+            <b>Unused servers:</b><br />
+            If your server has not been started for 3 days, it will automatically get deleted without any backups available.
+
+            <b>Where to get support:</b><br />
+            If you have questions, you can either:
+            <ul>
+                <li>Join our <a href="https://discord.gg/3jmDHT6pAr">discord server</a></li>
+                <li>Ask on our <a href="https://help.meegie.net">forum*</a></li>
+            </ul>
+
+            <sub>* points that you get can be traded for credits.</sub>
         </div>
     </div>
 
