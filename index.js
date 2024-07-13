@@ -17,7 +17,7 @@ var FileStore = require('session-file-store')(session);
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie:  {
       maxAge: 1000 * 60 * 60 * 24 * 31
     },
