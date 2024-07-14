@@ -108,13 +108,14 @@ router.get('/callback', async (req, res) => {
         });
         if (!userInDB) {
             try {
-                var pteroUser = await ptero.createUser(`u${user.id}@ertixnodes.xyz`, 'u' + user.id, 'Discord', 'Discord', user.avatar);
+                var pteroPass = genToken(32);
+                var pteroUser = await ptero.createUser(`u${user.id}@ertixnodes.xyz`, 'u' + user.id, 'Discord', 'Discord', pteroPass);
                 // console.log(pteroUser);
                 userInDB = new db.User({
                     userID: user.id,
                     balance: 30, // free credits
                     pteroID: pteroUser.attributes.id,
-                    password: user.avatar
+                    password: pteroPass
                 });
                 await userInDB.save();
             } catch (e) {
