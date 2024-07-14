@@ -5,40 +5,237 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ErtixNodes</title>
 
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+    <!-- Custom CSS -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #ffffff; /* White text */
+            margin: 0;
+            padding: 0;
         }
+
+        .overlay-bar {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+            z-index: 1000;
+            transition: top 0.3s;
+        }
+
+        .navbar {
+            background-color: transparent;
+            transition: background-color 0.3s;
+        }
+        .navbar.scrolled {
+            background-color: #000000; /* Dark background when scrolled */
+        }
+
+        /* Hero section styles */
         .hero {
-            background-color: #6c757d;
-            color: white;
-            padding: 100px 0;
+            background: url('https://highzzcloud.xyz/assets/images/bg.png') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
             text-align: center;
+            position: relative;
         }
-        .about-us, .resources, .features, .faq, .statistics, .footer {
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #ffffff; /* White text */
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #ffffff; /* White text */
+        }
+        .hero .btn {
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+        .hero .circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background-color: #4CAF50; /* Green circle color */
+            border-radius: 50%;
+            z-index: -1; /* Behind text */
+            opacity: 0.8;
+        }
+
+        /* About Us section styles */
+        .about-us {
+            padding: 50px 0;
+            text-align: center;
+            display: none; /* Initially hidden */
+        }
+        .about-us h2 {
+            margin-bottom: 30px;
+        }
+
+        /* Resources section styles */
+        .resources {
+            padding: 50px 0;
+            text-align: center;
+            display: none; /* Initially hidden */
+        }
+        .resources h2 {
+            margin-bottom: 30px;
+        }
+
+        /* Features section styles */
+        .features {
+            padding: 50px 0;
+            text-align: center;
+            display: none; /* Initially hidden */
+        }
+        .features h2 {
+            margin-bottom: 30px;
+        }
+
+        /* FAQ section styles */
+        .faq {
             padding: 50px 0;
             text-align: center;
         }
-        .resources .card, .statistics .card {
+        .faq h2 {
+            margin-bottom: 30px;
+            color: #ffffff; /* White text */
+        }
+        .accordion-item {
+            background-color: #1E1E1E; /* Dark gray accordion item background */
+            border: 1px solid #4CAF50; /* Green border */
+            margin-bottom: 10px;
+        }
+        .accordion-button {
+            background-color: #1E1E1E; /* Dark gray accordion button background */
+            color: #ffffff; /* White text */
+            border: none;
+            text-align: left;
+            padding: 10px;
+        }
+        .accordion-button:hover {
+            background-color: #2E2E2E; /* Darker gray on hover */
+        }
+        .accordion-button.collapsed {
+            background-color: #1E1E1E; /* Dark gray when collapsed */
+        }
+        .accordion-body {
+            background-color: #333333; /* Darker background for accordion body */
+            color: #ffffff; /* White text */
+            padding: 10px;
+        }
+
+        /* Statistics section styles */
+        .statistics {
+            padding: 50px 0;
+            text-align: center;
+            display: none; /* Initially hidden */
+        }
+        .statistics h2 {
+            margin-bottom: 30px;
+        }
+
+        /* Footer section styles */
+        .footer {
+            background-color: #000000; /* Very dark footer */
+            color: #ffffff; /* White text */
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Adjustments for cards and buttons */
+        .card {
+            background-color: #1E1E1E; /* Dark gray card background */
+            color: #ffffff; /* White text */
             margin-bottom: 20px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            color: #4CAF50; /* Green title color */
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            color: #ffffff; /* White text */
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background-color: #4CAF50; /* Green button */
+            border-color: #4CAF50; /* Green button border */
+        }
+        .btn-success {
+            background-color: #43A047; /* Darker green button */
+            border-color: #43A047; /* Darker green button border */
+        }
+        .btn-primary:hover, .btn-success:hover {
+            filter: brightness(85%); /* Reduce brightness on hover */
         }
     </style>
 </head>
 <body>
-        <!-- Hero Section -->
+
+    <!-- Overlay bar for scrolling -->
+    <div class="overlay-bar" id="overlayBar">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="#">ErtixNodes</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#resources">Free Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#faq">FAQ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#statistics">Statistics</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
     <div class="hero">
         <div class="container">
-            <h1 class="display-4">Welcome to ErtixNodes</h1>
-            <p class="lead">Your free Minecraft hosting solution.</p>
+            <h1>Welcome to ErtixNodes</h1>
+            <p>Your free Minecraft hosting solution.</p>
             <a href="/dash" class="btn btn-primary btn-lg">Create your server now!</a>
             <a href="https://discord.gg/3jmDHT6pAr" class="btn btn-success btn-lg">Join our discord server!</a>
+            <div class="circle"></div> <!-- Green circle -->
         </div>
     </div>
 
-     <!-- About Us Section -->
-     <div class="about-us">
+    <!-- About Us Section -->
+    <div id="about" class="about-us">
         <div class="container">
             <h2>About Us</h2>
             <p>ErtixNodes is dedicated to providing free and reliable Minecraft server hosting. We believe in giving everyone the opportunity to enjoy Minecraft with their friends without any cost. Our servers are optimized for performance and stability, ensuring a great gaming experience.</p>
@@ -46,14 +243,15 @@
     </div>
 
     <!-- Resources Section -->
-    <div class="resources">
+    <div id="resources" class="resources">
         <div class="container">
             <h2>Free Resources</h2>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-3">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">2 GB RAM</h5>
+                            <p class="card-text">Optimized for gaming</p>
                         </div>
                     </div>
                 </div>
@@ -61,6 +259,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">1 vCPU</h5>
+                            <p class="card-text">High performance</p>
                         </div>
                     </div>
                 </div>
@@ -68,6 +267,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">4 GB Disk</h5>
+                            <p class="card-text">Ample storage</p>
                         </div>
                     </div>
                 </div>
@@ -75,16 +275,17 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">PaperMC Software</h5>
+                            <p class="card-text">For optimized gameplay</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Billing -->
+            </div>
+            <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Only Billed When Online</h5>
-                            <p class="card-text">You are only billed for the time your server is actually online<sub>checked per minute</sub>. No hidden costs or surprise charges.</p>
+                            <p class="card-text">You are only billed for the time your server is actually online. No hidden costs or surprise charges.</p>
                         </div>
                     </div>
                 </div>
@@ -93,23 +294,15 @@
     </div>
 
     <!-- Features Section -->
-    <div class="features bg-light">
+    <div id="features" class="features">
         <div class="container">
             <h2>Features</h2>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">95+% Uptime</h5>
-                            <p class="card-text">Our servers ensure your Minecraft world is always accessible.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">100% Free</h5>
-                            <p class="card-text">We don't have any paid plans. Everything is 100% free!</p>
+                            <p class="card-text">Always accessible Minecraft world</p>
                         </div>
                     </div>
                 </div>
@@ -117,7 +310,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">24/7 Support</h5>
-                            <p class="card-text">Our support team is available around the clock to help you.</p>
+                            <p class="card-text">Available around the clock</p>
                         </div>
                     </div>
                 </div>
@@ -126,7 +319,7 @@
     </div>
 
     <!-- FAQ Section -->
-    <div class="faq">
+    <div id="faq" class="faq">
         <div class="container">
             <h2>Frequently Asked Questions</h2>
             <div class="accordion" id="faqAccordion">
@@ -162,13 +355,13 @@
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            No, there are no hidden costs. You are only billed for the time your server is online<sub>checked every minute</sub>., and there are no surprise charges as everything is pre-paid. Our hosting is 100% free. We use advertisements to get profits.
+                            No, there are no hidden costs. You are only billed for the time your server is online. There are no surprise charges as everything is prepaid. Our hosting is 100% free. We use advertisements to generate revenue.
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingFour">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                             Is a credit card required?
                         </button>
                     </h2>
@@ -183,10 +376,10 @@
     </div>
 
     <!-- Statistics Section -->
-    <div class="statistics bg-light">
+    <div id="statistics" class="statistics">
         <div class="container">
             <h2>Our Statistics</h2>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
@@ -198,7 +391,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">5+</</h5>
+                            <h5 class="card-title">5+</h5>
                             <p class="card-text">Servers Hosted</p>
                         </div>
                     </div>
@@ -216,12 +409,46 @@
     </div>
 
     <!-- Footer Section -->
-    <div class="footer bg-dark text-white">
+    <div class="footer">
         <div class="container">
             <p>&copy; 2024 ErtixNodes. All rights reserved.</p>
         </div>
     </div>
 
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Custom Script -->
+    <script>
+        // Show/hide the overlay bar and other sections on scroll
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            var overlayBar = document.getElementById("overlayBar");
+            var aboutUs = document.querySelector('.about-us');
+            var resources = document.querySelector('.resources');
+            var features = document.querySelector('.features');
+            var faq = document.querySelector('.faq');
+            var statistics = document.querySelector('.statistics');
+
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                overlayBar.style.display = "block";
+                document.querySelector('.navbar').classList.add('scrolled');
+                aboutUs.style.display = "block";
+                resources.style.display = "block";
+                features.style.display = "block";
+                faq.style.display = "block";
+                statistics.style.display = "block";
+            } else {
+                overlayBar.style.display = "none";
+                document.querySelector('.navbar').classList.remove('scrolled');
+                aboutUs.style.display = "none";
+                resources.style.display = "none";
+                features.style.display = "none";
+                faq.style.display = "none";
+                statistics.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
