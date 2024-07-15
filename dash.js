@@ -263,7 +263,7 @@ router.get('/server/api/create', async (req, res) => {
     if (dbUser.balance < 5) return res.type('txt').send('Failed to create server: you need at least 5 credits');
     
     var ram = 2048;
-    var cpu = 100;
+    var cpu = 0;
     var disk = 4096;
 
     const user = req.session.pteroID;
@@ -281,9 +281,9 @@ router.get('/server/api/create', async (req, res) => {
             'cpu': cpu,
         },
         'feature_limits': {
-            'databases': 1,
-            'allocations': 1,
-            'backups': 0
+            'databases': 0,
+            'allocations': 3,
+            'backups': 1
         },
         'environment': {
             'MINECRAFT_VERSION': 'latest',
