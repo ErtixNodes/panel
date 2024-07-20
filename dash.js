@@ -113,7 +113,7 @@ router.get('/callback', async (req, res) => {
                 // console.log(pteroUser);
                 userInDB = new db.User({
                     userID: user.id,
-                    balance: 30, // free credits
+                    balance: 1500, // free credits
                     pteroID: pteroUser.attributes.id,
                     password: pteroPass
                 });
@@ -200,7 +200,7 @@ router.get('/earn/cuty', async (req, res) => {
     const earn = new db.Earn({
         userID: userId,
         isUsed: false,
-        creditCount: 180,
+        creditCount: 1500,
         token,
         url
     });
