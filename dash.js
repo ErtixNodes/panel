@@ -115,7 +115,8 @@ router.get('/callback', async (req, res) => {
                     userID: user.id,
                     balance: 1500, // free credits
                     pteroID: pteroUser.attributes.id,
-                    password: pteroPass
+                    password: pteroPass,
+                    notif: false
                 });
                 await userInDB.save();
             } catch (e) {
