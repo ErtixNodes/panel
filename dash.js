@@ -163,10 +163,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/earn', async (req, res) => {
-    var user = await db.User.findOne({
+    /*var user = await db.User.findOne({
         userID: req.session.user.id
     });
-    res.render('earn', {req, res, user})
+    res.render('earn', {req, res, user}) */
+    res.redirect('/dash/earn/cuty');
 });
 
 router.get('/earn/cuty', async (req, res) => {
