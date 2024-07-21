@@ -163,6 +163,17 @@ router.get('/', async (req, res) => {
     res.render('dashboard', { req, res, pass: user.password, servers, user });
 });
 
+router.get('/create', async (req, res) => {
+    // res.send('yoo ' + req.session.user.global_name);
+    var user = await db.User.findOne({
+        userID: req.session.user.id
+    });
+    var servers = await db.Server.find({
+        userID: req.session.user.id
+    });
+    res.render('create', { req, res, pass: user.password, servers, user });
+});
+
 router.get('/earn', async (req, res) => {
     /*var user = await db.User.findOne({
         userID: req.session.user.id
