@@ -1,28 +1,4 @@
 <%- include('shared/top.ejs') %>
-<class="card">
-            <div class="card-body">
-                <h2>Pterodactyl Details</h2>
-                <p><strong>URL:</strong> <a href="https://game.meegie.net/" target="_blank">https://game.meegie.net/</a>
-                </p>
-                <p><strong>Username:</strong> u<%- req.session.user.id %></p>
-                <p><strong>Password:</strong> <%- pass %></p>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <h2>Your Servers</h2>
-                <ul class="list-group">
-                    <% for(var i=0; i<servers.length; i++) { %>
-                        <li class="list-group-item">
-                            <a href="https://game.meegie.net/server/<%- servers[i].pteroUID %>">
-                                <%= servers[i].name %> (<%= (servers[i].ram)/1024 %> GB RAM)
-                            </a>
-                        </li>
-                        <% } %>
-                </ul>
-            </div>
-        </div>
 
         <div class="card">
             <div class="card-body">
