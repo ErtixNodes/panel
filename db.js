@@ -5,7 +5,9 @@ const User = mongoose.model('User', {
     userID: String,
     balance: Number,
     pteroID: Number,
-    password: String
+    password: String,
+
+    notif: Boolean
 });
 
 const Server = mongoose.model('Server', {
