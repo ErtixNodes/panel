@@ -288,7 +288,7 @@ router.get('/server/api/create', async (req, res) => {
         'startup': "java -Xmx2G -jar server.jar",
         'limits': {
             'memory': ram,
-            'swap': 0,
+            'swap': -1,
             'disk': disk,
             'io': 100,
             'cpu': cpu,
