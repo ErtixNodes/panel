@@ -275,17 +275,17 @@ router.get('/server/api/create', async (req, res) => {
     if (!dbUser) return res.json({ ok: false });
     if (dbUser.balance < 5) return res.type('txt').send('Failed to create server: you need at least 5 credits');
     
-    var ram = 2*1024;
-    var cpu = 200;
-    var disk = 8*1024;
+    var ram = 0.5*1024;
+    var cpu = 50;
+    var disk = 1.5*1024;
 
     const user = req.session.pteroID;
     let json = {
-        'name': name,
+        'name': '[VPS] ' + name,
         'user': user,
-        'egg': 22,
-        'docker_image': "ghcr.io/pterodactyl/yolks:java_21",
-        'startup': "java -Xmx2G -jar server.jar",
+        'egg': 25,
+        'docker_image': "ghcr.io/pterodactyl/yolks:debian",
+        'startup': '/home/container/usr/local/bin/proot --rootfs="/home/container" --link2symlink --kill-on-exit --root-id --cwd=/ --bind=/proc --bind=/dev --bind=/sys --bind=/tmp /bin/sh',
         'limits': {
             'memory': ram,
             'swap': -1,
@@ -296,13 +296,13 @@ router.get('/server/api/create', async (req, res) => {
         'feature_limits': {
             'databases': 0,
             'allocations': 3,
-            'backups': 1
+            'backups': 0
         },
         'environment': {
-            'MINECRAFT_VERSION': 'latest',
+            /*'MINECRAFT_VERSION': 'latest',
             'SERVER_JARFILE': 'server.jar',
             'DL_PATH': '',
-            'BUILD_NUMBER': 'latest'
+            'BUILD_NUMBER': 'latest' */
         },
         'allocation': {
             // 'default': 1,
@@ -313,7 +313,7 @@ router.get('/server/api/create', async (req, res) => {
             'dedicated_ip': false,
             'port_range': [],
         },
-        'start_on_completion': true,
+        'start_on_completion': false,
         'skip_scripts': false,
         'oom_disabled': false,
     }
