@@ -35,6 +35,11 @@ app.use(morgan('dev')); // log requests in dev format
 const accessLogStream = fs.createWriteStream('./app.log', { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream })); // log requests in combined format to the file
 
+// Define a format that includes the referrer
+morgan.format('custom', ':method :url :status :response-time ms - Referrer: :referrer');
+// Set up Morgan with the custom format
+app.use(morgan('custom', { stream: accessLogStream }));
+
 if (isCI) {
   console.log('Disabling auth...');
   log('> THIS CAN BE DANGEROUS. ONLY USE IN CI!')
