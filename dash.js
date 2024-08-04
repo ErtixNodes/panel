@@ -276,7 +276,7 @@ router.get('/server/api/create', async (req, res) => {
     if (!dbUser) return res.json({ ok: false });
     if (dbUser.balance < 5) return res.type('txt').send('Failed to create server: you need at least 5 credits');
     
-    var ram = 0.75*1024;
+    var ram = 1*1024;
     var cpu = 100;
     var disk = 2*1024;
 
