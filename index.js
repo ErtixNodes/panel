@@ -33,7 +33,7 @@ app.use(session({
 
 // create a write stream (in append mode)
 const accessLogStream = fs.createWriteStream('./app.log', { flags: 'a' });
-app.use(morgan('combined', { stream: accessLogStream })); // log requests in combined format to the file
+// app.use(morgan('combined', { stream: accessLogStream })); // log requests in combined format to the file
 
 // Define a format that includes the referrer
 morgan.format('custom', 'Referrer: :referrer');
