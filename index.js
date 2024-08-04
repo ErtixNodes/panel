@@ -29,7 +29,7 @@ app.use(session({
     })
 }));
 
-app.use(morgan('dev')); // log requests in dev format
+// app.use(morgan('dev')); // log requests in dev format
 
 // create a write stream (in append mode)
 const accessLogStream = fs.createWriteStream('./app.log', { flags: 'a' });

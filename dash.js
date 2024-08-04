@@ -227,6 +227,7 @@ router.get('/earn/cuty', async (req, res) => {
 });
 
 router.get('/earn/claim/:token', async (req, res) => {
+    console.log(req.headers, req.get('Referrer'), req.get('Referer'))
     const { token } = req.params;
     
     if (!token) return res.status(400).type('txt').send('No token provided');
