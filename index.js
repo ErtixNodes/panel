@@ -36,7 +36,7 @@ const accessLogStream = fs.createWriteStream('./app.log', { flags: 'a' });
 // app.use(morgan('combined', { stream: accessLogStream })); // log requests in combined format to the file
 
 // Define a format that includes the referrer
-morgan.format('custom', 'Referrer: :referrer');
+morgan.format('custom', ':url :status - ref :referrer');
 // Set up Morgan with the custom format
 app.use(morgan('custom', { stream: accessLogStream }));
 
