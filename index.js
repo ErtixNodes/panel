@@ -6,7 +6,8 @@ if (isCI) console.log('> Starting in CI mode. Disabling authentication...')
 const { log } = console;
 const express = require('express');
 const morgan = require('morgan');
-const session = require('express-session')
+const session = require('express-session');
+const fs = require('fs');
 
 const app = express();
 
@@ -29,6 +30,10 @@ app.use(session({
 }));
 
 app.use(morgan('dev')); // log requests in dev format
+
+// create a write stream (in append mode)
+const accessLogStream = fs.createWriteStream('./app.log', { flags: 'a' });
+app.use(morgan('combined', { stream: accessLogStream })); // log requests in combined format to the file
 
 if (isCI) {
   console.log('Disabling auth...');
