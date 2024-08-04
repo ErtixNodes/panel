@@ -22,6 +22,7 @@ const Server = mongoose.model('Server', {
     disk: Number,
 
     cost: Number,
+    lastPing: Number
 });
 
 
@@ -30,7 +31,8 @@ const Earn = mongoose.model('Earn', {
     userID: String,
     isUsed: Boolean,
     creditCount: Number,
-    token: String
+    token: String,
+    url: String
 });
 
 module.exports = {
