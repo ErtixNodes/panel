@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hosting Client Panel</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Dashboard - ErtixNodes</title>
+    <link rel="stylesheet" href="/dash/style.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Material Icons -->
@@ -22,7 +22,7 @@
         <div class="user-info">
             <a href="#profile" class="user-link">
                 <div class="avatar-placeholder">A</div>
-                <span class="username">Username</span>
+                <span class="username"><%- req.session.user.global_name %></span>
             </a>
         </div>
     </div>
@@ -32,38 +32,41 @@
                 <div class="home-box">
                     <div class="resources">
                         <div class="resource-card">
-                            <i class="fa fa-memory"></i> <span>1 GB RAM</span>
+                            <i class="fa fa-memory"></i> <span>128 MB RAM</span>
                         </div>
                         <div class="resource-card">
-                            <i class="fa fa-hdd"></i> <span>5 GB DISK</span>
+                            <i class="fa fa-hdd"></i> <span>512 MB DISK</span>
                         </div>
                         <div class="resource-card">
-                            <i class="fa fa-cogs"></i> <span>0.75 CPU</span>
+                            <i class="fa fa-cogs"></i> <span>0.25 vCPU</span>
                         </div>
                     </div>
-                    <button class="create-server-button">Create a server</button>
+                    <a class="create-server-button" href="/dash/create">Create VPS</a>
                     <div class="panel-info">
-                        <p><strong>Panel information:</strong></p>
-                        <p><strong>Login:</strong> login</p>
-                        <p><strong>Password:</strong> password</p>
+                        <p><strong>Management panel information:</strong></p>
+                        <p><strong>URL:</strong> https://game.meegie.net</p>
+                        <p><strong>Login:</strong> u<%- req.session.user.id %></p>
+                        <p><strong>Password:</strong> <%- pass %></p>
                     </div>
+                    <% for(var i=0; i<servers.length; i++) { %>
                     <div class="server-card">
                         <div class="server-info">
                             <div class="server-detail">
-                                <i class="fa fa-server"></i> <span>Server Name</span>
+                                <i class="fa fa-server"></i> <span><%= servers[i].name %></span>
                             </div>
                             <div class="server-detail">
-                                <i class="fa fa-tachometer-alt"></i> <span>100%</span>
+                                <i class="fa fa-tachometer-alt"></i> <span><%= servers[i].cpu %></span>
                             </div>
                             <div class="server-detail">
-                                <i class="fa fa-memory"></i> <span>0.75 GB</span>
+                                <i class="fa fa-memory"></i> <span><%= servers[i].ram %> MB</span>
                             </div>
                             <div class="server-detail">
-                                <i class="fa fa-hdd"></i> <span>2 GB</span>
+                                <i class="fa fa-hdd"></i> <span><%= servers[i].disk %> MB</span>
                             </div>
                         </div>
-                        <button class="manage-button">Manage</button>
-                    </div>                    
+                        <a class="manage-button" href="https://game.meegie.net/server/<%- servers[i].pteroUID %>">Manage</a>
+                    </div>   
+                    <% } %>                 
             </section>
         </main>
     </div>

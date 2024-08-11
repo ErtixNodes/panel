@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Server</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Create VPS - ErtixNodes</title>
+    <link rel="stylesheet" href="/dash/style.css">
 </head>
 <body>
     <div class="create-container">
         <div class="create-box">
-            <h2>Create a server</h2>
-            <input type="text" placeholder="Name of server">
+            <h2>Create a VPS</h2>
+            <input type="text" placeholder="VPS name">
             <select>
                 <optgroup label="VPS">
-                    <option value="alpine">Alpine</option>
-                    <option value="debian" disabled>Debian (not available)</option>
+                    <option value="alpine">Alpine - free</option>
+                    <option value="debian" disabled>Debian - 3 credits/hour</option>
                 </optgroup>
             </select>
             <div class="create-buttons">
-                <a href="index.html" class="cancel-button">Cancel</a>
-                <a href="/api/create" class="create-button">Create</a>
+                <a href="/dash" class="cancel-button">Cancel</a>
+                <button onclick="create()" class="create-button">Create</button>
             </div>
         </div>
     </div>
+    
+    <script></script>
 </body>
 </html>
