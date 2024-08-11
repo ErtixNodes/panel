@@ -69,6 +69,10 @@ if (isCI) {
   });
 }
 
+app.get('/dash/style.css', (req, res) => {
+  res.sendFile(__dirname + '/views/dash/style.css')
+})
+
 app.use('/', require('./landing.js'));
 app.use('/dash', require('./dash.js'));
 
