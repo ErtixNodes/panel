@@ -39,11 +39,11 @@
     
     <script>
         async function create() {
-            var name = document.getElementById('name').value;
-            var type = document.getElementById('type').value;
-            var plan = document.getElementById('plan').value;
+            var name = encodeURIComponent(String(document.getElementById('name').value));
+            var type = encodeURIComponent(String(document.getElementById('type').value));
+            var plan = encodeURIComponent(String(document.getElementById('plan').value));
 
-            console.log(name, type, plan)
+            window.location.href = `/dash/server/api/create?name=${name}&type=${type}&plan=${plan}`;
         }
     </script>
 </body>
