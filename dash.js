@@ -230,6 +230,13 @@ router.get('/earn', async (req, res) => {
     // res.redirect('/dash/earn/cuty');
 });
 
+router.get('/credits', async (req, res) => {
+    var user = await db.User.findOne({
+        userID: req.session.user.id
+    });
+    return res.type('txt').send(String(user.balance));
+});
+
 router.get('/earn/cuty', async (req, res) => {
     var userId = req.session.user.id;
 

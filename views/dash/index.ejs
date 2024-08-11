@@ -32,7 +32,7 @@
                 <div class="home-box">
                     <div class="resources">
                         <div class="resource-card">
-                            <i class="fa fa-coins"></i> <span><%- user.balance %> credits</span>
+                            <i class="fa fa-coins"></i> <span><strong id="bal"><%- user.balance %></strong> credits</span>
                         </div>
                         <div class="resource-card">
                             <i class="fa fa-hdd"></i> <span>~<strong><%- Math.ceil(user.balance/60) %></strong> hours left</span>
@@ -74,5 +74,16 @@
             </section>
         </main>
     </div>
+
+    <script>
+        async function credits() {
+            var res = await fetch('/dash/credits').then(r => r.text());
+            document.getElementById('bal').innerHTML = res;
+        }
+
+        credits();
+
+        setInterval(time, 15*1000);
+    </script>
 </body>
 </html>
