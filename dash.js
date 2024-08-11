@@ -19,6 +19,15 @@ const path = require('path');
 
 const cooldownFilePath = path.join(__dirname, 'cooldowns.json');
 
+const plans = {
+    'vps1': {
+        ram: 128,
+        cpu: 25,
+        disk: 512,
+        cost: 1
+    }
+};
+
 // Function to read cooldown data from file
 function readCooldowns() {
     if (fs.existsSync(cooldownFilePath)) {
@@ -160,7 +169,7 @@ router.get('/', async (req, res) => {
     var servers = await db.Server.find({
         userID: req.session.user.id
     });
-    res.render('dashboard', { req, res, pass: user.password, servers, user });
+    res.render('dash/index', { req, res, pass: user.password, servers, user });
 });
 
 router.get('/create', async (req, res) => {
@@ -171,7 +180,7 @@ router.get('/create', async (req, res) => {
     var servers = await db.Server.find({
         userID: req.session.user.id
     });
-    res.render('create', { req, res, pass: user.password, servers, user });
+    res.render('dash/create', { req, res, pass: user.password, servers, user });
 });
 
 router.get('/earn', async (req, res) => {
@@ -267,18 +276,25 @@ router.get('/earn/claim/:token', async (req, res) => {
 });
 
 router.get('/server/api/create', async (req, res) => {
-    const { name } = req.query;
-    if (!name ) return res.json({ ok: false });
+    const { name, type, plan } = req.query;
+    if (!name || !type || !plan) return res.type('txt').send('Missing params');
+
+    if (type != 'alpine') return res.type('txt').send('Invalid type');
+
+    if (!plans[plan]) return res.type('txt').send('Invalid plan');
 
     var dbUser = await db.User.findOne({
         userID: req.session.userID
     });
     if (!dbUser) return res.json({ ok: false });
-    if (dbUser.balance < 5) return res.type('txt').send('Failed to create server: you need at least 5 credits');
+
+    var pl = plans[plan];
+
+    if (dbUser.balance < pl.cost * 5) return res.type('txt').send('Failed to create server: you need at least '+pl.cost*5+' credits');
     
-    var ram = 1*1024;
-    var cpu = 100;
-    var disk = 2*1024;
+    var ram = pl.ram;
+    var cpu = pl.cpu;
+    var disk = pl.disk;
 
     const user = req.session.pteroID;
     let json = {
@@ -300,10 +316,7 @@ router.get('/server/api/create', async (req, res) => {
             'backups': 0
         },
         'environment': {
-            /*'MINECRAFT_VERSION': 'latest',
-            'SERVER_JARFILE': 'server.jar',
-            'DL_PATH': '',
-            'BUILD_NUMBER': 'latest' */
+            /* Egg does not have env vars */
         },
         'allocation': {
             // 'default': 1,
@@ -341,19 +354,13 @@ router.get('/server/api/create', async (req, res) => {
         cpu,
         disk,
 
-        cost: 1
+        cost: pl.cost
     });
     await dbServer.save();
 
     res.redirect('/dash');
 });
 
-
-router.get('/_', (req, res) => {
-    res.json({
-        auth: true
-    });
-});
 
 module.exports = router;
 
