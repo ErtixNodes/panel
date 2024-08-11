@@ -147,15 +147,24 @@ router.get('/callback', async (req, res) => {
     // res.render('dashboard', {req, res});
 });
 
+router.get('/login', (req, res) => {
+    res.render('dash/login', { req, res });
+})
+
+router.get('/api/login', async (req, res) => {
+    const url = await oauth.generateAuthUrl({
+        scope: ["identify"],
+        state: crypto.randomBytes(16).toString("hex"), // Be aware that randomBytes is sync if no callback is provided
+    });
+    console.log(url);
+    return res.redirect(url);
+});
+
 router.use(async (req, res, next) => {
     // console.log('dash ses', req.session);
-    if (!req.session.user) {
-        const url = await oauth.generateAuthUrl({
-            scope: ["identify"],
-            state: crypto.randomBytes(16).toString("hex"), // Be aware that randomBytes is sync if no callback is provided
-        });
-        console.log(url);
-        return res.redirect(url);
+    console.log(req.url)
+    if (!req.session.user && req.url != '/login') {
+        return res.redirect('/dash/login');
     }
 
     next();
