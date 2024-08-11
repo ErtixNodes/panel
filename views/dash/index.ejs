@@ -42,12 +42,13 @@
                         </div> -->
                     </div>
                     <a class="create-server-button" href="/dash/create">Create VPS</a>
-                    <div class="panel-info">
-                        <p><strong>Management panel information:</strong></p>
+                    <div class="panel-info" style="margin-bottom: 25px;">
+                        <h1>Management panel information:</h1>
                         <p><strong>URL:</strong> https://game.meegie.net</p>
                         <p><strong>Login:</strong> u<%- req.session.user.id %></p>
                         <p><strong>Password:</strong> <%- pass %></p>
                     </div>
+                    <h1>Your vps:</h1>
                     <% for(var i=0; i<servers.length; i++) { %>
                     <div class="server-card">
                         <div class="server-info">
