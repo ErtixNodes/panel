@@ -343,7 +343,7 @@ a {
     width: 100%;
 }
 
-.create-buttons a {
+.create-buttons a, button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -351,6 +351,7 @@ a {
     padding: 10px;
     font-size: 16px;
     border-radius: 8px;
+    border: none;
     text-decoration: none;
     color: #ffffff;
     transition: background-color 0.3s;
