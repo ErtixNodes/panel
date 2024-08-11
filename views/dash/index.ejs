@@ -32,14 +32,14 @@
                 <div class="home-box">
                     <div class="resources">
                         <div class="resource-card">
-                            <i class="fa fa-memory"></i> <span>128 MB RAM</span>
+                            <i class="fa fa-coin"></i> <span><%- user.balance %> credits</span>
                         </div>
                         <div class="resource-card">
-                            <i class="fa fa-hdd"></i> <span>512 MB DISK</span>
+                            <i class="fa fa-hdd"></i> <span>~<strong><%- Math.ceil(user.balance/60) %></strong> hours left</span>
                         </div>
-                        <div class="resource-card">
+                        <!-- <div class="resource-card">
                             <i class="fa fa-cogs"></i> <span>0.25 vCPU</span>
-                        </div>
+                        </div> -->
                     </div>
                     <a class="create-server-button" href="/dash/create">Create VPS</a>
                     <div class="panel-info">
