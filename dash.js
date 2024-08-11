@@ -20,7 +20,7 @@ const path = require('path');
 const cooldownFilePath = path.join(__dirname, 'cooldowns.json');
 
 const plans = {
-    'vps1': {
+    'tiny1': {
         ram: 128,
         cpu: 25,
         disk: 512,
