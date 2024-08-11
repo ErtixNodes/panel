@@ -55,7 +55,7 @@
                                 <i class="fa fa-server"></i> <span><%= servers[i].name %></span>
                             </div>
                             <div class="server-detail">
-                                <i class="fa fa-tachometer-alt"></i> <span><%= servers[i].cpu %></span>
+                                <i class="fa fa-tachometer-alt"></i> <span><%= (servers[i].cpu/100) %> vCPU</span>
                             </div>
                             <div class="server-detail">
                                 <i class="fa fa-memory"></i> <span><%= servers[i].ram %> MB</span>
