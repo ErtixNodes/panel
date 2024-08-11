@@ -32,7 +32,7 @@
                 <div class="home-box">
                     <div class="resources">
                         <div class="resource-card">
-                            <i class="fa fa-coin"></i> <span><%- user.balance %> credits</span>
+                            <i class="fa fa-coins"></i> <span><%- user.balance %> credits</span>
                         </div>
                         <div class="resource-card">
                             <i class="fa fa-hdd"></i> <span>~<strong><%- Math.ceil(user.balance/60) %></strong> hours left</span>
@@ -62,6 +62,9 @@
                             </div>
                             <div class="server-detail">
                                 <i class="fa fa-hdd"></i> <span><%= servers[i].disk %> MB</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fa fa-coins"></i> <span><%= servers[i].cost %> credits/minute</span>
                             </div>
                         </div>
                         <a class="manage-button" href="https://game.meegie.net/server/<%- servers[i].pteroUID %>">Manage</a>
