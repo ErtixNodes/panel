@@ -12,7 +12,7 @@
             <h2>Earn credits</h2>
             <ul class="earn-list">
                 <li>
-                    <a href="/dash/earn/cuty" target="_blank">cuty.io</a> <span class="timer">(60)</span>
+                    <a href="/dash/earn/cuty" target="_blank">cuty.io</a> <span id="cutytime" class="timer">(loading)</span>
                 </li>
             </ul>
         </div>
@@ -21,7 +21,10 @@
     <script>
         async function time() {
             var res = await fetch('/dash/earn/cuty/time').then(r => r.text());
+            document.getElementById('cutytime').innerHTML = `(${res})`;
         }
+
+        time();
 
         setInterval(time, 1000);
     </script>

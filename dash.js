@@ -244,6 +244,24 @@ router.get('/earn/cuty', async (req, res) => {
     res.redirect(url);
 });
 
+router.get('/earn/cuty/time', async (req, res) => {
+    var userId = req.session.user.id;
+
+    if (cooldowns[userId]) {
+        const lastEarnTime = new Date(cooldowns[userId]);
+        const now = new Date();
+        const timeDiff = now - lastEarnTime;
+        const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+        if (hoursDiff < 24) {
+            const nextEarnTime = new Date(lastEarnTime.getTime() + 24 * 60 * 60 * 1000);
+            return res.type('txt').send(`${Math.floor((nextEarnTime.getTime() - Date.now()) / 1000 / 60)}m | ${Math.floor((nextEarnTime.getTime() - Date.now()) / 1000 / 60 / 60)}h`);
+        }
+    }
+
+    res.type('txt').send('Ready');
+});
+
 router.get('/earn/claim/:token', async (req, res) => {
     console.log(req.get('Referrer'), req.get('Referer'))
     const { token } = req.params;
