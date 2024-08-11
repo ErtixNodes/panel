@@ -9,23 +9,25 @@
 <body>
     <div class="create-container">
         <div class="create-box">
-            <h2>Create a VPS</h2>
-            <input type="text" placeholder="VPS name">
-            <select>
+            <h2>Create VPS</h2>
+            <input type="text" id="name" placeholder="VPS name">
+            <select id="type">
                 <optgroup label="VPS">
                     <option value="alpine">Alpine v3.20 - free</option>
                     <option value="debian" disabled>Debian - 3 credits/hour</option>
                 </optgroup>
             </select>
-            <select>
-                <optgroup label="Plans">
-                    <option value="alpine">128 MB ram | 0.25 vCPU | 0.5 GB disk | 1 credit/minute</option>
-                    <option value="alpine">256 MB ram | 0.25 vCPU | 1 GB disk | 2 credits/minute</option>
-                    <option value="alpine">512 MB ram | 0.5 vCPU  | 2 GB disk | 4 credits/minute</option>
-                    <option value="alpine">768 MB ram | 0.5 vCPU  | 2 GB disk | 6 credits/minute</option>
-                    <option value="alpine">1 GB ram | 0.5 vCPU | 4 GB disk | 8 credits/minute</option>
-                    <option value="alpine" disabled>1.5 GB ram | 0.5 vCPU | 4 GB disk | 12 credits/minute</option>
-                    <option value="alpine" disabled>2 GB ram | 1 vCPU | 8 GB disk | 16 credits/minute</option>
+            <select id="plan">
+                <optgroup label="Under 1 GB">
+                    <option value="tiny1">128 MB ram | 0.25 vCPU | 0.5 GB disk | 1 credit/minute</option>
+                    <option value="tiny2">256 MB ram | 0.25 vCPU | 1 GB disk | 2 credits/minute</option>
+                    <option value="tiny3">512 MB ram | 0.5 vCPU  | 2 GB disk | 4 credits/minute</option>
+                    <option value="tiny4">768 MB ram | 0.5 vCPU  | 2 GB disk | 6 credits/minute</option>
+                </optgroup>
+                <optgroup label="Over 1 GB">
+                    <option value="small1">1 GB ram | 0.5 vCPU | 4 GB disk | 8 credits/minute</option>
+                    <option value="small2" disabled>1.5 GB ram | 0.5 vCPU | 4 GB disk | 12 credits/minute</option>
+                    <option value="small3" disabled>2 GB ram | 1 vCPU | 8 GB disk | 16 credits/minute</option>
                 </optgroup>
             </select>
             <div class="create-buttons">
@@ -35,6 +37,14 @@
         </div>
     </div>
     
-    <script></script>
+    <script>
+        async function create() {
+            var name = document.getElementById('name').value;
+            var type = document.getElementById('type').value;
+            var plan = document.getElementById('plan').value;
+
+            console.log(name, type, plan)
+        }
+    </script>
 </body>
 </html>
