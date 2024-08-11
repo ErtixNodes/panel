@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Server</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="create-container">
+        <div class="create-box">
+            <h2>Create a server</h2>
+            <input type="text" placeholder="Name of server">
+            <select>
+                <optgroup label="VPS">
+                    <option value="alpine">Alpine</option>
+                    <option value="debian" disabled>Debian (not available)</option>
+                </optgroup>
+            </select>
+            <div class="create-buttons">
+                <a href="index.html" class="cancel-button">Cancel</a>
+                <a href="/api/create" class="create-button">Create</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

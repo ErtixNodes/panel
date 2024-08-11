@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hosting Client Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+    <div class="sidebar">
+        <nav>
+            <ul>
+                <li><a href="#home"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#create"><i class="fa fa-plus-circle"></i> Create</a></li>
+                <li><a href="#earn"><i class="fa fa-dollar-sign"></i> Earn</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            <a href="#profile" class="user-link">
+                <div class="avatar-placeholder">A</div>
+                <span class="username">Username</span>
+            </a>
+        </div>
+    </div>
+    <div class="main-content">
+        <main>
+            <section id="home">
+                <div class="home-box">
+                    <div class="resources">
+                        <div class="resource-card">
+                            <i class="fa fa-memory"></i> <span>1 GB RAM</span>
+                        </div>
+                        <div class="resource-card">
+                            <i class="fa fa-hdd"></i> <span>5 GB DISK</span>
+                        </div>
+                        <div class="resource-card">
+                            <i class="fa fa-cogs"></i> <span>0.75 CPU</span>
+                        </div>
+                    </div>
+                    <button class="create-server-button">Create a server</button>
+                    <div class="panel-info">
+                        <p><strong>Panel information:</strong></p>
+                        <p><strong>Login:</strong> login</p>
+                        <p><strong>Password:</strong> password</p>
+                    </div>
+                    <div class="server-card">
+                        <div class="server-info">
+                            <div class="server-detail">
+                                <i class="fa fa-server"></i> <span>Server Name</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fa fa-tachometer-alt"></i> <span>100%</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fa fa-memory"></i> <span>0.75 GB</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fa fa-hdd"></i> <span>2 GB</span>
+                            </div>
+                        </div>
+                        <button class="manage-button">Manage</button>
+                    </div>                    
+            </section>
+        </main>
+    </div>
+</body>
+</html>
