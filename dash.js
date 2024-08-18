@@ -104,7 +104,7 @@ setInterval(async () => {
                 }
         */
     });
-    var srvCount = db.Server.countDocuments();
+    var srvCount = await db.Server.countDocuments({});
     console.log(`Expired VPS: ${expired.length}/${srvCount}`);
     for(let i = 0; i < expired.length; i++) {
         var VPS = expired[i];
