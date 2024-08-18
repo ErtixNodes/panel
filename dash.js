@@ -127,7 +127,7 @@ setInterval(async () => {
             console.log('delete failed!', e);
         }
         console.log(`  | Server deleted`);
-        db.Server.deleteOne({ _id: VPS._id });
+        await db.Server.deleteOne({ _id: VPS._id });
         console.log(`  | Removed from db!`);
         // Expired
     }
