@@ -120,7 +120,7 @@ setInterval(async () => {
         var VPS = expired[i];
         // Expired
         // TODO: delete
-        console.log(`| Expired: ${VPS.name}`);
+        console.log(` | Expired: ${VPS.name}`);
         // Expired
     }
     console.log(`> Expired VPS: ${expired.length}/${srvCount}`);
