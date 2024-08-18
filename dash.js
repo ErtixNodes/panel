@@ -380,7 +380,7 @@ router.get('/server/api/create', async (req, res) => {
         await dbUser.save();
     }
 
-    var srv = await db.Server.findOne({
+    var srv = await db.Server.find({
         userID: req.session.userID
     });
 
