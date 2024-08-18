@@ -318,11 +318,7 @@ router.get('/create', async (req, res) => {
 });
 
 router.get('/earn', async (req, res) => {
-    var user = await db.User.findOne({
-        userID: req.session.user.id
-    });
-    res.render('dash/earn', {req, res, user});
-    // res.redirect('/dash/earn/cuty');
+    res.redirect('/dash#earn');
 });
 
 router.get('/credits', async (req, res) => {
