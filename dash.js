@@ -95,7 +95,17 @@ setInterval(async () => {
     // ---------------------
     console.log(`> Checking servers...`);
     var expired = await db.Server.find({
-        lastPing: { $lt: (Date.now()-(1000*60*60*24*3)) }
+        $or: [
+            { lastPing: { $lt: (Date.now()-(1000*60*60*24*3)) } },
+            { lastPing: null }
+        ]
+        // lastPing: {
+        //     $or: [
+        //         {}
+        //     ]
+        //     // $lt: (Date.now()-(1000*60*60*24*3))
+        // }
+        /* $or: [{ name: "Rambo" }, { breed: "Pugg" }, { age: 2 }]; */
         /*
                 if ((Date.now()-(1000*60*60*24*3)) > srv.lastPing) {
                     console.log(`${srv.name} needs to get deleted`);
