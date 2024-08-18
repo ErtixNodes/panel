@@ -7,7 +7,8 @@ const User = mongoose.model('User', {
     pteroID: Number,
     password: String,
 
-    notif: Boolean
+    notif: Boolean,
+    serverLimit: Number
 });
 
 const Server = mongoose.model('Server', {

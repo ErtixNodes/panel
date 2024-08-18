@@ -155,7 +155,8 @@ router.get('/callback', async (req, res) => {
                     balance: 1500, // free credits
                     pteroID: pteroUser.attributes.id,
                     password: pteroPass,
-                    notif: false
+                    notif: false,
+                    serverLimit: 1
                 });
                 await userInDB.save();
             } catch (e) {
@@ -363,6 +364,19 @@ router.get('/server/api/create', async (req, res) => {
         userID: req.session.userID
     });
     if (!dbUser) return res.json({ ok: false });
+
+    if (!dbUser.serverLimit) {
+        dbUser.serverLimit = 1;
+        await dbUser.save();
+    }
+
+    var srv = await db.Server.findOne({
+        userID: req.session.userID
+    });
+
+    if (srv.length >= dbUser.serverLimit) {
+        return res.type('txt').send('Server limit: 1 server');
+    }
 
     var pl = plans[plan];
 
