@@ -1,89 +1,204 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - ErtixNodes</title>
-    <link rel="stylesheet" href="/dash/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Material Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
-<body>
-    <div class="sidebar">
-        <nav>
-            <ul>
-                <li><a href="/dash"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="/dash/create"><i class="fa fa-plus-circle"></i> Create</a></li>
-                <li><a href="/dash/earn"><i class="fa fa-dollar-sign"></i> Earn</a></li>
-            </ul>
-        </nav>
-        <div class="user-info">
-            <a href="/dash" class="user-link">
-                <div class="avatar-placeholder">A</div>
-                <span class="username"><%- req.session.user.global_name %></span>
-            </a>
+<body class="bg-gray-900 text-white">
+    <div class="flex flex-col sm:flex-row">
+        <!-- Sidebar -->
+        <div class="sidebar bg-gray-800 w-full sm:w-64 sm:min-h-screen">
+            <nav class="mt-10">
+                <ul class="space-y-4">
+                    <li><a href="#home" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-home mr-3"></i> Home</a></li>
+                    <li><a href="#create" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-plus-circle mr-3"></i> Create</a></li>
+                    <li><a href="#earn" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-dollar-sign mr-3"></i> Earn</a></li>
+                </ul>
+            </nav>
+            <div class="user-info mt-auto px-4 py-4">
+                <a href="#home" class="flex items-center hover:bg-gray-700 p-2 rounded">
+                    <div class="avatar-placeholder bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center"><%- String(req.session.user.global_name)[0].toUpperCase() %></div>
+                    <span class="ml-3"><%- req.session.user.global_name %></span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="main-content flex-grow p-4 sm:p-10">
+            <main>
+                <!-- Home Section -->
+                <section id="home" class="mb-10">
+                    <div class="home-box">
+                        <div class="resources grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                            <div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
+                                <i class="fa fa-coins text-blue-500 text-2xl mr-3"></i> <span><strong id="bal"><%- user.balance %></strong> credits</span>
+                            </div>
+                            <div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
+                                <i class="fa fa-clock text-blue-500 text-2xl mr-3"></i> <span><strong>Next coin earning:</strong> <span class="cutytime">Loading</span></span>
+                            </div>
+                            <!-- <<div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
+                                <i class="fa fa-cogs text-blue-500 text-2xl mr-3"></i> <span>0.75 CPU</span>
+                            </div> -->
+                        </div>
+                        <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="#create">Create VPS</a>
+                        <div class="bg-gray-800 p-6 mt-6 rounded-lg">
+                            <p><strong>Panel information:</strong></p>
+                            <p><strong>URL:</strong> https://game.meegie.net/</p>
+                            <p><strong>Login:</strong> u<%- req.session.user.id %></p>
+                            <p><strong>Password:</strong> <%- pass %></p>
+                        </div>
+                        <% for(var i=0; i<servers.length; i++) { %>
+                            <div class="server-card bg-gray-800 p-4 mt-8 rounded-lg flex flex-col sm:flex-row justify-between items-center">
+                                <div class="server-info space-y-2 text-center sm:text-left">
+                                    <div class="server-detail"><i class="fa fa-server mr-2"></i> <strong><%= servers[i].name %></strong></div>
+                                    <div class="server-detail"><i class="fa fa-tachometer-alt mr-2"></i> <span><%= (servers[i].cpu/100) %> vCPU</span></div>
+                                    <div class="server-detail"><i class="fa fa-memory mr-2"></i> <span><%= servers[i].ram/1024 %> GB ram</span></div>
+                                    <div class="server-detail"><i class="fa fa-hdd mr-2"></i> <span><%= servers[i].disk/1024 %> GB disk</span></div>
+                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span><%= servers[i].cost %> credits/minute</span></div>
+                                </div>
+                                <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mt-4 sm:mt-0" href="https://game.meegie.net/server/<%- servers[i].pteroUID %>">Manage</a>
+                            </div>
+                        <% } %>  
+                    </div>
+                </section>
+
+                <!-- Create Section -->
+                <section id="create" class="hidden">
+                    <div class="create-container">
+                        <div class="create-box bg-gray-800 p-8 rounded-lg">
+                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Create VPS</h2>
+                            <input type="text" id="cname" placeholder="VPS name" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
+                            <select id="ctype" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
+                                <optgroup label="VPS">
+                                    <option value="alpine">Alpine - Free</option>
+                                    <option value="debian" disabled>Debian (not available)</option>
+                                </optgroup>
+                            </select>
+                            <select id="cplan" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
+                                <optgroup label="Under 1 GB">
+                                    <option value="tiny1">128 MB ram | 0.25 vCPU | 0.5 GB disk | 1 credit/minute</option>
+                                    <option value="tiny2">256 MB ram | 0.25 vCPU | 1 GB disk | 2 credits/minute</option>
+                                    <option value="tiny3">512 MB ram | 0.5 vCPU  | 2 GB disk | 4 credits/minute</option>
+                                    <option value="tiny4">768 MB ram | 0.5 vCPU  | 2 GB disk | 6 credits/minute</option>
+                                </optgroup>
+                                <optgroup label="Over 1 GB">
+                                    <option value="small1">1 GB ram | 0.5 vCPU | 4 GB disk | 8 credits/minute</option>
+                                    <option value="small2" disabled>1.5 GB ram | 0.5 vCPU | 4 GB disk | 12 credits/minute</option>
+                                    <option value="small3" disabled>2 GB ram | 1 vCPU | 8 GB disk | 16 credits/minute</option>
+                                </optgroup>
+                            </select>
+                            <div class="create-buttons flex flex-col sm:flex-row justify-between">
+                                <a href="#home" class="cancel-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Cancel</a>
+                                <button onclick="create();" class="create-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Earn Section -->
+                <section id="earn" class="hidden">
+                    <div class="earn-container">
+                        <div class="earn-box bg-gray-800 p-8 rounded-lg">
+                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">List of earnings</h2>
+                            <ul class="earn-list mb-6">
+                                <li class="mb-4">
+                                    <a href="/dash/earn/cuty" target="_blank" class="text-blue-400 hover:underline">cuty.io</a> - 1.5k credits - <span class="timer cutytime">loading</span>
+                                </li>
+                            </ul>
+                            <a href="#home" class="back-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Back</a>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
     </div>
-    <div class="main-content">
-        <main>
-            <section id="home">
-                <div class="home-box">
-                    <div class="resources">
-                        <div class="resource-card">
-                            <i class="fa fa-coins"></i> <span><strong id="bal"><%- user.balance %></strong> credits</span>
-                        </div>
-                        <div class="resource-card">
-                            <i class="fa fa-hdd"></i> <span>~<strong><%- Math.ceil(user.balance/60) %></strong> hours left</span>
-                        </div>
-                        <!-- <div class="resource-card">
-                            <i class="fa fa-cogs"></i> <span>0.25 vCPU</span>
-                        </div> -->
-                    </div>
-                    <a class="create-server-button" href="/dash/create">Create VPS</a>
-                    <div class="panel-info" style="margin-bottom: 25px;">
-                        <h1>Management panel information:</h1>
-                        <p><strong>URL:</strong> https://game.meegie.net</p>
-                        <p><strong>Login:</strong> u<%- req.session.user.id %></p>
-                        <p><strong>Password:</strong> <%- pass %></p>
-                    </div>
-                    <h1>Your vps:</h1>
-                    <% for(var i=0; i<servers.length; i++) { %>
-                    <div class="server-card">
-                        <div class="server-info">
-                            <div class="server-detail">
-                                <i class="fa fa-server"></i> <span><%= servers[i].name %></span>
-                            </div>
-                            <div class="server-detail">
-                                <i class="fa fa-tachometer-alt"></i> <span><%= (servers[i].cpu/100) %> vCPU</span>
-                            </div>
-                            <div class="server-detail">
-                                <i class="fa fa-memory"></i> <span><%= servers[i].ram %> MB</span>
-                            </div>
-                            <div class="server-detail">
-                                <i class="fa fa-hdd"></i> <span><%= servers[i].disk %> MB</span>
-                            </div>
-                            <div class="server-detail">
-                                <i class="fa fa-coins"></i> <span><%= servers[i].cost %> credits/minute</span>
-                            </div>
-                        </div>
-                        <a class="manage-button" href="https://game.meegie.net/server/<%- servers[i].pteroUID %>">Manage</a>
-                    </div>   
-                    <% } %>                 
-            </section>
-        </main>
+
+    <!-- Modal -->
+    <div id="manageModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center hidden">
+        <div class="bg-gray-800 p-6 rounded-lg w-full sm:w-1/3 mx-4">
+            <h2 class="text-2xl mb-4">Manage Server</h2>
+            <input type="text" placeholder="Server Name" class="w-full mb-4 p-2 rounded-lg bg-gray-700 text-white">
+            <div class="flex flex-col sm:flex-row justify-between">
+                <button class="delete-server-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Delete server</button>
+                <button class="cancel-button bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Cancel</button>
+                <button class="apply-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Apply</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        async function credits() {
-            var res = await fetch('/dash/credits').then(r => r.text());
-            document.getElementById('bal').innerHTML = res;
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Show/hide sections based on the clicked link
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function () {
+                document.querySelectorAll('section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+                const target = document.querySelector(this.getAttribute('href'));
+                target.classList.remove('hidden');
+            });
+        });
+
+        // Modal functionality
+        document.querySelectorAll('.manage-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.getElementById('manageModal').classList.remove('hidden');
+            });
+        });
+
+        function toggleModal(show) {
+            const modal = document.getElementById('manageModal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
         }
 
-        credits();
+        console.log(window.location.hash)
+        if (window.location.hash) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            const target = document.querySelector(window.location.hash);
+            target.classList.remove('hidden');
+        }
 
-        setInterval(credits, 15*1000);
+        async function time() {
+            var res = await fetch('/dash/earn/cuty/time').then(r => r.text());
+            // document.getElementById('cutytime').innerHTML = `(${res})`;
+            document.querySelectorAll('.cutytime').forEach(section => {
+                section.innerHTML = res;
+            });
+        }
+
+        time();
+
+        setInterval(time, 2.5*1000);
+
+        async function create() {
+            var name = encodeURIComponent(String(document.getElementById('cname').value));
+            var type = encodeURIComponent(String(document.getElementById('ctype').value));
+            var plan = encodeURIComponent(String(document.getElementById('cplan').value));
+
+            window.location.href = `/dash/server/api/create?name=${name}&type=${type}&plan=${plan}`;
+        }
     </script>
 </body>
 </html>

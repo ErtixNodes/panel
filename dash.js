@@ -157,7 +157,7 @@ setInterval(async () => {
         var earnUser = canEarn[i];
 
         if (earnUser.notif == false) {
-            hook.send(`:blue_square: **EARN** - <@${earnUser.userID}>, you can earn coins again at <https://ertixnodes.xyz/dash/earn>`);
+            hook.send(`:blue_square: **EARN** - <@${earnUser.userID}>, you can earn coins again at <https://ertixnodes.xyz/dash#earn>`);
 
             await sleep(15*1000);
 
