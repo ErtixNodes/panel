@@ -58,6 +58,9 @@ const plans = {
     }
 };
 
+const { Webhook } = require('discord-webhook-node');
+const hook = new Webhook(process.env.ADMIN_HOOK);
+
 // Function to read cooldown data from file
 function readCooldowns() {
     if (fs.existsSync(cooldownFilePath)) {
@@ -120,6 +123,9 @@ setInterval(async () => {
         var VPS = expired[i];
         // Expired
         // TODO: delete
+
+        hook.send(`:orange_square: **EXPIRED** - VPS **${VPS.name}** deleted ( owner: <@${VPS.userID}> )`);
+
         console.log(` | Expired: ${VPS.name}`);
         try {
             await ptero.deleteServer(VPS.pteroNID);
@@ -129,6 +135,7 @@ setInterval(async () => {
         console.log(`  | Server deleted`);
         await db.Server.deleteOne({ _id: VPS._id });
         console.log(`  | Removed from db!`);
+
         // Expired
     }
     console.log(`> Expired VPS: ${expired.length}/${srvCount}`);
@@ -167,7 +174,14 @@ router.get('/node/charge/:token/:id', async (req, res) => {
     await user.save();
 
     if (suspend == 'true' || user.balance == 0) {
-        console.log('i will suspend (angry emoji)')
+        console.log('i will suspend (angry emoji)');
+        let reason = 'unknown';
+        if (user.balance == 0) {
+            reason = 'No balance';
+        } else {
+            reason = 'Bandwith limit';
+        }
+        hook.send(`:red_square: **EXPIRED** - VPS **${VPS.name}** suspended ( owner: <@${VPS.userID}> - reason: ${reason} )`);
         try {
             await ptero.suspendServer(srv.pteroNID);
         } catch(e) {
@@ -429,6 +443,7 @@ router.get('/server/api/create', async (req, res) => {
     });
 
     if (srv.length >= dbUser.serverLimit) {
+        hook.send(`:blue_square: **SPAM** - User <@${req.session.userID}> tried to create server )`);
         return res.type('txt').send(`Server limit: ${dbUser.serverLimit} server\nYour server count: ${srv.length}`);
     }
 
@@ -501,6 +516,8 @@ router.get('/server/api/create', async (req, res) => {
         cost: pl.cost
     });
     await dbServer.save();
+
+    hook.send(`:green_square: **CREATED** - VPS **${dbServer.name}** created ( owner: <@${dbServer.userID}> )`);
 
     res.redirect('/dash');
 });
