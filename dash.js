@@ -295,7 +295,7 @@ router.use(async (req, res, next) => {
     next();
 });
 
-router.use('/', async (req, res) => {
+router.get('/', async (req, res) => {
     // res.send('yoo ' + req.session.user.global_name);
     var user = await db.User.findOne({
         userID: req.session.user.id
