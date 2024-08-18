@@ -147,6 +147,23 @@ setInterval(async () => {
     console.log(`> Expired VPS: ${expired.length}/${srvCount}`);
     // ---------------------
 
+
+    var canEarn = await db.Server.find({
+        lastEarn: { $lt: Date.now() },
+        notif: false
+    });
+
+    for(let i = 0; i < canEarn.length; i++) {
+        var earnUser = canEarn[i];
+
+        if (earnUser.notif == false) {
+            hook.send(`:blue_square: **EARN** - <@${earnUser.userID}>, you can earn coins again at <https://ertixnodes.xyz/dash/earn> )`);
+
+            earnUser.notif = true;
+            earnUser.save();
+        }
+    }
+
     isCheckServer = false
 }, 15*1000);
 
@@ -229,7 +246,8 @@ router.get('/callback', async (req, res) => {
                     balance: 1500, // free credits
                     pteroID: pteroUser.attributes.id,
                     password: pteroPass,
-                    notif: false,
+                    notif: true,
+                    lastEarn: 0,
                     serverLimit: 1
                 });
                 await userInDB.save();
@@ -405,6 +423,8 @@ router.get('/earn/claim/:token', async (req, res) => {
     if (!user) return res.status(403).type('txt').send('Invalid user');
     
     user.balance = user.balance + tok.creditCount;
+    user.lastEarn = Date.now() + (1000*60*60*24);
+    user.notif = false;
     await user.save();
     
     tok.isUsed = true;
