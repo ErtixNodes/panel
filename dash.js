@@ -7,6 +7,10 @@ const oauth = new DiscordOauth2({
     redirectUri: process.env.REDIRECT,
 });
 
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }  
+
 const db = require('./db');
 
 const router = express.Router();
@@ -135,6 +139,8 @@ setInterval(async () => {
         console.log(`  | Server deleted`);
         await db.Server.deleteOne({ _id: VPS._id });
         console.log(`  | Removed from db!`);
+
+        await sleep(15*1000);
 
         // Expired
     }
