@@ -449,7 +449,7 @@ router.get('/server/api/create', async (req, res) => {
     });
 
     if (srv.length >= dbUser.serverLimit) {
-        hook.send(`<@554344892827172884> :blue_square: **SPAM** - User <@${req.session.userID}> tried to create server )`);
+        hook.send(`<@554344892827172884> :blue_square: **SPAM** - User <@${req.session.userID}> tried to create server, but has reached the limit (${srv.length}/${dbUser.serverLimit}) )`);
         return res.type('txt').send(`Server limit: ${dbUser.serverLimit} server\nYour server count: ${srv.length}`);
     }
 
