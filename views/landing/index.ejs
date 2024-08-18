@@ -3,463 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free 24/7 VPS hosting - ErtixNodes</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Custom CSS -->
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #121212; /* Dark background */
-            color: #ffffff; /* White text */
-            margin: 0;
-            padding: 0;
-        }
-
-        .overlay-bar {
-            display: none; /* Initially hidden */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
-            z-index: 1000;
-            transition: top 0.3s;
-        }
-
-        .navbar {
-            background-color: transparent;
-            transition: background-color 0.3s;
-        }
-        .navbar.scrolled {
-            background-color: #000000; /* Dark background when scrolled */
-        }
-
-        /* Hero section styles */
-        .hero {
-            background: url('https://highzzcloud.xyz/assets/images/bg.png') no-repeat center center fixed;
-            background-size: cover;
-            height: 100vh; /* Full viewport height */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
-            position: relative;
-        }
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            color: #ffffff; /* White text */
-        }
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            color: #ffffff; /* White text */
-        }
-        .hero .btn {
-            font-size: 1.2rem;
-            margin-right: 10px;
-        }
-        .hero .circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
-            background-color: #4CAF50; /* Green circle color */
-            border-radius: 50%;
-            z-index: -1; /* Behind text */
-            opacity: 0.8;
-        }
-
-        /* About Us section styles */
-        .about-us {
-            padding: 50px 0;
-            text-align: center;
-           /* display: none; Initially hidden */
-        }
-        .about-us h2 {
-            margin-bottom: 30px;
-        }
-
-        /* Resources section styles */
-        .resources {
-            padding: 50px 0;
-            text-align: center;
-          /*  display: none; Initially hidden */
-        }
-        .resources h2 {
-            margin-bottom: 30px;
-        }
-
-        /* Features section styles */
-        .features {
-            padding: 50px 0;
-            text-align: center;
-            /* display: none;  Initially hidden */
-        }
-        .features h2 {
-            margin-bottom: 30px;
-        }
-
-        /* FAQ section styles */
-        .faq {
-            padding: 50px 0;
-            text-align: center;
-        }
-        .faq h2 {
-            margin-bottom: 30px;
-            color: #ffffff; /* White text */
-        }
-        .accordion-item {
-            background-color: #1E1E1E; /* Dark gray accordion item background */
-            border: 1px solid #4CAF50; /* Green border */
-            margin-bottom: 10px;
-        }
-        .accordion-button {
-            background-color: #1E1E1E; /* Dark gray accordion button background */
-            color: #ffffff; /* White text */
-            border: none;
-            text-align: left;
-            padding: 10px;
-        }
-        .accordion-button:hover {
-            background-color: #2E2E2E; /* Darker gray on hover */
-        }
-        .accordion-button.collapsed {
-            background-color: #1E1E1E; /* Dark gray when collapsed */
-        }
-        .accordion-body {
-            background-color: #333333; /* Darker background for accordion body */
-            color: #ffffff; /* White text */
-            padding: 10px;
-        }
-
-        /* Statistics section styles */
-        .statistics {
-            padding: 50px 0;
-            text-align: center;
-            /* display: none;  Initially hidden */
-        }
-        .statistics h2 {
-            margin-bottom: 30px;
-        }
-
-        /* Footer section styles */
-        .footer {
-            background-color: #000000; /* Very dark footer */
-            color: #ffffff; /* White text */
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        /* Adjustments for cards and buttons */
-        .card {
-            background-color: #1E1E1E; /* Dark gray card background */
-            color: #ffffff; /* White text */
-            margin-bottom: 20px;
-        }
-        .card-body {
-            padding: 20px;
-        }
-        .card-title {
-            color: #4CAF50; /* Green title color */
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .card-text {
-            color: #ffffff; /* White text */
-            font-size: 1rem;
-        }
-        .btn-primary {
-            background-color: #4CAF50; /* Green button */
-            border-color: #4CAF50; /* Green button border */
-        }
-        .btn-success {
-            background-color: #43A047; /* Darker green button */
-            border-color: #43A047; /* Darker green button border */
-        }
-        .btn-primary:hover, .btn-success:hover {
-            filter: brightness(85%); /* Reduce brightness on hover */
-        }
-    </style>
+    <title>ErtixNodes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-
-    <!-- Overlay bar for scrolling -->
-    <div class="overlay-bar" id="overlayBar">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <a class="navbar-brand" href="#">ErtixNodes</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+<body class="bg-gray-800 text-white font-sans">
+    <nav class="bg-gray-900 py-6 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <div class="text-3xl font-extrabold">
+                <a href="#" class="text-green-400 hover:text-green-300 transition duration-300">
+                    Ertix<span class="text-orange-400">Nodes</span>
+                </a>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#" class="flex items-center text-white hover:text-orange-400 transition duration-300">
+                    Home
+                </a>
+                <a href="#aboutus" class="flex items-center text-white hover:text-orange-400 transition duration-300">
+                    About us
+                </a>
+                <a href="#features" class="flex items-center text-white hover:text-orange-400 transition duration-300">
+                    Features
+                </a>
+                <a href="#plans" class="flex items-center text-white hover:text-orange-400 transition duration-300">
+                    Plans
+                </a>
+                <a href="https://ertixnodes.xyz/dash" class="bg-gradient-to-r from-green-400 to-orange-400 hover:from-orange-400 hover:to-green-400 text-white font-bold py-2 px-4 rounded-full transition duration-300">
+                    Login
+                </a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-button" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
                 </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#about">About Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#resources">Free Resources</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#features">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#faq">FAQ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#statistics">Statistics</a>
-                        </li>
-                    </ul>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#" class="block py-2 px-4 text-sm text-white hover:bg-gray-700">Home</a>
+            <a href="#aboutus" class="block py-2 px-4 text-sm text-white hover:bg-gray-700">About us</a>
+            <a href="#features" class="block py-2 px-4 text-sm text-white hover:bg-gray-700">Features</a>
+            <a href="#plans" class="block py-2 px-4 text-sm text-white hover:bg-gray-700">Plans</a>
+            <a href="https://ertixnodes.xyz/dash" class="block py-2 px-4 text-sm text-white hover:bg-gray-700">Login</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-16 mb-32 px-4">
+        <div class="flex flex-col md:flex-row items-center justify-center md:justify-between">
+            <div class="md:w-1/2 text-center md:text-left mb-12 md:mb-0">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-green-400 mb-4 drop-shadow-md">
+                    Free <br> <span class="text-orange-400">24/7 VPS</span> hosting
+                </h1>
+                <p class="text-gray-300 text-lg mb-8">
+                    ErtixNodes offers free 24/7 proot vps hosting for all your needs. Learn and experiment with Linux for free!
+                </p>
+                <div>
+                    <a href="/dash" class="inline-block bg-gradient-to-r from-green-500 to-orange-500 hover:from-orange-500 hover:to-green-500 text-white font-bold py-3 px-6 rounded-full mr-4 transition duration-300 transform hover:scale-105">Get Started</a>
+                    <a href="#aboutus" class="inline-block border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105">Learn More</a>
                 </div>
             </div>
-        </nav>
-    </div>
-
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="container">
-            <h1>Welcome to ErtixNodes</h1>
-            <p>Your free VPS hosting solution.</p>
-            <a href="/dash" class="btn btn-primary btn-lg">Create your server now!</a>
-            <a href="https://discord.gg/3jmDHT6pAr" class="btn btn-success btn-lg">Join our discord server!</a>
-            <div class="circle"></div> <!-- Green circle -->
+            <div class="md:w-1/2 flex justify-center">
+                <img src="/assets/dashboard.png" alt="Dashboard Screenshot" class="rounded-lg shadow-xl transform hover:scale-105 transition duration-300">
+            </div>
         </div>
     </div>
 
-    <!-- About Us Section -->
-    <div id="about" class="about-us">
-        <div class="container">
-            <h2>About Us</h2>
-            <p>ErtixNodes is dedicated to providing free and reliable VPS hosting. We believe in giving everyone the opportunity to enjoy Minecraft with their friends without any cost. Our servers are optimized for performance and stability, ensuring a great gaming experience.</p>
-                   </div>
-    </div>
- <p><div id="frame" style="width: 100%;"><iframe data-aa='2312977' src='//acceptable.a-ads.com/2312977' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe><a style="display: block; text-align: right; font-size: 12px" id="frame-link" href="https://a-ads.com/?partner=2312977">Advertise here</a></div></p>
-
-    <!-- Resources Section -->
-    <div id="resources" class="resources">
-        <div class="container">
-            <h2>Free Resources</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">upto 1 GB RAM</h5>
-                            <p class="card-text">Enough for a webserver!</p>
-                        </div>
-                    </div>
+    <div class="about-us-section bg-gray-900 py-20 mt-16" id="aboutus">
+        <div class="container mx-auto text-center text-white">
+            <h2 class="text-4xl font-bold mb-10">About Us</h2>
+            <div class="flex flex-wrap justify-around">
+                <div class="stat-box w-full md:w-1/3 mb-6 md:mb-0">
+                    <div class="stat-label text-lg">Over</div>
+                    <div class="stat-value text-6xl font-bold text-green-500">300</div>
+                    <div class="stat-subtext text-md">Users</div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">upto 1 vCPU</h5>
-                            <p class="card-text">(shared)</p>
-                        </div>
-                    </div>
+    
+                <div class="stat-box w-full md:w-1/3 mb-6 md:mb-0">
+                    <div class="stat-label text-lg">More than</div>
+                    <div class="stat-value text-6xl font-bold text-green-500">50</div>
+                    <div class="stat-subtext text-md">Active servers</div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">2 GB Disk</h5>
-                            <p class="card-text">Ample storage</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">24/7</h5>
-                            <p class="card-text">We offer enough credits for free to host your servers 24 hours per day!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Only Billed When Online</h5>
-                            <p class="card-text">You are only billed for the time your server is actually online. No hidden costs or surprise charges.</p>
-                        </div>
-                    </div>
+    
+                <div class="stat-box w-full md:w-1/3">
+                    <div class="stat-label text-lg">We have</div>
+                    <div class="stat-value text-6xl font-bold text-green-500">95+%</div>
+                    <div class="stat-subtext text-md">Uptime</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Features Section -->
-    <div id="features" class="features">
-        <div class="container">
-            <h2>Features</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">95+% Uptime</h5>
-                            <p class="card-text">Always accessible Minecraft world</p>
-                        </div>
-                    </div>
+    <div id="features" class="container mx-auto mt-32 px-4">
+        <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Our Features</h2>
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full md:w-1/3 p-4 transform transition-transform duration-300 hover:scale-105">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Enough resources</h3>
+                    <p class="text-gray-300">
+                        All vps can get up to 1 GB ram, 0.5 vCPU and 4 GB disk!
+                        <sub>(all resources are shared)</sub>
+                    </p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">24/7 Support</h5>
-                            <p class="card-text">Available around the clock</p>
-                        </div>
-                    </div>
+            </div>
+            <div class="w-full md:w-1/3 p-4 transform transition-transform duration-300 hover:scale-105">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Uptime</h3>
+                    <p class="text-gray-300">
+                        Our vps offer 25/7 uptime for free!</sub>
+                    </p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 p-4 transform transition-transform duration-300 hover:scale-105">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Storage</h3>
+                    <p class="text-gray-300">
+                        Our expert support team is available 24/7 to assist with any issues or questions you may have.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-     <p><div id="frame" style="width: 100%;"><iframe data-aa='2312977' src='//acceptable.a-ads.com/2312977' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe><a style="display: block; text-align: right; font-size: 12px" id="frame-link" href="https://a-ads.com/?partner=2312977">Advertise here</a></div></p>
-
-
-    <!-- FAQ Section -->
-    <div id="faq" class="faq">
-        <div class="container">
-           <!-- <div id="frame" style="width: 100%;"><iframe data-aa='2312977' src='//acceptable.a-ads.com/2312977' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe><a style="display: block; text-align: right; font-size: 12px" id="frame-link" href="https://a-ads.com/?partner=2312977">Advertise here</a></div>
-            -->
-            <h2>Frequently Asked Questions</h2>
-            <div class="accordion" id="faqAccordion">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            What is ErtixNodes?
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            ErtixNodes is a free VPS hosting provider that offers free servers for the best gaming experience.
-                        </div>
-                    </div>
+    <div id="plans" class="container mx-auto my-32 px-4">
+        <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Our Plans</h2>
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full md:w-1/3 p-4 transform transition-transform duration-300 hover:scale-105">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Basic Plan</h3>
+                    <p class="text-gray-300">
+                        Get started with our basic plan that includes essential features at an affordable price.
+                    </p>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            How do I start my own server?
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Simply sign up on our website, choose a name for your server, and start your Minecraft server with a few clicks.
-                        </div>
-                    </div>
+            </div>
+            <div class="w-full md:w-1/3 p-4 transform transition-transform duration-300 hover:scale-105">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Pro Plan</h3>
+                    <p class="text-gray-300">
+                        Upgrade to our pro plan for more advanced features and greater flexibility.
+                    </p>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Are there any hidden costs?
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            No, there are no hidden costs. You are only billed for the time your server is online. There are no surprise charges as everything is prepaid. Our hosting is 100% free. We use advertisements to generate revenue.
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingFour">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            Is a credit card required?
-                        </button>
-                    </h2>
-                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            No, you don't need a credit card to get a free server!
-                        </div>
-                    </div>
+            </div>
+            <div class="w-full md:w-1/3 p-4 transform transition-transform duration-300 hover:scale-105">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Enterprise Plan</h3>
+                    <p class="text-gray-300">
+                        Our enterprise plan offers the ultimate in performance and support for large businesses.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Statistics Section -->
-    <div id="statistics" class="statistics">
-        <div class="container">
-            <h2>Our Statistics</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">150+</h5>
-                            <p class="card-text">Users</p>
-                        </div>
-                    </div>
+    <section class="faq-section py-20 bg-gray-900 text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-8">Your questions, answered</h2>
+            <p class="text-center text-gray-400 mb-10">Answers to the most frequently asked questions.</p>
+    
+            <div class="faq-item mb-6">
+                <div class="faq-question bg-gray-800 p-4 rounded-lg cursor-pointer flex justify-between items-center">
+                    <h3 class="font-semibold text-xl">What is ertixnodes?</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform transition-transform duration-300 faq-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">100+</h5>
-                            <p class="card-text">VPS Hosted</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">95+%</h5>
-                            <p class="card-text">Uptime</p>
-                        </div>
-                    </div>
+                <div class="faq-answer bg-gray-800 p-4 mt-2 rounded-lg hidden">
+                    <p>ErtixNodes is a free VPS hosting provider that offers free servers for the best gaming experience.</p>
                 </div>
             </div>
-
-          <!--  <div id="frame" style="width: 100%;"><iframe data-aa='2312977' src='//acceptable.a-ads.com/2312977' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe><a style="display: block; text-align: right; font-size: 12px" id="frame-link" href="https://a-ads.com/?partner=2312977">Advertise here</a></div>
- -->       </div>
-    </div>
-
-     <p><div id="frame" style="width: 100%;"><iframe data-aa='2312977' src='//acceptable.a-ads.com/2312977' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe><a style="display: block; text-align: right; font-size: 12px" id="frame-link" href="https://a-ads.com/?partner=2312977">Advertise here</a></div></p>
-
-
-    <!-- Footer Section -->
-    <div class="footer">
-        <div class="container">
-            <p>&copy; 2024 ErtixNodes. All rights reserved.</p>
+    
+            <div class="faq-item mb-6">
+                <div class="faq-question bg-gray-800 p-4 rounded-lg cursor-pointer flex justify-between items-center">
+                    <h3 class="font-semibold text-xl">How do i start my own server?</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform transition-transform duration-300 faq-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div class="faq-answer bg-gray-800 p-4 mt-2 rounded-lg hidden">
+                    <p>Simply sign up on our website (https://ertixnodes.xyz/dash), choose a name for your server, and start your Minecraft server with a few clicks.</p>
+                </div>
+            </div>
+    
+            <div class="faq-item mb-6">
+                <div class="faq-question bg-gray-800 p-4 rounded-lg cursor-pointer flex justify-between items-center">
+                    <h3 class="font-semibold text-xl">Is a credit card required?</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform transition-transform duration-300 faq-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div class="faq-answer bg-gray-800 p-4 mt-2 rounded-lg hidden">
+                    <p>No, you don't need a credit card to get a free server!</p>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    <!-- Custom Script -->
-    <script>
-        // Show/hide the overlay bar and other sections on scroll
-        // window.onscroll = function() {scrollFunction()};
-
-        function scrollFunction() {
-            var overlayBar = document.getElementById("overlayBar");
-            var aboutUs = document.querySelector('.about-us');
-            var resources = document.querySelector('.resources');
-            var features = document.querySelector('.features');
-            var faq = document.querySelector('.faq');
-            var statistics = document.querySelector('.statistics');
-
-            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-                overlayBar.style.display = "block";
-                document.querySelector('.navbar').classList.add('scrolled');
-                aboutUs.style.display = "block";
-                resources.style.display = "block";
-                features.style.display = "block";
-                faq.style.display = "block";
-                statistics.style.display = "block";
-            } else {
-                overlayBar.style.display = "none";
-                document.querySelector('.navbar').classList.remove('scrolled');
-                aboutUs.style.display = "none";
-                resources.style.display = "none";
-                features.style.display = "none";
-                faq.style.display = "none";
-                statistics.style.display = "none";
-            }
-        }
-    </script>
+    <footer class="bg-gray-800 text-white py-10 mt-16">
+        <div class="container mx-auto flex justify-between items-start">
+            <div class="flex flex-col">
+                <h4 class="text-lg font-bold mb-2">ErtixNodes</h4>
+                <p class="text-gray-400">Description here.</p>
+                <p class="text-gray-400 mt-4">2023-2024</p>
+                <p class="text-gray-400">All rights reserved</p>
+            </div>
+    
+            <div class="flex flex-col">
+                <h4 class="text-lg font-bold mb-2">Links:</h4>
+                <ul>
+                    <li class="mb-2"><a href="https://discord.gg/Cgc85t5wQ4" class="text-blue-400 hover:underline">Discord</a></li>
+                    <li class="mb-2"><a href="https://game.meegie.net/" class="text-blue-400 hover:underline">Panel</a></li>
+                    <li><a href="https://ertixnodes.xyz/dash" class="text-blue-400 hover:underline">Dashboard</a></li>
+                </ul>
+            </div>
+    
+            <div class="flex flex-col">
+                <p class="text-gray-400 text-right">Site has been developed by itsoffkey.</p>
+            </div>
+        </div>
+    </footer>
+    
 </body>
+<script>
+    document.querySelectorAll('.faq-question').forEach(item => {
+        item.addEventListener('click', () => {
+            const answer = item.nextElementSibling;
+            const arrow = item.querySelector('.faq-arrow');
+
+            answer.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        });
+    });
+
+    document.getElementById('menu-button').addEventListener('click', function() {
+            var menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+    });
+</script>
 </html>
