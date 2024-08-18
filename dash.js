@@ -126,7 +126,7 @@ setInterval(async () => {
         } catch(e) {
             console.log('delete failed!', e);
         }
-        // db.Server.deleteOne({ _id: VPS._id });
+        db.Server.deleteOne({ _id: VPS._id });
         // Expired
     }
     console.log(`> Expired VPS: ${expired.length}/${srvCount}`);
