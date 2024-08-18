@@ -365,10 +365,6 @@ router.get('/earn/cuty', async (req, res) => {
     });
     await earn.save();
 
-    // Set the current time as the last earn time for the user and save to file
-    cooldowns[userId] = new Date().toISOString();
-    writeCooldowns(cooldowns);
-
     res.redirect(url);
 });
 
@@ -427,6 +423,10 @@ router.get('/earn/claim/:token', async (req, res) => {
     
     tok.isUsed = true;
     await tok.save();
+
+    // Set the current time as the last earn time for the user and save to file
+    cooldowns[tok.userID] = new Date().toISOString();
+    writeCooldowns(cooldowns);
 
     setTimeout(async () => {
         var srv = await db.Server.find({
