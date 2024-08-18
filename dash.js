@@ -101,6 +101,10 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         return res.send('Invalid server');
     }
 
+    srv.lastPing = Date.now();
+    if (!srv.keep) srv.keep = false;
+    await srv.save();
+
     var user = await db.User.findOne({
         userID: srv.userID
     });
@@ -109,7 +113,7 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         return res.send('invalid user');
     }
 
-    user.balance = user.balance - 0.25;
+    user.balance = user.balance - 1;
     await user.save();
 
     if (suspend == 'true' || user.balance == 0) {
@@ -119,6 +123,12 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         } catch(e) {
             console.log('cant sus', e);
         }
+    }
+
+    if ((Date.now()-(1000*60*60*24*3)) < srv.lastPing) {
+        console.log(`${srv.name} needs to get deleted`);
+    } else {
+        console.log(`${srv.name} is new enough`);
     }
 
     return res.send();

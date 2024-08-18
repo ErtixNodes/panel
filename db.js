@@ -8,6 +8,7 @@ const User = mongoose.model('User', {
     password: String,
 
     notif: Boolean,
+    lastEarn: Number,
     serverLimit: Number
 });
 
@@ -23,7 +24,8 @@ const Server = mongoose.model('Server', {
     disk: Number,
 
     cost: Number,
-    lastPing: Number
+    lastPing: Number,
+    keep: Boolean
 });
 
 
