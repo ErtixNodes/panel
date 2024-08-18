@@ -1,0 +1,31 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2024-08-18T19:57:02+02:00",
+    "name": "ErtixVPS",
+    "author": "info@bastothemax.nl",
+    "description": "ErtixNodes Alpine vps",
+    "features": null,
+    "docker_images": {
+        "ghcr.io\/pterodactyl\/yolks:debian": "ghcr.io\/pterodactyl\/yolks:debian"
+    },
+    "file_denylist": [],
+    "startup": "\/home\/container\/usr\/local\/bin\/proot --rootfs=\"\/home\/container\" --link2symlink --kill-on-exit --root-id --cwd=\/ --bind=\/proc --bind=\/dev --bind=\/sys --bind=\/tmp \/bin\/sh",
+    "config": {
+        "files": "{}",
+        "startup": "{}",
+        "logs": "{}",
+        "stop": "exit"
+    },
+    "scripts": {
+        "installation": {
+            "script": "apk update\r\napk upgrade\r\napk add wget curl tar\r\n\r\nROOTFS_DIR=\/mnt\/server\r\n\r\n# Define the Alpine Linux version we are going to be using.\r\nALPINE_VERSION=\"3.20\"\r\nALPINE_FULL_VERSION=\"3.20.2\"\r\nAPK_TOOLS_VERSION=\"2.14.4-r0\" # Make sure to update this too when updating Alpine Linux.\r\nPROOT_VERSION=\"5.3.0\" # Some releases do not have static builds attached.\r\n\r\n# Detect the machine architecture.\r\nARCH=$(uname -m)\r\n\r\n # Download Alpine Linux root file system.\r\nURL=\"https:\/\/dl-cdn.alpinelinux.org\/alpine\/v${ALPINE_VERSION}\/releases\/${ARCH}\/alpine-minirootfs-${ALPINE_FULL_VERSION}-${ARCH}.tar.gz\"\r\ncurl -Lo \/mnt\/install\/rootfs.tar.gz $URL\r\n    # Extract the Alpine Linux root file system.\r\n    tar -xzf \/mnt\/install\/rootfs.tar.gz -C $ROOTFS_DIR\r\n    \r\necho \"> Downloaded rootfs\"\r\n\r\n# Check machine architecture to make sure it is supported.\r\n# If not, we exit with a non-zero status code.\r\nif [ \"$ARCH\" = \"x86_64\" ]; then\r\n  ARCH_ALT=amd64\r\nelif [ \"$ARCH\" = \"aarch64\" ]; then\r\n  ARCH_ALT=arm64\r\nelse\r\n  printf \"Unsupported CPU architecture: ${ARCH}\"\r\n  exit 1\r\nfi\r\n\r\necho \"> Checked CPU!\"\r\n    \r\n# Download the packages from their sources.\r\n    curl -Lo \/mnt\/install\/apk-tools-static.apk \"https:\/\/dl-cdn.alpinelinux.org\/alpine\/v${ALPINE_VERSION}\/main\/${ARCH}\/apk-tools-static-${APK_TOOLS_VERSION}.apk\"\r\n    curl -Lo \/mnt\/install\/gotty.tar.gz \"https:\/\/github.com\/sorenisanerd\/gotty\/releases\/download\/v1.5.0\/gotty_v1.5.0_linux_${ARCH_ALT}.tar.gz\"\r\n    curl -Lo $ROOTFS_DIR\/usr\/local\/bin\/proot \"https:\/\/github.com\/proot-me\/proot\/releases\/download\/v${PROOT_VERSION}\/proot-v${PROOT_VERSION}-${ARCH}-static\"\r\n    \r\n    echo \"> Downloaded tools\"\r\n    \r\n    # Extract everything that needs to be extracted.\r\n    tar -xzf \/mnt\/install\/apk-tools-static.apk -C \/mnt\/install\/\r\n    echo \"- apk\"\r\n    tar -xzf \/mnt\/install\/gotty.tar.gz -C $ROOTFS_DIR\/usr\/local\/bin\r\n    echo \"- gotty\"\r\n    \r\n    echo \"> Extracted tools\"\r\n    \r\n    # Install base system packages using the static APK-Tools.\r\n    \/mnt\/install\/sbin\/apk.static -X \"https:\/\/dl-cdn.alpinelinux.org\/alpine\/v${ALPINE_VERSION}\/main\/\" -U --allow-untrusted --root $ROOTFS_DIR add alpine-base apk-tools curl wget\r\n    echo \"> Installed pkg\"\r\n    \r\n    # Make PRoot and GoTTY executable.\r\n    chmod 755 $ROOTFS_DIR\/usr\/local\/bin\/proot $ROOTFS_DIR\/usr\/local\/bin\/gotty\r\n    echo \"> Made executable\"\r\n    \r\n # Add DNS Resolver nameservers to resolv.conf.\r\n    printf \"nameserver 1.1.1.1\\nnameserver 1.0.0.1\" > ${ROOTFS_DIR}\/etc\/resolv.conf\r\n    echo \"> Fixed dns!\"\r\n    # Wipe the files we downloaded into \/mnt\/install previously.\r\n    \r\n    # rm -rf \/mnt\/install\/apk-tools-static.apk \/mnt\/install\/rootfs.tar.gz \/mnt\/install\/sbin\r\n    # Create .installed to later check whether Alpine is installed.",
+            "container": "alpine",
+            "entrypoint": "ash"
+        }
+    },
+    "variables": []
+}
