@@ -121,6 +121,12 @@ setInterval(async () => {
         // Expired
         // TODO: delete
         console.log(` | Expired: ${VPS.name}`);
+        try {
+            await ptero.deleteServer(VPS.pteroNID);
+        } catch(e) {
+            console.log('delete failed!', e);
+        }
+        // db.Server.deleteOne({ _id: VPS._id });
         // Expired
     }
     console.log(`> Expired VPS: ${expired.length}/${srvCount}`);
