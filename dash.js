@@ -93,7 +93,7 @@ setInterval(async () => {
     isCheckServer = true;
 
     // ---------------------
-    console.log(`Checking servers...`);
+    console.log(`> Checking servers...`);
     var expired = await db.Server.find({
         lastPing: { $lt: (Date.now()-(1000*60*60*24*3)) }
         /*
@@ -105,13 +105,14 @@ setInterval(async () => {
         */
     });
     var srvCount = await db.Server.countDocuments({});
-    console.log(`Expired VPS: ${expired.length}/${srvCount}`);
     for(let i = 0; i < expired.length; i++) {
         var VPS = expired[i];
         // Expired
         // TODO: delete
+        console.log(`| Expired: ${VPS.name}`);
         // Expired
     }
+    console.log(`> Expired VPS: ${expired.length}/${srvCount}`);
     // ---------------------
 
     isCheckServer = false
