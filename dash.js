@@ -124,7 +124,7 @@ setInterval(async () => {
         // Expired
         // TODO: delete
 
-        hook.send(`@everyone :orange_square: **EXPIRED** - VPS **${VPS.name}** deleted ( owner: <@${VPS.userID}> )`);
+        hook.send(`<@554344892827172884> :orange_square: **EXPIRED** - VPS **${VPS.name}** deleted ( owner: <@${VPS.userID}> )`);
 
         console.log(` | Expired: ${VPS.name}`);
         try {
@@ -181,7 +181,7 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         } else {
             reason = 'Bandwith limit';
         }
-        hook.send(`@everyone :red_square: **EXPIRED** - VPS **${VPS.name}** suspended ( owner: <@${VPS.userID}> - reason: ${reason} )`);
+        hook.send(`<@554344892827172884> :red_square: **EXPIRED** - VPS **${VPS.name}** suspended ( owner: <@${VPS.userID}> - reason: ${reason} )`);
         try {
             await ptero.suspendServer(srv.pteroNID);
         } catch(e) {
@@ -443,7 +443,7 @@ router.get('/server/api/create', async (req, res) => {
     });
 
     if (srv.length >= dbUser.serverLimit) {
-        hook.send(`@everyone :blue_square: **SPAM** - User <@${req.session.userID}> tried to create server )`);
+        hook.send(`<@554344892827172884> :blue_square: **SPAM** - User <@${req.session.userID}> tried to create server )`);
         return res.type('txt').send(`Server limit: ${dbUser.serverLimit} server\nYour server count: ${srv.length}`);
     }
 
@@ -517,7 +517,7 @@ router.get('/server/api/create', async (req, res) => {
     });
     await dbServer.save();
 
-    hook.send(`@everyone :green_square: **CREATED** - VPS **${dbServer.name}** created ( owner: <@${dbServer.userID}> )`);
+    hook.send(`<@554344892827172884> :green_square: **CREATED** - VPS **${dbServer.name}** created ( owner: <@${dbServer.userID}> )`);
 
     res.redirect('/dash');
 });
