@@ -87,6 +87,36 @@ function genToken(length){
 
 const fetch = require('node-fetch');
 
+var isCheckServer = false;
+setInterval(async () => {
+    if (isCheckServer == true) return;
+    isCheckServer = true;
+
+    // ---------------------
+    console.log(`Checking servers...`);
+    var expired = await db.Server.find({
+        lastPing: { $lt: (Date.now()-(1000*60*60*24*3)) }
+        /*
+                if ((Date.now()-(1000*60*60*24*3)) > srv.lastPing) {
+                    console.log(`${srv.name} needs to get deleted`);
+                } else {
+                    console.log(`${srv.name} is new enough`);
+                }
+        */
+    });
+    var srvCount = db.Server.countDocuments();
+    console.log(`Expired VPS: ${expired.length}/${srvCount}`);
+    for(let i = 0; i < expired.length; i++) {
+        var VPS = expired[i];
+        // Expired
+        // TODO: delete
+        // Expired
+    }
+    // ---------------------
+
+    isCheckServer = false
+}, 15*1000);
+
 router.get('/node/charge/:token/:id', async (req, res) => {
     const { id, token } = req.params;
     const { suspend } = req.query;
@@ -123,12 +153,6 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         } catch(e) {
             console.log('cant sus', e);
         }
-    }
-
-    if ((Date.now()-(1000*60*60*24*3)) < srv.lastPing) {
-        console.log(`${srv.name} needs to get deleted`);
-    } else {
-        console.log(`${srv.name} is new enough`);
     }
 
     return res.send();
