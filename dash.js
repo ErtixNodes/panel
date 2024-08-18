@@ -385,7 +385,7 @@ router.get('/server/api/create', async (req, res) => {
     });
 
     if (srv.length >= dbUser.serverLimit) {
-        return res.type('txt').send('Server limit: 1 server');
+        return res.type('txt').send(`Server limit: ${dbUser.serverLimit} server\nYour server count: ${srv.length}`);
     }
 
     var pl = plans[plan];
