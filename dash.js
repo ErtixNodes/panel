@@ -148,7 +148,7 @@ setInterval(async () => {
     // ---------------------
 
 
-    var canEarn = await db.Server.find({
+    var canEarn = await db.User.find({
         lastEarn: { $lt: Date.now() },
         notif: false
     });
