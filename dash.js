@@ -103,7 +103,7 @@ setInterval(async () => {
     console.log(`> Checking servers...`);
     var expired = await db.Server.find({
         $or: [
-            { lastPing: { $lt: (Date.now() - (1000 * 60 * 60 * 24 * 3)) } },
+            { lastPing: { $lt: (Date.now() - (1000 * 60 * 60 * 24 * 2)) } },
             // { lastPing: null },
             // { lastPing: { $exists : false } }
         ]
