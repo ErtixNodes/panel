@@ -359,7 +359,7 @@ router.get('/earn/cuty', async (req, res) => {
     const earn = new db.Earn({
         userID: userId,
         isUsed: false,
-        creditCount: 1500,
+        creditCount: 3000,
         token,
         url
     });
