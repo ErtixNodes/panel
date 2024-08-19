@@ -9,7 +9,7 @@ const oauth = new DiscordOauth2({
 
 const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
-  }  
+}
 
 const db = require('./db');
 
@@ -81,12 +81,12 @@ function writeCooldowns(cooldowns) {
 
 const cooldowns = readCooldowns(); // Load cooldown data
 
-function genToken(length){
+function genToken(length) {
     //edit the token allowed characters
     var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
-    var b = [];  
-    for (var i=0; i<length; i++) {
-        var j = (Math.random() * (a.length-1)).toFixed(0);
+    var b = [];
+    for (var i = 0; i < length; i++) {
+        var j = (Math.random() * (a.length - 1)).toFixed(0);
         b[i] = a[j];
     }
     return b.join("");
@@ -103,7 +103,7 @@ setInterval(async () => {
     console.log(`> Checking servers...`);
     var expired = await db.Server.find({
         $or: [
-            { lastPing: { $lt: (Date.now()-(1000*60*60*24*3)) } },
+            { lastPing: { $lt: (Date.now() - (1000 * 60 * 60 * 24 * 3)) } },
             // { lastPing: null },
             // { lastPing: { $exists : false } }
         ]
@@ -123,24 +123,27 @@ setInterval(async () => {
         */
     });
     var srvCount = await db.Server.countDocuments({});
-    for(let i = 0; i < expired.length; i++) {
+    for (let i = 0; i < expired.length; i++) {
         var VPS = expired[i];
         // Expired
         // TODO: delete
 
-        hook.send(`<@554344892827172884> :orange_square: **EXPIRED** - VPS **${VPS.name}** deleted ( owner: <@${VPS.userID}> )`);
+        if (VPS.keep == false || !VPS.keep) {
 
-        console.log(` | Expired: ${VPS.name}`);
-        try {
-            await ptero.deleteServer(VPS.pteroNID);
-        } catch(e) {
-            console.log('delete failed!', e);
+            hook.send(`<@554344892827172884> :orange_square: **EXPIRED** - VPS **${VPS.name}** deleted ( owner: <@${VPS.userID}> )`);
+
+            console.log(` | Expired: ${VPS.name}`);
+            try {
+                await ptero.deleteServer(VPS.pteroNID);
+            } catch (e) {
+                console.log('delete failed!', e);
+            }
+            console.log(`  | Server deleted`);
+            await db.Server.deleteOne({ _id: VPS._id });
+            console.log(`  | Removed from db!`);
+
+            await sleep(15 * 1000);
         }
-        console.log(`  | Server deleted`);
-        await db.Server.deleteOne({ _id: VPS._id });
-        console.log(`  | Removed from db!`);
-
-        await sleep(15*1000);
 
         // Expired
     }
@@ -153,13 +156,13 @@ setInterval(async () => {
         notif: false
     });
 
-    for(let i = 0; i < canEarn.length; i++) {
+    for (let i = 0; i < canEarn.length; i++) {
         var earnUser = canEarn[i];
 
         if (earnUser.notif == false) {
             hook.send(`:blue_square: **EARN** - <@${earnUser.userID}>, you can earn coins again at <https://ertixnodes.xyz/dash#earn>`);
 
-            await sleep(15*1000);
+            await sleep(15 * 1000);
 
             earnUser.notif = true;
             earnUser.save();
@@ -167,7 +170,7 @@ setInterval(async () => {
     }
 
     isCheckServer = false
-}, 15*1000);
+}, 15 * 1000);
 
 router.get('/node/charge/:token/:id', async (req, res) => {
     const { id, token } = req.params;
@@ -209,7 +212,7 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         hook.send(`<@554344892827172884> :red_square: **EXPIRED** - VPS **${VPS.name}** suspended ( owner: <@${VPS.userID}> - reason: ${reason} )`);
         try {
             await ptero.suspendServer(srv.pteroNID);
-        } catch(e) {
+        } catch (e) {
             console.log('cant sus', e);
         }
     }
@@ -233,7 +236,7 @@ router.get('/callback', async (req, res) => {
 
         var user = await oauth.getUser(token.access_token);
 
-         console.log('user', user);
+        console.log('user', user);
 
         var userInDB = await db.User.findOne({
             userID: user.id
@@ -389,7 +392,7 @@ router.get('/earn/cuty/time', async (req, res) => {
             var s = nextEarnTime.diff(Date.now(), 'second');
             var m = nextEarnTime.diff(Date.now(), 'minute');
             var h = nextEarnTime.diff(Date.now(), 'hour');
-            
+
 
             return res.type('txt').send(`${h}h | ${m}m | ${s}s`);
         }
@@ -401,26 +404,26 @@ router.get('/earn/cuty/time', async (req, res) => {
 router.get('/earn/claim/:token', async (req, res) => {
     console.log(req.get('Referrer'), req.get('Referer'))
     const { token } = req.params;
-    
+
     if (!token) return res.status(400).type('txt').send('No token provided');
-    
+
     var tok = await db.Earn.findOne({
         token
     });
     if (!tok) return res.status(403).type('txt').send('Invalid token');
-    
+
     if (tok.isUsed == true) return res.status(403).type('txt').send('Token already used');
-    
+
     var user = await db.User.findOne({
         userID: tok.userID
     });
     if (!user) return res.status(403).type('txt').send('Invalid user');
-    
+
     user.balance = user.balance + tok.creditCount;
-    user.lastEarn = Date.now() + (1000*60*60*24);
+    user.lastEarn = Date.now() + (1000 * 60 * 60 * 24);
     user.notif = false;
     await user.save();
-    
+
     tok.isUsed = true;
     await tok.save();
 
@@ -435,12 +438,12 @@ router.get('/earn/claim/:token', async (req, res) => {
         srv.forEach(async server => {
             try {
                 await ptero.unsuspendServer(server.pteroNID);
-            } catch(e) {
+            } catch (e) {
                 console.log('cant unsuspend', e);
             }
         });
     }, 1);
-    
+
     return res.redirect(`/dash`);
 });
 
@@ -473,8 +476,8 @@ router.get('/server/api/create', async (req, res) => {
 
     var pl = plans[plan];
 
-    if (dbUser.balance < pl.cost * 5) return res.type('txt').send('Failed to create server: you need at least '+pl.cost*5+' credits');
-    
+    if (dbUser.balance < pl.cost * 5) return res.type('txt').send('Failed to create server: you need at least ' + pl.cost * 5 + ' credits');
+
     var ram = pl.ram;
     var cpu = pl.cpu;
     var disk = pl.disk;
@@ -518,8 +521,8 @@ router.get('/server/api/create', async (req, res) => {
         var srv = await ptero.createRawServer(json);
     } catch (e) {
         console.log('ERROR creating server', e);
-       // return error(res, 500, 'Failed to create server');
-       return res.redirect('/dash' + req.url);
+        // return error(res, 500, 'Failed to create server');
+        return res.redirect('/dash' + req.url);
     }
 
     // console.log(srv);
