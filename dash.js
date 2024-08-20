@@ -540,7 +540,8 @@ router.get('/server/api/create', async (req, res) => {
         cpu,
         disk,
 
-        cost: pl.cost
+        cost: pl.cost,
+        lastPing: Date.now()
     });
     await dbServer.save();
 
