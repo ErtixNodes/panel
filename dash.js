@@ -172,6 +172,10 @@ setInterval(async () => {
     isCheckServer = false
 }, 15 * 1000);
 
+router.get('/test', (req, res) => {
+    res.render('dash/test');
+});
+
 router.get('/node/charge/:token/:id', async (req, res) => {
     const { id, token } = req.params;
     const { suspend } = req.query;
