@@ -202,7 +202,7 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         return res.send('invalid user');
     }
 
-    user.balance = user.balance - 1;
+    user.balance = user.balance - srv.cost;
     await user.save();
 
     if (suspend == 'true' || user.balance == 0) {
