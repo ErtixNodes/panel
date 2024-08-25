@@ -213,7 +213,7 @@ router.get('/node/charge/:token/:id', async (req, res) => {
         } else {
             reason = 'Bandwith limit';
         }
-        hook.send(`<@554344892827172884> :red_square: **EXPIRED** - VPS **${VPS.name}** suspended ( owner: <@${VPS.userID}> - reason: ${reason} )`);
+        hook.send(`<@554344892827172884> :red_square: **SUSPENDED** - VPS **${srv.name}** suspended ( owner: <@${srv.userID}> - reason: ${reason} )`);
         try {
             await ptero.suspendServer(srv.pteroNID);
         } catch (e) {
