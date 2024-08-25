@@ -208,7 +208,7 @@ router.get('/node/charge/:token/:id', async (req, res) => {
     if (suspend == 'true' || user.balance < 1) {
         console.log('i will suspend (angry emoji)');
         let reason = 'unknown';
-        if (user.balance == 0) {
+        if (user.balance < 1) {
             reason = 'No balance';
         } else {
             reason = 'Bandwith limit';
