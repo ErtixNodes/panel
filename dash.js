@@ -205,7 +205,7 @@ router.get('/node/charge/:token/:id', async (req, res) => {
     user.balance = user.balance - srv.cost;
     await user.save();
 
-    if (suspend == 'true' || user.balance == 0) {
+    if (suspend == 'true' || user.balance < 1) {
         console.log('i will suspend (angry emoji)');
         let reason = 'unknown';
         if (user.balance == 0) {
