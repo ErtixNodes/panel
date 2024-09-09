@@ -226,7 +226,7 @@ router.get('/callback', async (req, res) => {
                 // console.log(pteroUser);
                 userInDB = new db.User({
                     userID: user.id,
-                    balance: 1500, // free credits
+                    balance: 60, // free credits
                     pteroID: pteroUser.attributes.id,
                     password: pteroPass,
                     notif: true,
