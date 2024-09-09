@@ -28,37 +28,11 @@ var relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 
 const plans = {
-    'tiny1': {
-        ram: 128,
-        cpu: 25,
-        disk: 512,
-        cost: 1
-    },
     'tiny2': {
         ram: 256,
-        cpu: 25,
+        cpu: 10,
         disk: 1024,
-        cost: 2
-    },
-    'tiny3': {
-        ram: 512,
-        cpu: 50,
-        disk: 2048,
-        cost: 4
-    },
-    'tiny4': {
-        ram: 768,
-        cpu: 50,
-        disk: 2048,
-        cost: 6
-    },
-
-    // over 1 gb
-    'small1': {
-        ram: 1024,
-        cpu: 50,
-        disk: 4096,
-        cost: 8
+        cost: 1
     }
 };
 
