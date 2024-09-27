@@ -18,13 +18,16 @@ const VPS = mongoose.model('Server', {
     proxID: Number,
 
     name: String,
-    ram: Number,
-    cpu: Number,
-    disk: Number,
 
     cost: Number,
-    lastPing: Number,
-    keep: Boolean
+    expiry: Number,
+    status: String // creating | active
+});
+
+const Node = mongoose.model('Node', {
+    name: String,
+    nextID: Number,
+    maxVPS: Number
 });
 
 
@@ -40,5 +43,6 @@ const Earn = mongoose.model('Earn', {
 module.exports = {
     User,
     VPS,
-    Earn
+    Earn,
+    Node
 };
