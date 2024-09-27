@@ -21,6 +21,7 @@ const VPS = mongoose.model('Server', {
 
     sshPort: Number,
     password: String,
+    ip: String,
 
     cost: Number,
     expiry: Number,
