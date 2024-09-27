@@ -61,7 +61,7 @@ async function handle(req, res) {
     res.redirect(`/dash/vps/${userVPS.proxID}`);
 
     const {Worker} = require('worker_threads');
-    const worker = new Worker('../create.js', {workerData: {
+    const worker = new Worker('./create.js', {workerData: {
         name,
         proxID,
         ip,
