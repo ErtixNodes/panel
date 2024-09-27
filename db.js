@@ -21,10 +21,10 @@ const VPS = mongoose.model('Server', {
 
     sshPort: Number,
     password: String,
-    
+
     cost: Number,
     expiry: Number,
-    status: String // creating | active
+    status: String // creating | active | error
 });
 
 const Node = mongoose.model('Node', {

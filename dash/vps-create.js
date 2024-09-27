@@ -101,7 +101,10 @@ async function handle(req, res) {
         // SSH Port
         addForward(sshPort.port, 22, ip);
 
-        console.log('DEMO - Create done!');
+        userVPS.status = 'active';
+        await userVPS.save();
+
+        console.log(`${name} - Create done!`);
     });
 }
 
