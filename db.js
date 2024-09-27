@@ -55,5 +55,7 @@ module.exports = {
     VPS,
     Earn,
     Node,
-    Port
+    Port,
+
+    mongoose
 };
