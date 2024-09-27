@@ -7,7 +7,7 @@ async function handle(req, res) {
     // var vps = await db.VPS.find({
     //     userID: req.session.user.id
     // });
-    res.render('dash/vps', { req, res, vps, user });
+    res.render('dash/vps', { req, res, user });
 }
 
 module.exports = handle;
