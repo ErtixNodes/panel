@@ -141,7 +141,7 @@ async function addForward(port, intPort, ip) {
     console.log(`Adding :${port} -> ${ip}:${intPort}`);
     fs.writeFileSync(`/port/${port}.sh`, `iptables -t nat -A PREROUTING -p TCP --dport ${port} -j DNAT --to-destination ${ip}:${intPort}`);
 
-    var a = await shell.exec(`bash /port/${ID}.sh`);
+    var a = await shell.exec(`bash /port/${port}.sh`);
 
     return a;
 }
