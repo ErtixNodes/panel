@@ -21,17 +21,6 @@ dayjs.extend(relativeTime);
 const { Webhook } = require('discord-webhook-node');
 const hook = new Webhook(process.env.ADMIN_HOOK);
 
-function genToken(length) {
-    //edit the token allowed characters
-    var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
-    var b = [];
-    for (var i = 0; i < length; i++) {
-        var j = (Math.random() * (a.length - 1)).toFixed(0);
-        b[i] = a[j];
-    }
-    return b.join("");
-}
-
 const fetch = require('node-fetch');
 
 var isCheckServer = false;
@@ -99,5 +88,6 @@ app.use(async (req, res, next) => {
 
 app.get('/', require('./dash/index.js'));
 app.get('/earn/cuty/time', require('./dash/time-cuty.js'));
+app.get('/earn/cuty', require('./dash/earn-cuty.js'));
 
 module.exports = app;
