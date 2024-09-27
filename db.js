@@ -19,6 +19,9 @@ const VPS = mongoose.model('Server', {
 
     name: String,
 
+    sshPort: Number,
+    password: String,
+    
     cost: Number,
     expiry: Number,
     status: String // creating | active
@@ -30,6 +33,12 @@ const Node = mongoose.model('Node', {
     maxVPS: Number
 });
 
+const Port = mongoose.model('Port', {
+    port: Number,
+    isUsed: Boolean,
+    vpsID: String,
+    intPort: Number
+});
 
 // Money
 const Earn = mongoose.model('Earn', {
@@ -44,5 +53,6 @@ module.exports = {
     User,
     VPS,
     Earn,
-    Node
+    Node,
+    Port
 };
