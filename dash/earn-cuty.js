@@ -26,7 +26,7 @@ async function handle(req, res) {
     if (timeLeft > 0) return res.send(`In ${Math.ceil(timeLeft/1000/60/60)} hours`);
 
     var tok = await db.Earn.findOne({
-        userID: userId,
+        userID: user.userID,
         isUsed: false
     });
 
@@ -41,7 +41,7 @@ async function handle(req, res) {
     await user.save();
 
     const earn = new db.Earn({
-        userID: userId,
+        userID: user.userID,
         isUsed: false,
         creditCount: 1500,
         token,
