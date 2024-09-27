@@ -93,5 +93,6 @@ app.get('/earn/link/cuty', require('./dash/earn-cuty.js'));
 app.get('/earn/claim/:token', require('./dash/claim.js'));
 
 app.get('/vps/create', require('./dash/vps-create.js'));
+app.get('/vps/:id', require('./dash/vps.js'));
 
 module.exports = app;
