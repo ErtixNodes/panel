@@ -88,7 +88,7 @@
                         <div class="create-box bg-gray-800 p-8 rounded-lg">
                             <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Create VPS</h2>
                             <input type="text" id="cname" placeholder="VPS name" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
-                            <select id="ctype" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
+                            <!-- <select id="ctype" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
                                 <optgroup label="VPS">
                                     <option value="alpine">Alpine - Free</option>
                                     <option value="debian" disabled>Debian (not available)</option>
@@ -106,7 +106,7 @@
                                     <option value="small2" disabled>1.5 GB ram | 0.5 vCPU | 4 GB disk | 12 credits/minute</option>
                                     <option value="small3" disabled>2 GB ram | 1 vCPU | 8 GB disk | 16 credits/minute</option>
                                 </optgroup>
-                            </select>
+                            </select> -->
                             <div class="create-buttons flex flex-col sm:flex-row justify-between">
                                 <a href="#home" class="cancel-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Cancel</a>
                                 <button onclick="create();" class="create-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Create</button>
@@ -210,10 +210,10 @@
 
         async function create() {
             var name = encodeURIComponent(String(document.getElementById('cname').value));
-            var type = encodeURIComponent(String(document.getElementById('ctype').value));
-            var plan = encodeURIComponent(String(document.getElementById('cplan').value));
+            // var type = encodeURIComponent(String(document.getElementById('ctype').value));
+            // var plan = encodeURIComponent(String(document.getElementById('cplan').value));
 
-            window.location.href = `/dash/server/api/create?name=${name}&type=${type}&plan=${plan}`;
+            window.location.href = `/dash/vps/create?name=${name}`;
         }
     </script>
 

@@ -11,7 +11,7 @@ async function handle(req, res) {
         userID: req.session.user.id
     });
 
-    if (vps.length >= user.vpsLimit) return res.send(`VPS limit exceeded. ${vps.length}/${user.vpsLimit}`);
+    if (vps.length >= user.serverLimit) return res.send(`VPS limit exceeded. ${vps.length}/${user.serverLimit}`);
 
     const { name } = req.query;
     if (!name) return res.send(`No name in body`);
@@ -23,7 +23,7 @@ async function handle(req, res) {
 
     if (!vpsCount > node.maxVPS) return res.send(`No slots available! ${vpsCount}/${node.maxVPS}`);
 
-    let ip = randomip(node.subnet, node.subnetMask);
+    let ip = randomip('10.5.0.1', 16);
 
     const proxID = node.nextID;
     node.nextID++;
@@ -41,7 +41,7 @@ async function handle(req, res) {
     });
     await userVPS.save();
 
-    req.send('Creating...');
+    res.send('Creating...');
 }
 
 module.exports = handle;
