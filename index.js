@@ -82,6 +82,6 @@ if (process.env.SERVER_PORT) {
   process.env.PORT = process.env.SERVER_PORT;
 }
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.HOST, process.env.PORT, () => {
   log(`App online at port ${process.env.PORT}`);
 });
