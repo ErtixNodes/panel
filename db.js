@@ -8,16 +8,15 @@ const User = mongoose.model('User', {
     password: String,
 
     notif: Boolean,
-    lastEarn: Number,
-    serverLimit: Number
+    serverLimit: Number,
+
+    nextEarnCuty: Number,
 });
 
-const Server = mongoose.model('Server', {
+const VPS = mongoose.model('Server', {
     userID: String,
-    pteroUID: String,
-    pteroNID: Number,
-    pteroLID: String,
-    
+    proxID: Number,
+
     name: String,
     ram: Number,
     cpu: Number,
@@ -40,6 +39,6 @@ const Earn = mongoose.model('Earn', {
 
 module.exports = {
     User,
-    Server,
+    VPS,
     Earn
 };

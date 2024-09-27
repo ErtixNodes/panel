@@ -67,22 +67,16 @@
                             </div> -->
                         </div>
                         <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="#create">Create VPS</a>
-                        <div class="bg-gray-800 p-6 mt-6 rounded-lg">
-                            <p><strong>Panel information:</strong></p>
-                            <p><strong>URL:</strong> https://game.meegie.net/</p>
-                            <p><strong>Login:</strong> u<%- req.session.user.id %></p>
-                            <p><strong>Password:</strong> <%- pass %></p>
-                        </div>
-                        <% for(var i=0; i<servers.length; i++) { %>
+                        <% for(var i=0; i<vps.length; i++) { %>
                             <div class="server-card bg-gray-800 p-4 mt-8 rounded-lg flex flex-col sm:flex-row justify-between items-center">
                                 <div class="server-info space-y-2 text-center sm:text-left">
-                                    <div class="server-detail"><i class="fa fa-server mr-2"></i> <strong><%= servers[i].name %></strong></div>
-                                    <div class="server-detail"><i class="fa fa-tachometer-alt mr-2"></i> <span><%= (servers[i].cpu/100) %> vCPU</span></div>
-                                    <div class="server-detail"><i class="fa fa-memory mr-2"></i> <span><%= servers[i].ram/1024 %> GB ram</span></div>
-                                    <div class="server-detail"><i class="fa fa-hdd mr-2"></i> <span><%= servers[i].disk/1024 %> GB disk</span></div>
-                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span><%= servers[i].cost %> credits/minute</span></div>
+                                    <div class="server-detail"><i class="fa fa-server mr-2"></i> <strong><%= vps[i].name %></strong></div>
+                                    <div class="server-detail"><i class="fa fa-tachometer-alt mr-2"></i> <span><%= (vps[i].cpu/100) %> vCPU</span></div>
+                                    <div class="server-detail"><i class="fa fa-memory mr-2"></i> <span><%= vps[i].ram/1024 %> GB ram</span></div>
+                                    <div class="server-detail"><i class="fa fa-hdd mr-2"></i> <span><%= vps[i].disk/1024 %> GB disk</span></div>
+                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span><%= vps[i].cost %> credits/minute</span></div>
                                 </div>
-                                <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mt-4 sm:mt-0" href="https://game.meegie.net/server/<%- servers[i].pteroUID %>">Manage</a>
+                                <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mt-4 sm:mt-0" href="https://game.meegie.net/server/<%- vps[i].pteroUID %>">Manage</a>
                             </div>
                         <% } %>  
                     </div>
