@@ -62,7 +62,7 @@ async function handle(req, res) {
 
     res.redirect(`/dash/vps/${userVPS.proxID}`);
 
-    process.nextTick(async () => {
+    setTimeout(async () => {
         console.log(`Creating ${name} with ${proxID} | ${ip} | ${sshPort.port}:22`);
 
         const sleep = (milliseconds) => {
@@ -107,7 +107,7 @@ async function handle(req, res) {
         await userVPS.save();
 
         console.log(`${name} - Create done!`);
-    });
+    }, 0);
 }
 
 function getCreateCMD(path, proxID, data) {
