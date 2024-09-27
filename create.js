@@ -96,7 +96,7 @@ async function addForward(port, intPort, ip) {
     return a;
 }
 
-main().then(() => {
+main(name, proxID, ip, sshPort).then(() => {
     db.mongoose.connection.close();
     console.log('DB connection closed');
 });
