@@ -72,6 +72,7 @@ app.get('/callback', async (req, res) => {
 app.use((req, res, next) => {
     req.db = db;
     req.oauth = oauth;
+    req.hook = hook;
     next();
 });
 

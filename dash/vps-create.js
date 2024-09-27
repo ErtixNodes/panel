@@ -41,6 +41,8 @@ async function handle(req, res) {
     });
     await userVPS.save();
 
+    req.hook.send(`<@${process.env.ADMIN_ID}> :green_square: **CREATE** - <@${req.session.userID}> ${name} - ${proxID} (${ip})`);
+
     res.send('Creating...');
 }
 
