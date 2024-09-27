@@ -70,6 +70,7 @@ async function handle(req, res) {
         }
 
         var createCMD = getCreateCMD('alpine-3.20-default_20240908_amd64.tar.xz', proxID, userVPS);
+        console.log(createCMD);
         var vpsCreateRes = await shell.exec(createCMD);
 
         if (vpsCreateRes.stderr.length > 0) {
@@ -128,7 +129,7 @@ function getCreateCMD(path, proxID, data) {
     cmd += `--password ${data.password} `;
     cmd += `--start=1 `;
     cmd += `--unprivileged=1 `;
-    cmd += `--cores=0.5 `;
+    cmd += `--cores=1 `;
     cmd += `--features fuse=1,nesting=1,keyctl=1 `;
     cmd += `--rootfs local:3`;
 
