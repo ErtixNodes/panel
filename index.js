@@ -132,7 +132,14 @@ io.on('connection', (client) => {
     conn.on('ready', () => {
       //  CONNECT
       console.log('> Ready!');
-      conn.shell((err, stream) => {
+      conn.shell({
+        env: {
+          COLORTERM: 'truecolor'
+        },
+        term: 'xterm-256color',
+        width: 640,
+        height: 480
+      }, (err, stream) => {
         console.log('> Shell!');
         if (err) {
           console.log(err);
