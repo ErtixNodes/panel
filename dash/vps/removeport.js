@@ -29,6 +29,8 @@ async function handle(req, res) {
     newPort.vpsID = null;
     await newPort.save();
 
+    req.hook.send(`<@${process.env.ADMIN_ID}> :blue_square: **FORWARD** - <@${req.session.userID}> ${vps.name} - :${newPort.port} -> \`null\``);
+
     res.redirect(`/dash/vps/${vps.proxID}#ports`);
 }
 
