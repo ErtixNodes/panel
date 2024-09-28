@@ -29,7 +29,7 @@ async function handle(req, res) {
     newPort.vpsID = null;
     await newPort.save();
 
-    res.redirect(`/dash/vps/${vps.proxID}`);
+    res.redirect(`/dash/vps/${vps.proxID}#ports`);
 }
 
 async function removeForward(port, intPort, ip) {

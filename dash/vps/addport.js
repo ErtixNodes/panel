@@ -27,7 +27,7 @@ async function handle(req, res) {
 
     await addForward(newPort.port, newPort.port, vps.ip);
 
-    res.redirect(`/dash/vps/${vps.proxID}`);
+    res.redirect(`/dash/vps/${vps.proxID}#ports`);
 }
 
 async function addForward(port, intPort, ip) {
