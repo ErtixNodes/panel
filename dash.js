@@ -103,4 +103,6 @@ app.get('/vps/:id/kill', require('./dash/vps/kill.js'));
 app.get('/vps/:id/addport', require('./dash/vps/addport.js'));
 app.get('/vps/:id/removeport/:port', require('./dash/vps/removeport.js'));
 
+app.get('/vps/:id/renew', require('./dash/vps/renew.js'));
+
 module.exports = app;
