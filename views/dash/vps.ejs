@@ -170,7 +170,7 @@
                         </div>
                     </section>
 
-                    <% } %>
+                    <% } else { %>
                         <section id="home" class="mb-10">
                             <div class="home-box">
                                 <div style="margin: 50px;"></div>
@@ -181,29 +181,29 @@
                                             href="https://discord.gg/FhY3VZ3fMh" target="_blank">Contact us on
                                             discord!</a>
                                         <% } %>
-                                        <% if (vps.status=='creating' ) { %>
-                                            <h1>VPS is still creating!</h1>
-                                            <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
-                                                href="/dash/vps/<%- vps.proxID %>">Refresh</a>
+                                            <% if (vps.status=='creating' ) { %>
+                                                <h1>VPS is still creating!</h1>
+                                                <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                                    href="/dash/vps/<%- vps.proxID %>">Refresh</a>
 
-                                            <i>Reloading page in 10 seconds...</i>
+                                                <i>Reloading page in 10 seconds...</i>
 
-                                            <script>
-                                                setTimeout(() => {
-                                                    window.location.href = "/dash/vps/<%- vps.proxID %>";
-                                                }, 10 * 1000);
-                                            </script>
-                                            <% } %>
+                                                <script>
+                                                    setTimeout(() => {
+                                                        window.location.href = "/dash/vps/<%- vps.proxID %>";
+                                                    }, 10 * 1000);
+                                                </script>
+                                                <% } %>
                                 </div>
                             </div>
-        </div>
-        </section>
+                        </div>
+                    </section>
+                <% } %>
 
-
-        <script async="async" data-cfasync="false"
-            src="//pl24093205.highratecpm.com/49ff494b61507c0a7a28e8eccd704be2/invoke.js"></script>
-        <div id="container-49ff494b61507c0a7a28e8eccd704be2"></div>
-        </main>
+            <script async="async" data-cfasync="false"
+                src="//pl24093205.highratecpm.com/49ff494b61507c0a7a28e8eccd704be2/invoke.js"></script>
+            <div id="container-49ff494b61507c0a7a28e8eccd704be2"></div>
+            </main>
     </div>
     </div>
 
