@@ -36,9 +36,12 @@ async function removeForward(port, intPort, ip) {
 
     console.log(`Adding :${port} -> ${ip}:${intPort}`);
 
-    await shell.exec(`iptables -t nat -D PREROUTING -p TCP --dport ${port} -j DNAT --to-destination ${ip}:${intPort}`);
-
-    fs.rmSync(`/port/${port}.sh`);
+    try {
+        await shell.exec(`iptables -t nat -D PREROUTING -p TCP --dport ${port} -j DNAT --to-destination ${ip}:${intPort}`);
+        fs.rmSync(`/port/${port}.sh`);
+    } catch (e) {
+        console.log('Failed to remove port', String(e));
+    }
 }
 
 module.exports = handle;
