@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <meta name="monetag" content="430b865a90d2d16ecdaec3fdfe06db2d">
+
+    <!-- SHELL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css">
 </head>
 <body class="bg-gray-900 text-white">
     
@@ -220,6 +223,7 @@
     </script>
 
     <!-- SHELL -->
+     <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
     var socket = io();
@@ -228,6 +232,17 @@
         console.log('Connect');
 
         socket.emit('ID', parseInt('<%- vps.proxID %>'));
+
+        var term = new Terminal();
+        term.open(document.getElementById('shell'));
+
+        socket.on('data', (d) => {
+            term.write(d);
+        });
+
+        term.on('data', (data) => {
+            socket.emit('data', data);
+        });
     });
     </script>
 

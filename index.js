@@ -140,7 +140,7 @@ io.on('connection', (client) => {
           return;
         }
         
-        client.emit("data", 'Connected!');
+        client.emit("connected");
 
         stream.on('close', () => {
           client.emit("error", 'CLOSED');
