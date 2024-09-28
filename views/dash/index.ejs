@@ -71,12 +71,12 @@
                             <div class="server-card bg-gray-800 p-4 mt-8 rounded-lg flex flex-col sm:flex-row justify-between items-center">
                                 <div class="server-info space-y-2 text-center sm:text-left">
                                     <div class="server-detail"><i class="fa fa-server mr-2"></i> <strong><%= vps[i].name %></strong></div>
-                                    <div class="server-detail"><i class="fa fa-tachometer-alt mr-2"></i> <span><%= (vps[i].cpu/100) %> vCPU</span></div>
-                                    <div class="server-detail"><i class="fa fa-memory mr-2"></i> <span><%= vps[i].ram/1024 %> GB ram</span></div>
-                                    <div class="server-detail"><i class="fa fa-hdd mr-2"></i> <span><%= vps[i].disk/1024 %> GB disk</span></div>
-                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span><%= vps[i].cost %> credits/minute</span></div>
+                                    <div class="server-detail"><i class="fa fa-tachometer-alt mr-2"></i> <span>1 vCPU</span></div>
+                                    <div class="server-detail"><i class="fa fa-memory mr-2"></i> <span>0.5 GB ram</span></div>
+                                    <div class="server-detail"><i class="fa fa-hdd mr-2"></i> <span>3 GB disk</span></div>
+                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span><%= vps[i].expiry %> expiry</span></div>
                                 </div>
-                                <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mt-4 sm:mt-0" href="https://game.meegie.net/server/<%- vps[i].pteroUID %>">Manage</a>
+                                <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mt-4 sm:mt-0" href="/dash/vps/<%- vps[i].proxID %>">Manage</a>
                             </div>
                         <% } %>  
                     </div>
