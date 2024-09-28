@@ -94,5 +94,6 @@ app.get('/earn/claim/:token', require('./dash/claim.js'));
 
 app.get('/vps/create', require('./dash/vps-create.js'));
 app.get('/vps/:id', require('./dash/vps.js'));
+app.get('/vps/:id/status', require('./dash/vps/status.js'));
 
 module.exports = app;
