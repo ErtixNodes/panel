@@ -16,9 +16,11 @@ async function handle(req, res) {
 
     var status = await shell.exec(`pct status ${vps.proxID}`);
 
+    if (status.stderr.length > 0) return res.send(status.stderr);
+
     console.log(status);
 
-    res.send('TODO');
+    res.send(String(status.stdout).replace('status: ', '').replace('\n', ''));
 }
 
 module.exports = handle;
