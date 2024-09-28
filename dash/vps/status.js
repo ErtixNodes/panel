@@ -18,8 +18,6 @@ async function handle(req, res) {
 
     if (status.stderr.length > 0) return res.send(status.stderr);
 
-    console.log(status);
-
     res.send(String(status.stdout).replace('status: ', '').replace('\n', ''));
 }
 
