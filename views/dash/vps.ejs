@@ -252,7 +252,7 @@
             term.write(d);
         });
 
-        term.on('data', (data) => {
+        term.onData((data) => {
             socket.emit('data', data);
         });
     });
