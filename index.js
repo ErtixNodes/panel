@@ -149,6 +149,7 @@ io.on('connection', (client) => {
         });
 
         stream.on('data', (data) => {
+          console.log('Received:', data);
           client.emit("data", data);
         });
 
