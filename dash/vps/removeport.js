@@ -39,8 +39,6 @@ async function removeForward(port, intPort, ip) {
     await shell.exec(`iptables -t nat -D PREROUTING -p TCP --dport ${port} -j DNAT --to-destination ${ip}:${intPort}`);
 
     fs.rmSync(`/port/${port}.sh`);
-
-    return a;
 }
 
 module.exports = handle;
