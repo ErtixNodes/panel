@@ -36,15 +36,15 @@
         <div class="sidebar bg-gray-800 w-full sm:w-64 sm:min-h-screen">
             <div class="user-info mt-auto px-4 py-4">
                 <a href="/dash/#home" class="flex items-center hover:bg-gray-700 p-2 rounded">
-                    <div class="avatar-placeholder bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center">&lt;-</div>
+                    <div class="avatar-placeholder bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa fa-arrow-left mr-3"></i></div>
                     <span class="ml-3">Back</span>
                 </a>
             </div>
             <nav class="mt-10">
                 <ul class="space-y-4">
-                    <li><a href="#home" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-home mr-3"></i> Info</a></li>
-                    <li><a href="#create" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-plus-circle mr-3"></i> Shell</a></li>
-                    <li><a href="#earn" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-dollar-sign mr-3"></i> Ports</a></li>
+                    <li><a href="#home" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-info mr-3"></i> Info</a></li>
+                    <li><a href="#shell" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-terminal mr-3"></i> Shell</a></li>
+                    <li><a href="#ports" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-ethernet mr-3"></i> Ports</a></li>
                 </ul>
             </nav>
         </div>
@@ -96,49 +96,35 @@
                 </section>
 
                 <!-- Create Section -->
-                <section id="create" class="hidden">
+                <section id="addport" class="hidden">
                     <div class="create-container">
                         <div class="create-box bg-gray-800 p-8 rounded-lg">
-                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Create VPS</h2>
-                            <input type="text" id="cname" placeholder="VPS name" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
-                            <!-- <select id="ctype" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
-                                <optgroup label="VPS">
-                                    <option value="alpine">Alpine - Free</option>
-                                    <option value="debian" disabled>Debian (not available)</option>
-                                </optgroup>
-                            </select>
-                            <select id="cplan" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
-                                <optgroup label="Tiny">
-                                    <option value="tiny1">128 MB ram | 0.25 vCPU | 0.5 GB disk | 1 credit/minute</option>
-                                    <option value="tiny2" disabled>256 MB ram | 0.25 vCPU | 1 GB disk | 2 credits/minute</option>
-                                    <option value="tiny3" disabled>512 MB ram | 0.5 vCPU  | 2 GB disk | 4 credits/minute</option>
-                                    <option value="tiny4" disabled>768 MB ram | 0.5 vCPU  | 2 GB disk | 6 credits/minute</option>
-                                </optgroup>
-                                <optgroup label="Small">
-                                    <option value="small1" disabled>1 GB ram | 0.5 vCPU | 4 GB disk | 8 credits/minute</option>
-                                    <option value="small2" disabled>1.5 GB ram | 0.5 vCPU | 4 GB disk | 12 credits/minute</option>
-                                    <option value="small3" disabled>2 GB ram | 1 vCPU | 8 GB disk | 16 credits/minute</option>
-                                </optgroup>
-                            </select> -->
+                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Add port</h2>
+                            <input type="number" id="cname" placeholder="Internal port" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
+                            <i>Leave empty to get random one.</i>
+
                             <div class="create-buttons flex flex-col sm:flex-row justify-between">
-                                <a href="#home" class="cancel-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Cancel</a>
-                                <button onclick="create();" class="create-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Create</button>
+                                <a href="#ports" class="cancel-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Cancel</a>
+                                <button onclick="createPort();" class="create-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Create</button>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Earn Section -->
-                <section id="earn" class="hidden">
+                <section id="ports" class="hidden">
                     <div class="earn-container">
                         <div class="earn-box bg-gray-800 p-8 rounded-lg">
-                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">List of earnings</h2>
-                            <ul class="earn-list mb-6">
-                                <li class="mb-4">
-                                    <a href="/dash/earn/link/cuty" target="_blank" class="text-blue-400 hover:underline">cuty.io</a> - 3 credits - <span class="timer cutytime">loading</span>
-                                </li>
+                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Port forwarding</h2>
+                            <ul>
+                                <% for(var i=0; i<vpsPorts.length; i++) { %>
+                                    <li>127.0.0.0:<%= vpsPorts[i].port %> -> :<%= vpsPorts[i].intPort %> <% if (vpsPorts[i].intPort != 22) { %><a href="/dash/vps/<%- vps.proxID %>/removeport/<%= vpsPorts[i].port %>" class="back-button bg-red-600 hover:bg-red-500 text-white py-1 px-2 rounded-lg w-full sm:w-auto">Remove</a></li><% } %>
+                                <% } %>
                             </ul>
-                            <a href="#home" class="back-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Back</a>
+  
+                            <br /><br />
+
+                            <a href="/dash/vps/<%- vps.proxID %>/addport" class="back-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Add port</a>
                         </div>
                     </div>
                 </section>

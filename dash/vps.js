@@ -10,7 +10,11 @@ async function handle(req, res) {
     });
     if (!vps) return res.redirect('/dash');
 
-    res.render('dash/vps', { req, res, user, vps });
+    var vpsPorts = await db.Port.find({
+        vpsID: vps._id
+    });
+
+    res.render('dash/vps', { req, res, user, vps, vpsPorts });
 }
 
 module.exports = handle;
