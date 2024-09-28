@@ -100,10 +100,6 @@ io.on('connection', (client) => {
 
   client.userID = session.userID;
 
-  client.on('disconnect', () => {
-    console.log('> Disconnected', client.request.session.userID);
-  });
-
   if (!session.userID) {
     client.disconnect(true);
   }
@@ -168,6 +164,14 @@ io.on('connection', (client) => {
       client.disconnect(true);
     });
     conn.connect(connData);
+
+    client.on('disconnect', () => {
+      try {
+        conn.end();
+      } catch (e) {
+        console.log('ERROR disconnecting', e);
+      }
+    });
   });
 });
 
