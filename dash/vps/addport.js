@@ -22,6 +22,7 @@ async function handle(req, res) {
 
     newPort.isUsed = true;
     newPort.intPort = newPort.port;
+    newPort.vpsID = vps._id;
     await newPort.save();
 
     await addForward(newPort.port, newPort.port, vps.ip);
