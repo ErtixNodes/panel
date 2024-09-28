@@ -16,7 +16,7 @@ async function handle(req, res) {
 
     shell.exec(`pct start ${vps.proxID}`);
 
-    res.send('OK');
+    res.redirect(`/dash/vps/${vps.proxID}`);
 }
 
 module.exports = handle;
