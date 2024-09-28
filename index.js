@@ -123,10 +123,21 @@ io.on('connection', (client) => {
       client.emit("connecting");
     }
 
+    var connData = {
+      host: vps.ip,
+      port: 22,
+      username: 'root',
+      password: vps.password
+    };
+
+    console.log(connData);
+
     const conn = new SSH2.Client();
     conn.on('ready', () => {
       //  CONNECT
+      console.log('> Ready!');
       conn.shell((err, stream) => {
+        console.log('> Shell!');
         if (err) {
           console.log(err);
           client.emit("error", err);
@@ -156,12 +167,7 @@ io.on('connection', (client) => {
       client.emit("error", err);
       client.disconnect(true);
     });
-    conn.connect({
-      host: vps.ip,
-      port: 22,
-      username: 'root',
-      password: vps.password
-    });
+    conn.connect(connData);
   });
 });
 
