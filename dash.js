@@ -96,5 +96,8 @@ app.get('/vps/create', require('./dash/vps-create.js'));
 app.get('/vps/:id', require('./dash/vps.js'));
 app.get('/vps/:id/status', require('./dash/vps/status.js'));
 app.get('/vps/:id/start', require('./dash/vps/start.js'));
+app.get('/vps/:id/restart', require('./dash/vps/restart.js'));
+app.get('/vps/:id/stop', require('./dash/vps/stop.js'));
+app.get('/vps/:id/kill', require('./dash/vps/kill.js'));
 
 module.exports = app;
