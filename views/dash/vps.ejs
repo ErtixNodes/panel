@@ -55,6 +55,7 @@
         <div class="main-content flex-grow p-4 sm:p-10">
             <main>
 
+                <% if (vps.status == 'active') { %>
                 <!-- Home Section -->
                 <section id="home" class="mb-10">
                     <div class="home-box">
@@ -143,6 +144,41 @@
                         </div>
                     </div>
                 </section>
+
+                <% } %>
+                <% if (vps.status == 'error') { %>
+                    <div style="margin: 50px;"></div>
+                        <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+
+
+                            <h1>VPS create failed!</h1>
+                            <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="https://discord.gg/FhY3VZ3fMh" target="_blank">Contact us on discord!</a>
+
+
+                        </div>
+                    </div>
+                <% } %>
+
+                <% if (vps.status == 'creating') { %>
+                    <div style="margin: 50px;"></div>
+                        <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+
+
+                            <h1>VPS is still creating!</h1>
+                            <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="/dash/vps/<%- vps.proxID %>">Refresh</a>
+
+                            <i>Reloading page in 10 seconds...</i>
+
+                            <script>
+                                setTimeout(() => {
+                                    window.location.href = "/dash/vps/<%- vps.proxID %>";
+                                }, 10*1000);
+                            </script>
+
+
+                        </div>
+                    </div>
+                <% } %>
 
                 <script async="async" data-cfasync="false" src="//pl24093205.highratecpm.com/49ff494b61507c0a7a28e8eccd704be2/invoke.js"></script>
                 <div id="container-49ff494b61507c0a7a28e8eccd704be2"></div>
