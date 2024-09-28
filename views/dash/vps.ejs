@@ -1,16 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VH00E01KDE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-VH00E01KDE');
-</script>
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VH00E01KDE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-VH00E01KDE');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - ErtixNodes</title>
@@ -25,29 +25,35 @@
     <!-- SHELL -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css">
 </head>
+
 <body class="bg-gray-900 text-white">
-    
-   <script>(function(d,z,s){s.src='https://'+d+'/400/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('aupoafto.com',7925389,document.createElement('script'))</script>
-  <!-- In page push ^ -->    
+
+    <script>(function (d, z, s) { s.src = 'https://' + d + '/400/' + z; try { (document.body || document.documentElement).appendChild(s) } catch (e) { } })('aupoafto.com', 7925389, document.createElement('script'))</script>
+    <!-- In page push ^ -->
 
 
-<script src="https://kukrosti.com/act/files/tag.min.js?z=7960913" data-cfasync="false" async></script>
-<!-- Push notifs ^ -->
+    <script src="https://kukrosti.com/act/files/tag.min.js?z=7960913" data-cfasync="false" async></script>
+    <!-- Push notifs ^ -->
 
     <div class="flex flex-col sm:flex-row">
         <!-- Sidebar -->
         <div class="sidebar bg-gray-800 w-full sm:w-64 sm:min-h-screen">
             <div class="user-info mt-auto px-4 py-4">
                 <a href="/dash/#home" class="flex items-center hover:bg-gray-700 p-2 rounded">
-                    <div class="avatar-placeholder bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa fa-arrow-left mr-3"></i></div>
+                    <div class="avatar-placeholder bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center">
+                        <i class="fa fa-arrow-left mr-3"></i>
+                    </div>
                     <span class="ml-3">Back</span>
                 </a>
             </div>
             <nav class="mt-10">
                 <ul class="space-y-4">
-                    <li><a href="#home" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-info mr-3"></i> Info</a></li>
-                    <li><a href="#shell" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-terminal mr-3"></i> Shell</a></li>
-                    <li><a href="#ports" class="flex items-center px-4 py-2 hover:bg-gray-700"><i class="fa fa-ethernet mr-3"></i> Ports</a></li>
+                    <li><a href="#home" class="flex items-center px-4 py-2 hover:bg-gray-700"><i
+                                class="fa fa-info mr-3"></i> Info</a></li>
+                    <li><a href="#shell" class="flex items-center px-4 py-2 hover:bg-gray-700"><i
+                                class="fa fa-terminal mr-3"></i> Shell</a></li>
+                    <li><a href="#ports" class="flex items-center px-4 py-2 hover:bg-gray-700"><i
+                                class="fa fa-ethernet mr-3"></i> Ports</a></li>
                 </ul>
             </nav>
         </div>
@@ -55,51 +61,60 @@
         <div class="main-content flex-grow p-4 sm:p-10">
             <main>
 
-                <% if (vps.status == 'active') { %>
-                <!-- Home Section -->
-                <section id="home" class="mb-10">
-                    <div class="home-box">
-                        <div class="resources grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                            <div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
-                                <i class="fa fa-coins text-blue-500 text-2xl mr-3"></i> <span><strong>Status:</strong> <span id="vpsstatus">Loading</span></span>
-                            </div>
-                            <div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
-                                <i class="fa fa-clock text-blue-500 text-2xl mr-3"></i> <span><strong>Expiry:</strong> in <%= Math.floor((vps.expiry-Date.now())/1000/60/60) %> hours</span>
-                            </div>
-                            <!-- <<div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
+                <% if (vps.status=='active' ) { %>
+                    <!-- Home Section -->
+                    <section id="home" class="mb-10">
+                        <div class="home-box">
+                            <div class="resources grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                <div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
+                                    <i class="fa fa-coins text-blue-500 text-2xl mr-3"></i>
+                                    <span><strong>Status:</strong> <span id="vpsstatus">Loading</span></span>
+                                </div>
+                                <div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
+                                    <i class="fa fa-clock text-blue-500 text-2xl mr-3"></i>
+                                    <span><strong>Expiry:</strong> in <%= Math.floor((vps.expiry-Date.now())/1000/60/60)
+                                            %> hours</span>
+                                </div>
+                                <!-- <<div class="resource-card bg-gray-800 p-4 rounded-lg flex items-center">
                                 <i class="fa fa-cogs text-blue-500 text-2xl mr-3"></i> <span>0.75 CPU</span>
                             </div> -->
+                            </div>
+
+                            <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                href="/dash/vps/<%- vps.proxID %>">Refresh</a>
+                            <a class="bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                href="/dash/vps/<%- vps.proxID %>/start">Start</a>
+                            <a class="bg-red-400 hover:bg-red-300 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                href="/dash/vps/<%- vps.proxID %>/stop">Stop</a>
+                            <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                href="/dash/vps/<%- vps.proxID %>/restart">Restart</a>
+                            <a class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                href="/dash/vps/<%- vps.proxID %>/kill">Kill</a>
                         </div>
-
-                        <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="/dash/vps/<%- vps.proxID %>">Refresh</a>
-                        <a class="bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="/dash/vps/<%- vps.proxID %>/start">Start</a>
-                        <a class="bg-red-400 hover:bg-red-300 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="/dash/vps/<%- vps.proxID %>/stop">Stop</a>
-                        <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="/dash/vps/<%- vps.proxID %>/restart">Restart</a>
-                        <a class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="/dash/vps/<%- vps.proxID %>/kill">Kill</a>
-                    </div>
-                    <div style="margin: 50px;">
-                        <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
-                            <b>VPS IP:</b> 127.0.0.1<br /> 
-                            <b>SSH PORT:</b> <%- vps.sshPort %><br />
-                            <!-- <b>Root password:</b> <a href="#password" class="bg-blue-700 hover:bg-blue-600 text-white py-2 px-8 rounded-lg w-full sm:w-auto">View</a><br /> -->
-                            <b>Root password:</b> <pre style="display: inline;"><%- vps.password %></pre><br />
+                        <div style="margin: 50px;">
+                            <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+                                <b>VPS IP:</b> 127.0.0.1<br />
+                                <b>SSH PORT:</b> <%- vps.sshPort %><br />
+                                    <!-- <b>Root password:</b> <a href="#password" class="bg-blue-700 hover:bg-blue-600 text-white py-2 px-8 rounded-lg w-full sm:w-auto">View</a><br /> -->
+                                    <b>Root password:</b>
+                                    <pre style="display: inline;"><%- vps.password %></pre><br />
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                <section id="password" class="hidden">
-                    <div style="margin: 50px;">
-                        <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
-
-
-                            Coming soon :D
+                    <section id="password" class="hidden">
+                        <div style="margin: 50px;">
+                            <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
 
 
+                                Coming soon :D
+
+
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                <section id="shell" class="hidden"></section>
+                    <section id="shell" class="hidden"></section>
                     <div style="margin: 50px;">
                         <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
 
@@ -109,81 +124,87 @@
 
                         </div>
                     </div>
-                </section>
+                    </section>
 
-                <!-- Create Section -->
-                <section id="addport" class="hidden">
-                    <div class="create-container">
-                        <div class="create-box bg-gray-800 p-8 rounded-lg">
-                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Add port</h2>
-                            <input type="number" id="cname" placeholder="Internal port" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
-                            <i>Leave empty to get random one.</i>
+                    <!-- Create Section -->
+                    <section id="addport" class="hidden">
+                        <div class="create-container">
+                            <div class="create-box bg-gray-800 p-8 rounded-lg">
+                                <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Add port</h2>
+                                <input type="number" id="cname" placeholder="Internal port"
+                                    class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
+                                <i>Leave empty to get random one.</i>
 
-                            <div class="create-buttons flex flex-col sm:flex-row justify-between">
-                                <a href="#ports" class="cancel-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Cancel</a>
-                                <button onclick="createPort();" class="create-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Create</button>
+                                <div class="create-buttons flex flex-col sm:flex-row justify-between">
+                                    <a href="#ports"
+                                        class="cancel-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Cancel</a>
+                                    <button onclick="createPort();"
+                                        class="create-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Create</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                <!-- Earn Section -->
-                <section id="ports" class="hidden">
-                    <div class="earn-container">
-                        <div class="earn-box bg-gray-800 p-8 rounded-lg">
-                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Port forwarding</h2>
-                            <ul>
-                                <% for(var i=0; i<vpsPorts.length; i++) { %>
-                                    <li>127.0.0.0:<%= vpsPorts[i].port %> -> :<%= vpsPorts[i].intPort %> <% if (vpsPorts[i].intPort != 22) { %><a href="/dash/vps/<%- vps.proxID %>/removeport/<%= vpsPorts[i].port %>" class="back-button bg-red-600 hover:bg-red-500 text-white py-1 px-2 rounded-lg w-full sm:w-auto">Remove</a></li><% } %>
-                                <% } %>
-                            </ul>
-  
-                            <br /><br />
+                    <!-- Earn Section -->
+                    <section id="ports" class="hidden">
+                        <div class="earn-container">
+                            <div class="earn-box bg-gray-800 p-8 rounded-lg">
+                                <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Port forwarding</h2>
+                                <ul>
+                                    <% for(var i=0; i<vpsPorts.length; i++) { %>
+                                        <li>127.0.0.0:<%= vpsPorts[i].port %> -> :<%= vpsPorts[i].intPort %>
+                                                    <% if (vpsPorts[i].intPort !=22) { %><a
+                                                            href="/dash/vps/<%- vps.proxID %>/removeport/<%= vpsPorts[i].port %>"
+                                                            class="back-button bg-red-600 hover:bg-red-500 text-white py-1 px-2 rounded-lg w-full sm:w-auto">Remove</a>
+                                        </li>
+                                        <% } %>
+                                            <% } %>
+                                </ul>
 
-                            <a href="/dash/vps/<%- vps.proxID %>/addport" class="back-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Add port</a>
+                                <br /><br />
+
+                                <a href="/dash/vps/<%- vps.proxID %>/addport"
+                                    class="back-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Add
+                                    port</a>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                <% } %>
-                <% if (vps.status == 'error') { %>
-                    <div style="margin: 50px;"></div>
-                        <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+                    <% } %>
+                        <section id="home" class="mb-10">
+                            <div class="home-box">
+                                <div style="margin: 50px;"></div>
+                                <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+                                    <% if (vps.status=='error' ) { %>
+                                        <h1>VPS create failed!</h1>
+                                        <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                            href="https://discord.gg/FhY3VZ3fMh" target="_blank">Contact us on
+                                            discord!</a>
+                                        <% } %>
+                                        <% if (vps.status=='creating' ) { %>
+                                            <h1>VPS is still creating!</h1>
+                                            <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                                href="/dash/vps/<%- vps.proxID %>">Refresh</a>
 
+                                            <i>Reloading page in 10 seconds...</i>
 
-                            <h1>VPS create failed!</h1>
-                            <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="https://discord.gg/FhY3VZ3fMh" target="_blank">Contact us on discord!</a>
-
-
-                        </div>
-                    </div>
-                <% } %>
-
-                <% if (vps.status == 'creating') { %>
-                    <div style="margin: 50px;"></div>
-                        <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
-
-
-                            <h1>VPS is still creating!</h1>
-                            <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="/dash/vps/<%- vps.proxID %>">Refresh</a>
-
-                            <i>Reloading page in 10 seconds...</i>
-
-                            <script>
-                                setTimeout(() => {
-                                    window.location.href = "/dash/vps/<%- vps.proxID %>";
-                                }, 10*1000);
-                            </script>
-
-
-                        </div>
-                    </div>
-                <% } %>
-
-                <script async="async" data-cfasync="false" src="//pl24093205.highratecpm.com/49ff494b61507c0a7a28e8eccd704be2/invoke.js"></script>
-                <div id="container-49ff494b61507c0a7a28e8eccd704be2"></div>
-            </main>
+                                            <script>
+                                                setTimeout(() => {
+                                                    window.location.href = "/dash/vps/<%- vps.proxID %>";
+                                                }, 10 * 1000);
+                                            </script>
+                                            <% } %>
+                                </div>
+                            </div>
         </div>
+        </section>
+
+
+        <script async="async" data-cfasync="false"
+            src="//pl24093205.highratecpm.com/49ff494b61507c0a7a28e8eccd704be2/invoke.js"></script>
+        <div id="container-49ff494b61507c0a7a28e8eccd704be2"></div>
+        </main>
+    </div>
     </div>
 
     <!-- Modal -->
@@ -192,9 +213,13 @@
             <h2 class="text-2xl mb-4">Manage Server</h2>
             <input type="text" placeholder="Server Name" class="w-full mb-4 p-2 rounded-lg bg-gray-700 text-white">
             <div class="flex flex-col sm:flex-row justify-between">
-                <button class="delete-server-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Delete server</button>
-                <button class="cancel-button bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Cancel</button>
-                <button class="apply-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Apply</button>
+                <button
+                    class="delete-server-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Delete
+                    server</button>
+                <button
+                    class="cancel-button bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Cancel</button>
+                <button
+                    class="apply-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Apply</button>
             </div>
         </div>
     </div>
@@ -259,7 +284,7 @@
 
         time();
 
-        setInterval(time, 60*1000);
+        setInterval(time, 60 * 1000);
 
         async function create() {
             var name = encodeURIComponent(String(document.getElementById('cname').value));
@@ -271,38 +296,40 @@
     </script>
 
     <!-- SHELL -->
-     <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-    var socket = io();
+        var socket = io();
 
-    socket.on('connect', () => {
-        console.log('Connect');
+        socket.on('connect', () => {
+            console.log('Connect');
 
-        socket.emit('ID', parseInt('<%- vps.proxID %>'));
+            socket.emit('ID', parseInt('<%- vps.proxID %>'));
 
-        var term = new Terminal();
-        term.open(document.getElementById('term'));
+            var term = new Terminal();
+            term.open(document.getElementById('term'));
 
-        socket.on('data', (d) => {
-            // d = String(d);
-            // console.log('Received:', d);
-            term.write(d);
+            socket.on('data', (d) => {
+                // d = String(d);
+                // console.log('Received:', d);
+                term.write(d);
+            });
+
+            term.onData((data) => {
+                socket.emit('data', data);
+            });
+
+            term.onResize((data, data2) => {
+                console.log(data, data2);
+                socket.emit('resize', { cols: data.cols, rows: data.rows });
+            });
+
+            term.resize(64, 20);
         });
-
-        term.onData((data) => {
-            socket.emit('data', data);
-        });
-
-        term.onResize((data, data2) => {
-            console.log(data, data2);
-            socket.emit('resize', { cols: data.cols, rows: data.rows });
-        });
-
-        term.resize(64, 20);
-    });
     </script>
 
-    <script type='text/javascript' src='//pl24150956.cpmrevenuegate.com/fa/04/70/fa047085f4a64ad8db1115a2ed6775af.js'></script>
+    <script type='text/javascript'
+        src='//pl24150956.cpmrevenuegate.com/fa/04/70/fa047085f4a64ad8db1115a2ed6775af.js'></script>
 </body>
+
 </html>
