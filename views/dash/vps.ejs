@@ -249,7 +249,7 @@
         term.open(document.getElementById('term'));
 
         socket.on('data', (d) => {
-            console.log('Received:', data);
+            console.log('Received:', d);
             term.write(d);
         });
 
