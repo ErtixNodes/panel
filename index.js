@@ -174,6 +174,7 @@ io.on('connection', (client) => {
     conn.connect(connData);
 
     client.on('disconnect', () => {
+      console.log('> Disconnected');
       try {
         conn.end();
       } catch (e) {
