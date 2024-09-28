@@ -74,7 +74,7 @@
                                     <div class="server-detail"><i class="fa fa-tachometer-alt mr-2"></i> <span>1 vCPU</span></div>
                                     <div class="server-detail"><i class="fa fa-memory mr-2"></i> <span>0.5 GB ram</span></div>
                                     <div class="server-detail"><i class="fa fa-hdd mr-2"></i> <span>3 GB disk</span></div>
-                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span><%= vps[i].expiry %> expiry</span></div>
+                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span>Expires in <%= Math.floor((vps[i].expiry-Date.now())/1000/60/60) %> hours</span></div>
                                 </div>
                                 <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mt-4 sm:mt-0" href="/dash/vps/<%- vps[i].proxID %>">Manage</a>
                             </div>
