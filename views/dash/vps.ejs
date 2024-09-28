@@ -98,6 +98,18 @@
                     </div>
                 </section>
 
+                <section id="shell" class="hidden"></section>
+                    <div style="margin: 50px;">
+                        <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+
+
+                            <div id="term"></div>
+
+
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Create Section -->
                 <section id="addport" class="hidden">
                     <div class="create-container">
@@ -234,7 +246,7 @@
         socket.emit('ID', parseInt('<%- vps.proxID %>'));
 
         var term = new Terminal();
-        term.open(document.getElementById('shell'));
+        term.open(document.getElementById('term'));
 
         socket.on('data', (d) => {
             term.write(d);
