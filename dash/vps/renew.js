@@ -20,7 +20,7 @@ async function handle(req, res) {
     user.balance -= 20;
     await user.save();
 
-    vps.expiry = dayjs().add(2, 'day');
+    vps.expiry = dayjs(vps.expiry).add(2, 'day');
     await vps.save();
 
     res.redirect(`/dash/vps/${vps.proxID}`);
