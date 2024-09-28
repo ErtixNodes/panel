@@ -261,7 +261,9 @@
         term.onResize((data, data2) => {
             console.log(data, data2);
             socket.emit('resize', { cols: data.cols, rows: data.rows });
-        })
+        });
+
+        term.resize(640, 480);
     });
     </script>
 
