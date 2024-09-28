@@ -219,6 +219,18 @@
         }
     </script>
 
+    <!-- SHELL -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    var socket = io();
+
+    socket.on('connect', () => {
+        console.log('Connect');
+
+        socket.emit('ID', parseInt('<%- vps.proxID %>'));
+    });
+    </script>
+
     <script type='text/javascript' src='//pl24150956.cpmrevenuegate.com/fa/04/70/fa047085f4a64ad8db1115a2ed6775af.js'></script>
 </body>
 </html>

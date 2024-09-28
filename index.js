@@ -18,21 +18,26 @@ const io = new Server(server);
 
 app.set('view engine', 'ejs');
 
+const db = require('./db');
+const SSH2 = require('ssh2');
+
 var FileStore = require('session-file-store')(session);
 
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    cookie:  {
-      maxAge: 1000 * 60 * 60 * 24 * 31
-    },
+var ses = session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie:  {
+    maxAge: 1000 * 60 * 60 * 24 * 31
+  },
 
-    store: new FileStore({
-      reapAsync: true,
-      reapSyncFallback: true
-    })
-}));
+  store: new FileStore({
+    reapAsync: true,
+    reapSyncFallback: true
+  })
+});
+app.use(ses);
+io.engine.use(ses);
 
 // app.use(morgan('dev')); // log requests in dev format
 
@@ -86,6 +91,79 @@ if (process.env.SERVER_PORT) {
   log('> Using ptero :D');
   process.env.PORT = process.env.SERVER_PORT;
 }
+
+io.on('connection', (client) => {
+  console.log('> Connected', client.request.session.userID);
+  client.isAuth = false;
+
+  var session = client.request.session;
+
+  client.userID = session.userID;
+
+  client.on('disconnect', () => {
+    console.log('> Disconnected', client.request.session.userID);
+  });
+
+  if (!session.userID) {
+    client.disconnect(true);
+  }
+
+  client.on('ID', async (vpsID) => {
+    client.vpsID = vpsID;
+
+    const vps = await db.VPS.findOne({
+      userID: client.userID,
+      proxID: vpsID
+    });
+
+    if (!vps) {
+      client.emit("error", "No VPS found");
+      client.disconnect(true);
+    } else {
+      client.emit("connecting");
+    }
+
+    const conn = new SSH2.Client();
+    conn.on('ready', () => {
+      //  CONNECT
+      conn.shell((err, stream) => {
+        if (err) {
+          console.log(err);
+          client.emit("error", err);
+          return;
+        }
+        
+        client.emit("data", 'Connected!');
+
+        stream.on('close', () => {
+          client.emit("error", 'CLOSED');
+          conn.end();
+          client.disconnect(true);
+        });
+
+        stream.on('data', (data) => {
+          client.emit("data", data);
+        });
+
+        client.on('data', (data) => {
+          stream.write(data);
+        });
+      });
+      
+    });
+    conn.on('error', (err) => {
+      console.log(err);
+      client.emit("error", err);
+      client.disconnect(true);
+    });
+    conn.connect({
+      host: vps.ip,
+      port: 22,
+      username: 'root',
+      password: vps.password
+    });
+  });
+});
 
 server.listen(process.env.PORT, process.env.HOST, () => {
   log(`App online at ${process.env.HOST}:${process.env.PORT}`);
