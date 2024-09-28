@@ -11,6 +11,11 @@ const fs = require('fs');
 
 const app = express();
 
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
 app.set('view engine', 'ejs');
 
 var FileStore = require('session-file-store')(session);
@@ -82,6 +87,6 @@ if (process.env.SERVER_PORT) {
   process.env.PORT = process.env.SERVER_PORT;
 }
 
-app.listen(process.env.PORT, process.env.HOST, () => {
+server.listen(process.env.PORT, process.env.HOST, () => {
   log(`App online at ${process.env.HOST}:${process.env.PORT}`);
 });
