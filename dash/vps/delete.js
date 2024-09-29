@@ -17,6 +17,8 @@ async function handle(req, res) {
     const { sure } = req.query;
     if (!sure || sure != 'yes') return res.send('UNKNOWN');
 
+    if (vps.status == 'delete') return res.send('VPS already in delete mode!');
+
     vps.expiry = Date.now();
     vps.status = 'delete';
     await vps.save();
