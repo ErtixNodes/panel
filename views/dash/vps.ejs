@@ -220,6 +220,10 @@
                                             href="https://discord.gg/FhY3VZ3fMh" target="_blank">Contact us on
                                             discord!</a>
                                         <% } %>
+                                        <% if (vps.status=='delete' ) { %>
+                                            <h1>VPS deleted!</h1>
+                                            <p>Your VPS will get deleted in a few minutes!</p>
+                                            <% } %>
                                             <% if (vps.status=='creating' ) { %>
                                                 <h1>VPS is still creating!</h1>
                                                 <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"

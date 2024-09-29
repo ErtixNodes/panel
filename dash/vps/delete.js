@@ -18,7 +18,7 @@ async function handle(req, res) {
     if (!sure || sure != 'yes') return res.send('UNKNOWN');
 
     vps.expiry = Date.now();
-    vps.status = 'error';
+    vps.status = 'delete';
     await vps.save();
 
     req.hook.send(`<@${process.env.ADMIN_ID}> :orange_square: **DELETE** - <@${req.session.userID}> ${vps.name}`);
