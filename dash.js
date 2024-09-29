@@ -45,7 +45,7 @@ app.get('/callback', async (req, res) => {
             try {
                 userInDB = new db.User({
                     userID: user.id,
-                    balance: 60,
+                    balance: 0,
                     notif: true,
                     serverLimit: 1,
                     nextEarnCuty: Date.now()
