@@ -29,7 +29,7 @@ async function handle(req, res) {
 
     req.hook.send(`<@${process.env.ADMIN_ID}> :blue_square: **FORWARD** - <@${req.session.userID}> ${vps.name} - :${newPort.port} -> VPS`);
 
-    res.redirect(`/dash/vps/${vps.proxID}#ports`);
+    res.redirect(`/dash/vps/${vps.proxID}`);
 }
 
 async function addForward(port, intPort, ip) {

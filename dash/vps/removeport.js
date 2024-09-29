@@ -31,7 +31,7 @@ async function handle(req, res) {
 
     req.hook.send(`<@${process.env.ADMIN_ID}> :blue_square: **FORWARD** - <@${req.session.userID}> ${vps.name} - :${newPort.port} -> \`null\``);
 
-    res.redirect(`/dash/vps/${vps.proxID}#ports`);
+    res.redirect(`/dash/vps/${vps.proxID}`);
 }
 
 async function removeForward(port, intPort, ip) {
