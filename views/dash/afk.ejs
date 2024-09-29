@@ -82,7 +82,7 @@
             let timer = document.getElementById('timer');
             timer.innerHTML = i;
 
-            let paused = false; while (i > 0) {
+            while (i > 0) {
                 await sleep(1 * 1000);
                 if (!document.hidden && !paused) {
                     i--;
@@ -93,7 +93,6 @@
                             adWind.location.replace('https://noohapou.com/4/7925190');
                         }
                     }
-
 
                 } else {
                     timer.innerHTML = 'PAUSED';
