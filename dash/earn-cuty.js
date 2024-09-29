@@ -37,6 +37,8 @@ async function handle(req, res) {
     var url = await fetch(`https://api.cuty.io/quick?token=${process.env.CUTY}&url=${encodeURIComponent(`${process.env.URL}/dash/earn/claim/${token}`)}&format=text`);
     url = await url.text();
 
+    console.log(process.env.URL, url);
+
     user.nextEarnCuty = Date.now() + (1000 * 60 * 60 * 24);
     await user.save();
 
