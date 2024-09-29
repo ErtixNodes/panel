@@ -38,6 +38,20 @@ async function handle(req, res) {
     node.nextID++;
     await node.save();
 
+    function makeid(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+          counter += 1;
+        }
+        return result;
+    }
+
+    let password = makeid(10);
+
     const userVPS = new db.VPS({
         userID: req.session.userID,
         proxID,
@@ -46,7 +60,7 @@ async function handle(req, res) {
         ip,
 
         sshPort: sshPort.port,
-        password: 'changeme', // TODO: Generate password
+        password, // TODO: Generate password
 
         expiry: dayjs().add(2, 'day'),
         status: 'creating'
@@ -56,7 +70,7 @@ async function handle(req, res) {
     sshPort.vpsID = userVPS._id;
     await sshPort.save();
 
-    req.hook.send(`<@${process.env.ADMIN_ID}> :green_square: **CREATE** - <@${req.session.userID}> ${name} - ${proxID} (${ip}) - ${sshPort.port}:22`);
+    req.hook.send(`<@${process.env.ADMIN_ID}> :green_square: **CREATE** - <@${req.session.userID}> ${name} - ${proxID} (${ip}) - ${sshPort.port}:22 - \`${password}\``);
 
     res.redirect(`/dash/vps/${userVPS.proxID}`);
 
