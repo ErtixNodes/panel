@@ -23,6 +23,8 @@ async function handle(req, res) {
     vps.expiry = dayjs(vps.expiry).add(2, 'day');
     await vps.save();
 
+    req.hook.send(`<@${process.env.ADMIN_ID}> :orange_square: **RENEW** - <@${req.session.userID}> ${vps.name}`);
+
     res.redirect(`/dash/vps/${vps.proxID}`);
 }
 
