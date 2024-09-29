@@ -140,8 +140,8 @@ async function checkServer() {
 
         console.log(`Deleted VPS ${vps._id}`);
     }
-    console.log(VPS);
-    hook.send(`<@${process.env.ADMIN_ID}> :blue_circle: ${VPS.length} vps expired!`);
+    // console.log(VPS);
+    if (VPS.length > 0) hook.send(`<@${process.env.ADMIN_ID}> :blue_circle: ${VPS.length} vps expired!`);
 
     // END CHECK
 
@@ -149,6 +149,7 @@ async function checkServer() {
 }
 
 checkServer();
+setInterval(checkServer, 5*60*1000);
 
 async function removeForward(port, intPort, ip) {
 
