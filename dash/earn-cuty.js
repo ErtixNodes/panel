@@ -43,7 +43,7 @@ async function handle(req, res) {
     const earn = new db.Earn({
         userID: user.userID,
         isUsed: false,
-        creditCount: 1500,
+        creditCount: 7,
         token,
         url
     });
