@@ -21,7 +21,7 @@ async function handle(req, res) {
     vps.status = 'delete';
     await vps.save();
 
-    req.hook.send(`<@${process.env.ADMIN_ID}> :orange_square: **DELETE** - <@${req.session.userID}> ${vps.name}`);
+    req.hook.send(`:orange_square: **DELETE** - <@${req.session.userID}> ${vps.name}`);
 
     res.redirect(`/dash`);
 }

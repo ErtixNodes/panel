@@ -145,7 +145,7 @@ async function checkServer() {
         console.log(`Deleted VPS ${vps._id}`);
     }
     // console.log(VPS);
-    if (VPS.length > 0) hook.send(`<@${process.env.ADMIN_ID}> :blue_circle: ${VPS.length} vps expired!`);
+    if (VPS.length > 0) hook.send(`:blue_circle: ${VPS.length} vps expired!`);
 
     // END CHECK
 
