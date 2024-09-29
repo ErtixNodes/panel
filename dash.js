@@ -1,5 +1,7 @@
 const express = require('express');
 const DiscordOauth2 = require("discord-oauth2");
+const fs = require('fs');
+const shell = require('shelljs');
 const oauth = new DiscordOauth2({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -20,10 +22,6 @@ dayjs.extend(relativeTime);
 
 const { Webhook } = require('discord-webhook-node');
 const hook = new Webhook(process.env.ADMIN_HOOK);
-
-const fetch = require('node-fetch');
-
-var isCheckServer = false;
 
 hook.send(`<@${process.env.ADMIN_ID}> :blue_square: **BOOT** - Dashboard started`);
 
@@ -105,5 +103,63 @@ app.get('/vps/:id/removeport/:port', require('./dash/vps/removeport.js'));
 
 app.get('/vps/:id/renew', require('./dash/vps/renew.js'));
 app.get('/vps/:id/delete', require('./dash/vps/delete.js'));
+
+let isCheckServer = false;
+async function checkServer() {
+    if (isCheckServer == true) return;
+    isCheckServer = true;
+
+    // CHECK
+    var VPS = await db.VPS.find({
+        expiry: {
+            $lt: Date.now()
+        }
+    });
+    for(let i = 0; i < VPS.length; i++) {
+        let vps = VPS[i];
+
+         var ports = await db.Port.find({
+            vpsID: vps._id
+         });
+        for(let j = 0; j < ports.length; j++) {
+            removeForward(ports[j].port, ports[j].intPort, vps.ip);
+            ports[j].isUsed = false;
+            ports[j].intPort = null;
+            ports[j].vpsID = null;
+            await ports[j].save();
+        }
+
+        await shell.exec(`pct stop ${vps.proxID}`);
+        await shell.exec(`pct destroy ${vps.proxID}`);
+
+        await hook.send(`<@${process.env.ADMIN_ID}> :red_circle: **EXPIRED** - VPS ${vps.name} deleted`);
+
+        await db.VPS.deleteOne({
+            _id: vps._id
+        });
+
+        console.log(`Deleted VPS ${vps._id}`);
+    }
+    console.log(VPS);
+    hook.send(`<@${process.env.ADMIN_ID}> :blue_circle: ${VPS.length} vps expired!`);
+
+    // END CHECK
+
+    isCheckServer = false;
+}
+
+checkServer();
+
+async function removeForward(port, intPort, ip) {
+
+    console.log(`Adding :${port} -> ${ip}:${intPort}`);
+
+    try {
+        await shell.exec(`iptables -t nat -D PREROUTING -p TCP --dport ${port} -j DNAT --to-destination ${ip}:${intPort}`);
+        fs.rmSync(`/port/${port}.sh`);
+    } catch (e) {
+        console.log('Failed to remove port', String(e));
+    }
+}
 
 module.exports = app;
