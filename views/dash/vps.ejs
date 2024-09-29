@@ -50,20 +50,16 @@
                 <ul class="space-y-4">
                     <li><a href="#home" class="flex items-center px-4 py-2 hover:bg-gray-700"><i
                                 class="fa fa-info mr-3"></i> Info</a></li>
-                    <li><a href="#shell" class="flex items-center px-4 py-2 hover:bg-gray-700"><i
+                    <!-- <li><a href="#shell" class="flex items-center px-4 py-2 hover:bg-gray-700"><i
                                 class="fa fa-terminal mr-3"></i> Shell</a></li>
                     <li><a href="#ports" class="flex items-center px-4 py-2 hover:bg-gray-700"><i
-                                class="fa fa-ethernet mr-3"></i> Ports</a></li>
+                                class="fa fa-ethernet mr-3"></i> Ports</a></li> -->
                 </ul>
             </nav>
         </div>
+
         <!-- Main content -->
-        <div class="main-content flex-grow p-4 sm:p-10">
-            <div style="margin: 50px; display: block;">
-                <script async="async" data-cfasync="false"
-                src="//pl24093205.highratecpm.com/49ff494b61507c0a7a28e8eccd704be2/invoke.js"></script>
-                <div id="container-49ff494b61507c0a7a28e8eccd704be2"></div>
-            </div>
+        <div class="main-content p-4 sm:p-10" style="width: 100%;">
             <main>
                 <% if (vps.status=='active' ) { %>
                     <!-- Home Section -->
@@ -105,6 +101,7 @@
 
                         </div>
                         <div style="margin: 50px;">
+                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">SSH Details</h2>
                             <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
                                 <b>VPS IP:</b> 127.0.0.1<br />
                                 <b>SSH PORT:</b> <%- vps.sshPort %><br />
@@ -112,22 +109,36 @@
                                     <b>Root password:</b>
                                     <pre style="display: inline;"><%- vps.password %></pre><br />
                             </div>
-                        </div>
-                    </section>
 
-                    <section id="password" class="hidden">
-                        <div style="margin: 50px;">
+                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Shell</h2>
                             <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
-
-
-                                Coming soon :D
-
-
+                                <div id="term" style="margin: 10px;"></div>
                             </div>
+
+                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Ports</h2>
+                            <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+                                <ul>
+                                    <% for(var i=0; i<vpsPorts.length; i++) { %>
+                                        <li>127.0.0.0:<%= vpsPorts[i].port %> -> :<%= vpsPorts[i].intPort %>
+                                                    <% if (vpsPorts[i].intPort !=22) { %><a
+                                                            href="/dash/vps/<%- vps.proxID %>/removeport/<%= vpsPorts[i].port %>"
+                                                            class="back-button bg-red-600 hover:bg-red-500 text-white py-1 px-2 rounded-lg w-full sm:w-auto">Remove</a>
+                                        </li>
+                                        <% } %>
+                                            <% } %>
+                                </ul>
+
+                                <br /><br />
+
+                                <a href="/dash/vps/<%- vps.proxID %>/addport"
+                                    class="back-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Add
+                                    port</a>
+                            </div>
+                            
                         </div>
                     </section>
 
-                    <section id="delete" class="hidden">
+                    <section id="delete" class="hidden mb-10">
                         <div style="margin: 50px;">
                             <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
 
@@ -149,20 +160,8 @@
                         </div>
                     </section>
 
-                    <section id="shell" class="hidden">
-                    <div style="margin: 50px;">
-                        <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
-
-
-                            <div id="term"></div>
-
-
-                        </div>
-                    </div>
-                    </section>
-
                     <!-- Create Section -->
-                    <section id="addport" class="hidden">
+                    <section id="addport" class="hidden mb-10">
                         <div class="create-container">
                             <div class="create-box bg-gray-800 p-8 rounded-lg">
                                 <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Add port</h2>
@@ -181,7 +180,7 @@
                     </section>
 
                     <!-- Earn Section -->
-                    <section id="ports" class="hidden">
+                    <section id="ports" class="hidden mb-10">
                         <div class="earn-container">
                             <div class="earn-box bg-gray-800 p-8 rounded-lg">
                                 <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Port forwarding</h2>
