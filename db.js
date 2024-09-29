@@ -11,6 +11,7 @@ const User = mongoose.model('User', {
     serverLimit: Number,
 
     nextEarnCuty: Number,
+    nextAFK: Number
 });
 
 const VPS = mongoose.model('Server', {

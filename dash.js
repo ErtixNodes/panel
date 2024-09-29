@@ -104,6 +104,10 @@ app.get('/vps/:id/removeport/:port', require('./dash/vps/removeport.js'));
 app.get('/vps/:id/renew', require('./dash/vps/renew.js'));
 app.get('/vps/:id/delete', require('./dash/vps/delete.js'));
 
+app.get('/afk', require('./dash/afk/page.js'));
+app.get('/afk/claim', require('./dash/afk/claim.js'));
+
+
 let isCheckServer = false;
 async function checkServer() {
     if (isCheckServer == true) return;

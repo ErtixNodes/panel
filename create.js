@@ -10,10 +10,6 @@ const db = require('./db');
 async function main(name, proxID, ip, sshPort) {
     console.log(`Creating ${name} with ${proxID} | ${ip} | ${sshPort.port}:22`);
 
-    const sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
-
     const userVPS = await db.VPS.findOne({
         proxID
     });
