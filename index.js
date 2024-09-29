@@ -115,6 +115,7 @@ io.on('connection', (client) => {
     if (!vps) {
       client.emit("error", "No VPS found");
       client.disconnect(true);
+      return;
     } else {
       client.emit("connecting");
     }
