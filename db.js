@@ -52,12 +52,21 @@ const Earn = mongoose.model('Earn', {
     url: String
 });
 
+// Blog
+const Blog = mongoose.model('Blog', {
+    title: String,
+    date: Number,
+    content: String,
+    id: String
+});
+
 module.exports = {
     User,
     VPS,
     Earn,
     Node,
     Port,
+    Blog,
 
     mongoose
 };
