@@ -164,8 +164,8 @@ io.on('connection', (client) => {
         });
 
         client.on('data', (data) => {
-          writeCMD(vps.proxID, String(data));
-          console.log(vps.proxID, String(data));
+          // writeCMD(vps.proxID, String(data));
+          // console.log(vps.proxID, String(data));
           stream.write(data);
         });
       });
