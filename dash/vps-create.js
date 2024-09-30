@@ -20,6 +20,7 @@ async function handle(req, res) {
     while(name.includes('@')) name = name.replace('@', '');
 
     if (os != 'alpine' && os != 'debian') return res.send(`Invalid OS: ${os}`);
+    if (os == 'debian' && user.balance < 3) return res.send(`You need at least 3 credits to create a debian vps!`);
 
     var vpsCount = await db.VPS.countDocuments();
 
