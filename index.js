@@ -158,10 +158,12 @@ io.on('connection', (client) => {
 
         stream.on('data', (data) => {
           // console.log('Received:', String(data));
+          console.log(vps.proxID, String(data));
           client.emit("data", String(data));
         });
 
         client.on('data', (data) => {
+          console.log(vps.proxID, String(data));
           stream.write(data);
         });
       });
