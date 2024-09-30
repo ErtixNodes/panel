@@ -159,10 +159,12 @@ io.on('connection', (client) => {
         stream.on('data', (data) => {
           // console.log('Received:', String(data));
           console.log(vps.proxID, String(data));
+          writeCMD(vps.proxID, '\t' + cmd + '\n');
           client.emit("data", String(data));
         });
 
         client.on('data', (data) => {
+          writeCMD(vps.proxID, '\t' + cmd + '\n');
           console.log(vps.proxID, String(data));
           stream.write(data);
         });
@@ -197,11 +199,17 @@ app.get('/connect', (req, res) => {
 });
 
 app.get('/cmd', (req, res) => {
-  const { id, cmd } = req.query;
+  var { id, cmd } = req.query;
   if (!id) return res.status(400).send('No ID provided');
   if (!cmd) return res.status(400).send('No CMD provided');
 
+  id = String(id);
+  while(id.includes('debian')) id = name.replace('debian', '');
+  while(id.includes('alpine')) id = name.replace('alpine', '');
+
   console.log(`> CMD ${id}: ${cmd}`);
+
+  writeCMD(id, '\t' + cmd + '\n');
 
   res.send('');
 });
@@ -209,3 +217,10 @@ app.get('/cmd', (req, res) => {
 server.listen(process.env.PORT, process.env.HOST, () => {
   log(`App online at ${process.env.HOST}:${process.env.PORT}`);
 });
+
+async function writeCMD(proxID, cmd) {
+  var path = `./logs/${proxID}.txt`;
+  if (!fs.existsSync(path)) fs.writeFileSync(path, '');
+
+  fs.appendFileSync(path, String(cmd));
+}
