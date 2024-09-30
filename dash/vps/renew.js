@@ -15,12 +15,12 @@ async function handle(req, res) {
     if (!vps) return res.send('UNKNOWN');
 
     var userCredit = user.balance;
-    if (userCredit < 20) return res.send('You need more credits: 20 needed');
+    if (userCredit < 10) return res.send('You need more credits: 10 needed');
 
-    user.balance -= 20;
+    user.balance -= 10;
     await user.save();
 
-    vps.expiry = dayjs(vps.expiry).add(2, 'day');
+    vps.expiry = dayjs(vps.expiry).add(1, 'day');
     await vps.save();
 
     req.hook.send(`:orange_square: **RENEW** - <@${req.session.userID}> ${vps.name}`);
