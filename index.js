@@ -185,6 +185,25 @@ io.on('connection', (client) => {
   });
 });
 
+app.get('/connect', (req, res) => {
+  const { id } = req.query;
+  if (!id) return res.status(400).send('No ID provided');
+
+  console.log(`> CONNECT ${id}`);
+
+  res.send('');
+});
+
+app.get('/cmd', (req, res) => {
+  const { id, cmd } = req.query;
+  if (!id) return res.status(400).send('No ID provided');
+  if (!cmd) return res.status(400).send('No CMD provided');
+
+  console.log(`> CMD ${id}: ${cmd}`);
+
+  res.send('');
+});
+
 server.listen(process.env.PORT, process.env.HOST, () => {
   log(`App online at ${process.env.HOST}:${process.env.PORT}`);
 });
