@@ -48,6 +48,8 @@ async function main(name, proxID, ip, sshPort, os) {
         // SHELL
         await shell.exec(`pct exec ${proxID} sh -- -c "bash <(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`);
         await shell.exec(`pct exec ${proxID} sh -- -c "sed -i 's#/bin/ash#/bin/zsh#' /etc/passwd"`);
+        await shell.exec(`pct exec ${proxID} sh -- -c "sed -i 's#/bin/sh#/bin/zsh#' /etc/passwd"`);
+        await shell.exec(`pct exec ${proxID} sh -- -c "sed -i 's#/bin/bash#/bin/zsh#' /etc/passwd"`);
 
     }
     if (os == 'debian') {
