@@ -56,7 +56,7 @@ async function main(name, proxID, ip, sshPort, os) {
 
         // SSH
         await shell.exec(`pct exec ${proxID} bash -- -c "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config"`);
-        await shell.exec(`pct exec ${proxID} bash -- -c "service sshd start"`);
+        await shell.exec(`pct exec ${proxID} bash -- -c "service sshd restart"`);
 
         // MOTD
         await shell.exec(`pct exec ${proxID} bash -- -c "echo '\tFree VPS by ErtixNodes.' > /etc/motd"`);
