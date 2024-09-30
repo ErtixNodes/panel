@@ -13,8 +13,13 @@ async function handle(req, res) {
 
     if (vps.length >= user.serverLimit) return res.send(`VPS limit exceeded. ${vps.length}/${user.serverLimit}`);
 
-    const { name } = req.query;
-    if (!name) return res.send(`No name in body`);
+    var { name, os } = req.query;
+    if (!name || !os) return res.send(`No name or os in body`);
+
+    name = String(name);
+    while(name.includes('@')) name = name.replace('@', '');
+
+    if (os != 'alpine' && os != 'debian') return res.send(`Invalid OS: ${os}`);
 
     var vpsCount = await db.VPS.countDocuments();
 
@@ -58,6 +63,7 @@ async function handle(req, res) {
 
         name,
         ip,
+        os,
 
         sshPort: sshPort.port,
         password, // TODO: Generate password
@@ -70,7 +76,12 @@ async function handle(req, res) {
     sshPort.vpsID = userVPS._id;
     await sshPort.save();
 
-    req.hook.send(`<@${process.env.ADMIN_ID}> :green_square: **CREATE** - <@${req.session.userID}> ${name} - ${proxID} (${ip}) - ${sshPort.port}:22 - \`${password}\``);
+    if (os == 'debian') {
+        user.balance -= 3;
+        await user.save();
+    }
+
+    req.hook.send(`<@${process.env.ADMIN_ID}> :green_square: **CREATE** - <@${req.session.userID}> ${name} - ${proxID} (${os} @ ${ip}) - ${sshPort.port}:22 - \`${password}\``);
 
     res.redirect(`/dash/vps/${userVPS.proxID}`);
 
@@ -82,7 +93,8 @@ async function handle(req, res) {
         sshPort: {
             port: sshPort.port,
             intPort: sshPort.intPort
-        }
+        },
+        os
     }});
 }
 

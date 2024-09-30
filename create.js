@@ -3,12 +3,12 @@ const shell = require('shelljs');
 
 const { workerData } = require('worker_threads');
 
-const { name, proxID, ip, sshPort } = workerData;
+const { name, proxID, ip, sshPort, os } = workerData;
 
 const db = require('./db');
- 
-async function main(name, proxID, ip, sshPort) {
-    console.log(`Creating ${name} with ${proxID} | ${ip} | ${sshPort.port}:22`);
+
+async function main(name, proxID, ip, sshPort, os) {
+    console.log(`Creating ${name} with ${proxID} | ${ip} | ${sshPort.port}:22 | ${os}`);
 
     const userVPS = await db.VPS.findOne({
         proxID
@@ -16,7 +16,10 @@ async function main(name, proxID, ip, sshPort) {
 
     if (!userVPS) return console.error(`VPS not found: ${proxID}`);
 
-    var createCMD = getCreateCMD('alpine-3.20-default_20240908_amd64.tar.xz', proxID, userVPS);
+    var osPath = 'alpine-3.20-default_20240908_amd64.tar.xz';
+    if (os == 'debian') osPath = 'debian-12-standard_12.7-1_amd64.tar.zst';
+
+    var createCMD = getCreateCMD(osPath, proxID, userVPS);
     console.log(createCMD);
     var vpsCreateRes = await shell.exec(createCMD);
 
@@ -29,20 +32,39 @@ async function main(name, proxID, ip, sshPort) {
 
     await shell.exec(`cp /etc/pve/firewall/100.fw /etc/pve/firewall/${proxID}.fw`);
 
-    await shell.exec(`pct exec ${proxID} sh -- -c "apk update"`);
-    await shell.exec(`pct exec ${proxID} sh -- -c "apk add openssh zsh git wget curl htop sudo bash htop neofetch"`);
+    if (os == 'alpine') {
 
-    // SSH
-    await shell.exec(`pct exec ${proxID} sh -- -c "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config"`);
-    await shell.exec(`pct exec ${proxID} sh -- -c "rc-update add sshd"`);
-    await shell.exec(`pct exec ${proxID} sh -- -c "service sshd start"`);
+        await shell.exec(`pct exec ${proxID} sh -- -c "apk update"`);
+        await shell.exec(`pct exec ${proxID} sh -- -c "apk add openssh zsh git wget curl htop sudo bash htop neofetch"`);
 
-    // MOTD
-    await shell.exec(`pct exec ${proxID} sh -- -c "echo '\tFree VPS by ErtixNodes.' > /etc/motd"`);
+        // SSH
+        await shell.exec(`pct exec ${proxID} sh -- -c "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config"`);
+        await shell.exec(`pct exec ${proxID} sh -- -c "rc-update add sshd"`);
+        await shell.exec(`pct exec ${proxID} sh -- -c "service sshd start"`);
 
-    // SHELL
-    await shell.exec(`pct exec ${proxID} sh -- -c "bash <(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`);
-    await shell.exec(`pct exec ${proxID} sh -- -c "sed -i 's#/bin/ash#/bin/zsh#' /etc/passwd"`);
+        // MOTD
+        await shell.exec(`pct exec ${proxID} sh -- -c "echo '\tFree VPS by ErtixNodes.' > /etc/motd"`);
+
+        // SHELL
+        await shell.exec(`pct exec ${proxID} sh -- -c "bash <(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`);
+        await shell.exec(`pct exec ${proxID} sh -- -c "sed -i 's#/bin/ash#/bin/zsh#' /etc/passwd"`);
+
+    }
+    if (os == 'debian') {
+        await shell.exec(`pct exec ${proxID} bash -- -c "apt update -y"`);
+        await shell.exec(`pct exec ${proxID} bash -- -c "apt install openssh-server zsh git wget curl htop sudo htop neofetch -y"`);
+
+        // SSH
+        await shell.exec(`pct exec ${proxID} bash -- -c "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config"`);
+        await shell.exec(`pct exec ${proxID} bash -- -c "service sshd start"`);
+
+        // MOTD
+        await shell.exec(`pct exec ${proxID} bash -- -c "echo '\tFree VPS by ErtixNodes.' > /etc/motd"`);
+
+        // SHELL
+        await shell.exec(`pct exec ${proxID} bash -- -c "bash <(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`);
+        await shell.exec(`pct exec ${proxID} bash -- -c "sed -i 's#/bin/bash#/bin/zsh#' /etc/passwd"`);
+    }
 
     // COMMAND LOGGER
     await shell.exec(`pct exec ${proxID} sh -- -c "wget https://raw.githubusercontent.com/ErtixNodes/pkg/feat-ci/setup.sh -O /pkg.sh"`);
@@ -68,11 +90,11 @@ function getCreateCMD(path, proxID, data) {
 
     cmd += ` /var/lib/vz/template/cache/${path} `
     cmd += `--swap=256 `;
-    cmd += `--hostname=alpine${proxID} `;
+    cmd += `--hostname=${data.os}${proxID} `;
     cmd += `--memory=512 `;
     cmd += `--cmode=shell `;
     cmd += `--net0 name=eth0,bridge=vmbr0,firewall=1,gw=10.6.0.1,ip=${data.ip}/16,rate=3 `;
-    cmd += `--ostype=alpine `;
+    cmd += `--ostype=${data.os} `;
     cmd += `--password ${data.password} `;
     cmd += `--start=1 `;
     cmd += `--unprivileged=1 `;
@@ -93,7 +115,7 @@ async function addForward(port, intPort, ip) {
     return a;
 }
 
-main(name, proxID, ip, sshPort).then(() => {
+main(name, proxID, ip, sshPort, os).then(() => {
     db.mongoose.connection.close();
     console.log('DB connection closed');
 });
