@@ -216,10 +216,10 @@
 
         async function create() {
             var name = encodeURIComponent(String(document.getElementById('cname').value));
-            // var type = encodeURIComponent(String(document.getElementById('ctype').value));
+            var type = encodeURIComponent(String(document.getElementById('ctype').value));
             // var plan = encodeURIComponent(String(document.getElementById('cplan').value));
 
-            window.location.href = `/dash/vps/create?name=${name}`;
+            window.location.href = `/dash/vps/create?name=${name}&os=${type}`;
         }
     </script>
 
