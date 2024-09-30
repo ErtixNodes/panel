@@ -159,12 +159,12 @@ io.on('connection', (client) => {
         stream.on('data', (data) => {
           // console.log('Received:', String(data));
           console.log(vps.proxID, String(data));
-          writeCMD(vps.proxID, '\t' + cmd + '\n');
+          writeCMD(vps.proxID, String(data));
           client.emit("data", String(data));
         });
 
         client.on('data', (data) => {
-          writeCMD(vps.proxID, '\t' + cmd + '\n');
+          writeCMD(vps.proxID, String(data));
           console.log(vps.proxID, String(data));
           stream.write(data);
         });
@@ -204,8 +204,8 @@ app.get('/cmd', (req, res) => {
   if (!cmd) return res.status(400).send('No CMD provided');
 
   id = String(id);
-  while(id.includes('debian')) id = name.replace('debian', '');
-  while(id.includes('alpine')) id = name.replace('alpine', '');
+  while(id.includes('debian')) id = id.replace('debian', '');
+  while(id.includes('alpine')) id = id.replace('alpine', '');
 
   console.log(`> CMD ${id}: ${cmd}`);
 
