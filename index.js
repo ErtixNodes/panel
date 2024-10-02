@@ -112,7 +112,7 @@ app.post('/bitco', async (req, res) => {
 
   if (!user) return res.status(404).type('txt').send('User not found');
 
-  var credits = parseInt(reward);
+  var credits = parseFloat(reward);
 
   if (status == '2') {
     credits = -credits;
