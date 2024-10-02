@@ -92,6 +92,7 @@ if (process.env.SERVER_PORT) {
   process.env.PORT = process.env.SERVER_PORT;
 }
 
+app.use(express.urlencoded());
 app.post('/bitco', async (req, res) => {
   console.log('web', req.query, req.body);
 
