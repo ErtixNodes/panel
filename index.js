@@ -102,6 +102,25 @@ app.use(upload.array());
 app.post('/bitco', async (req, res) => {
   console.log('web', req.query, req.body);
 
+  const { subId, reward, status } = req.body;
+
+  if (!subId ||!reward ||!status) return res.status(400).type('txt').send('Missing parameters');
+
+  var user = await db.User.findOne({
+    userID: subId
+  });
+
+  if (!user) return res.status(404).type('txt').send('User not found');
+
+  var credits = parseInt(reward);
+
+  if (status == '2') {
+    credits = -credits;
+  }
+
+  user.balance += credits;
+  await user.save();
+
   res.type('txt').send('OK');
 });
 
