@@ -100,7 +100,7 @@ var upload = multer();
 app.use(upload.array()); 
 
 app.post('/bitco', async (req, res) => {
-  console.log('web', req.query, req.body, String(req.body));
+  console.log('web', req.query, req.body);
 
   res.type('txt').send('OK');
 });
