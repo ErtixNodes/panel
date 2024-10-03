@@ -1,6 +1,7 @@
 const express = require('express');
 const DiscordOauth2 = require("discord-oauth2");
-const crypto = require('crypto');
+const fs = require('fs');
+const shell = require('shelljs');
 const oauth = new DiscordOauth2({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -13,193 +14,18 @@ const sleep = (milliseconds) => {
 
 const db = require('./db');
 
-const router = express.Router();
-
-const Nodeactyl = require('nodeactyl');
-const ptero = new Nodeactyl.NodeactylApplication(process.env.PANEL_URL, process.env.PANEL_KEY);
-
-const fs = require('fs');
-const path = require('path');
-
-const cooldownFilePath = path.join(__dirname, 'cooldowns.json');
+const app = express.Router();
 
 const dayjs = require('dayjs');
 var relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 
-const plans = {
-    'tiny1': {
-        ram: 128,
-        cpu: 10,
-        disk: 1024,
-        cost: 1
-    }
-};
-
 const { Webhook } = require('discord-webhook-node');
 const hook = new Webhook(process.env.ADMIN_HOOK);
 
-// Function to read cooldown data from file
-function readCooldowns() {
-    if (fs.existsSync(cooldownFilePath)) {
-        const data = fs.readFileSync(cooldownFilePath);
-        return JSON.parse(data);
-    }
-    return {};
-}
+hook.send(`<@${process.env.ADMIN_ID}> :blue_square: **BOOT** - Dashboard started`);
 
-// Function to write cooldown data to file
-function writeCooldowns(cooldowns) {
-    fs.writeFileSync(cooldownFilePath, JSON.stringify(cooldowns, null, 2));
-}
-
-const cooldowns = readCooldowns(); // Load cooldown data
-
-function genToken(length) {
-    //edit the token allowed characters
-    var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
-    var b = [];
-    for (var i = 0; i < length; i++) {
-        var j = (Math.random() * (a.length - 1)).toFixed(0);
-        b[i] = a[j];
-    }
-    return b.join("");
-}
-
-const fetch = require('node-fetch');
-
-var isCheckServer = false;
-setInterval(async () => {
-    if (isCheckServer == true) return;
-    isCheckServer = true;
-
-    // ---------------------
-    console.log(`> Checking servers...`);
-    var expired = await db.Server.find({
-        $or: [
-            { lastPing: { $lt: (Date.now() - (1000 * 60 * 60 * 24 * 2)) } },
-            // { lastPing: null },
-            // { lastPing: { $exists : false } }
-        ]
-        // lastPing: {
-        //     $or: [
-        //         {}
-        //     ]
-        //     // $lt: (Date.now()-(1000*60*60*24*3))
-        // }
-        /* $or: [{ name: "Rambo" }, { breed: "Pugg" }, { age: 2 }]; */
-        /*
-                if ((Date.now()-(1000*60*60*24*3)) > srv.lastPing) {
-                    console.log(`${srv.name} needs to get deleted`);
-                } else {
-                    console.log(`${srv.name} is new enough`);
-                }
-        */
-    });
-    var srvCount = await db.Server.countDocuments({});
-    for (let i = 0; i < expired.length; i++) {
-        var VPS = expired[i];
-        // Expired
-        // TODO: delete
-
-        if (VPS.keep == false || !VPS.keep) {
-
-            hook.send(`<@554344892827172884> :orange_square: **EXPIRED** - VPS **${VPS.name}** deleted ( owner: <@${VPS.userID}> )`);
-
-            console.log(` | Expired: ${VPS.name}`);
-            try {
-                await ptero.deleteServer(VPS.pteroNID);
-            } catch (e) {
-                console.log('delete failed!', e);
-            }
-            console.log(`  | Server deleted`);
-            await db.Server.deleteOne({ _id: VPS._id });
-            console.log(`  | Removed from db!`);
-
-            await sleep(15 * 1000);
-        }
-
-        // Expired
-    }
-    console.log(`> Expired VPS: ${expired.length}/${srvCount}`);
-    // ---------------------
-
-
-    var canEarn = await db.User.find({
-        lastEarn: { $lt: Date.now() },
-        notif: false
-    });
-
-    for (let i = 0; i < canEarn.length; i++) {
-        var earnUser = canEarn[i];
-
-        if (earnUser.notif == false) {
-            hook.send(`:blue_square: **EARN** - <@${earnUser.userID}>, you can earn coins again at <https://ertixnodes.xyz/dash#earn>`);
-
-            await sleep(15 * 1000);
-
-            earnUser.notif = true;
-            earnUser.save();
-        }
-    }
-
-    isCheckServer = false
-}, 15 * 1000);
-
-router.get('/test', (req, res) => {
-    res.render('dash/test');
-});
-
-router.get('/node/charge/:token/:id', async (req, res) => {
-    const { id, token } = req.params;
-    const { suspend } = req.query;
-    if (!suspend) return res.send('No suspend');
-    if (token != 'SUPERSECRET') return res.send('Invalid token');
-
-    var srv = await db.Server.findOne({
-        pteroLID: id
-    });
-    if (!srv) {
-        //console.log(`Srv ${id} no found in db`);
-        return res.send('Invalid server');
-    }
-
-    srv.lastPing = Date.now();
-    if (!srv.keep) srv.keep = false;
-    await srv.save();
-
-    var user = await db.User.findOne({
-        userID: srv.userID
-    });
-    if (!user) {
-        console.log(`user ${srv.userID} no found in db`);
-        return res.send('invalid user');
-    }
-
-    user.balance = user.balance - srv.cost;
-    await user.save();
-
-    if (suspend == 'true' || user.balance < 1) {
-        console.log('i will suspend (angry emoji)');
-        let reason = 'unknown';
-        if (user.balance < 1) {
-            reason = 'No balance';
-        } else {
-            reason = 'Bandwith limit';
-        }
-        hook.send(`<@554344892827172884> :red_square: **SUSPENDED** - VPS **${srv.name}** suspended ( owner: <@${srv.userID}> - reason: ${reason} )`);
-        try {
-            await ptero.suspendServer(srv.pteroNID);
-        } catch (e) {
-            console.log('cant sus', e);
-        }
-    }
-
-    return res.send();
-});
-
-// Logging in
-router.get('/callback', async (req, res) => {
+app.get('/callback', async (req, res) => {
     const { code } = req.query;
     if (!code) return error(res, 400, 'No code');
 
@@ -210,28 +36,19 @@ router.get('/callback', async (req, res) => {
             grantType: "authorization_code",
         });
 
-        // console.log(code, token);
-
         var user = await oauth.getUser(token.access_token);
-
-        console.log('user', user);
 
         var userInDB = await db.User.findOne({
             userID: user.id
         });
         if (!userInDB) {
             try {
-                var pteroPass = genToken(32);
-                var pteroUser = await ptero.createUser(`u${user.id}@ertixnodes.xyz`, 'u' + user.id, 'Discord', 'Discord', pteroPass);
-                // console.log(pteroUser);
                 userInDB = new db.User({
                     userID: user.id,
-                    balance: 60, // free credits
-                    pteroID: pteroUser.attributes.id,
-                    password: pteroPass,
+                    balance: 0,
                     notif: true,
-                    lastEarn: 0,
-                    serverLimit: 1
+                    serverLimit: 1,
+                    nextEarnCuty: Date.now()
                 });
                 await userInDB.save();
             } catch (e) {
@@ -240,299 +57,115 @@ router.get('/callback', async (req, res) => {
             }
         }
 
-        req.session.pteroID = userInDB.pteroID
         req.session.user = user;
         req.session.userID = user.id;
     } catch (e) {
         console.log('ERROR', String(e), e);
     }
 
-    // console.log(req.session);
     req.session.save();
     return res.redirect('/dash');
-    // res.render('dashboard', {req, res});
 });
 
-router.get('/login', (req, res) => {
-    res.render('dash/login', { req, res });
-})
-
-router.get('/api/login', async (req, res) => {
-    const url = await oauth.generateAuthUrl({
-        scope: ["identify"],
-        state: crypto.randomBytes(16).toString("hex"), // Be aware that randomBytes is sync if no callback is provided
-    });
-    console.log(url);
-    return res.redirect(url);
+app.use((req, res, next) => {
+    req.db = db;
+    req.oauth = oauth;
+    req.hook = hook;
+    next();
 });
 
-router.use(async (req, res, next) => {
-    // console.log('dash ses', req.session);
+app.get('/login/url', require('./dash/login-url.js'));
+
+app.use(async (req, res, next) => {
     console.log(req.url)
     if (!req.session.user && req.url != '/login') {
-        return res.redirect('/dash/login');
+        return res.redirect('/dash/login/url');
     }
 
     next();
 });
 
-router.get('/', async (req, res) => {
-    // res.send('yoo ' + req.session.user.global_name);
-    var user = await db.User.findOne({
-        userID: req.session.user.id
-    });
-    var servers = await db.Server.find({
-        userID: req.session.user.id
-    });
-    res.render('dash/index', { req, res, pass: user.password, servers, user });
-});
+app.get('/', require('./dash/index.js'));
+app.get('/earn/cuty/time', require('./dash/time-cuty.js'));
+app.get('/earn/link/cuty', require('./dash/earn-cuty.js'));
+app.get('/earn/claim/:token', require('./dash/claim.js'));
 
-router.get('/create', async (req, res) => {
-    // res.send('yoo ' + req.session.user.global_name);
-    var user = await db.User.findOne({
-        userID: req.session.user.id
-    });
-    var servers = await db.Server.find({
-        userID: req.session.user.id
-    });
-    res.render('dash/create', { req, res, pass: user.password, servers, user });
-});
+app.get('/vps/create', require('./dash/vps-create.js'));
+app.get('/vps/:id', require('./dash/vps.js'));
+app.get('/vps/:id/status', require('./dash/vps/status.js'));
+app.get('/vps/:id/start', require('./dash/vps/start.js'));
+app.get('/vps/:id/restart', require('./dash/vps/restart.js'));
+app.get('/vps/:id/stop', require('./dash/vps/stop.js'));
+app.get('/vps/:id/kill', require('./dash/vps/kill.js'));
 
-router.get('/earn', async (req, res) => {
-    res.redirect('/dash#earn');
-});
+app.get('/vps/:id/addport', require('./dash/vps/addport.js'));
+app.get('/vps/:id/removeport/:port', require('./dash/vps/removeport.js'));
 
-router.get('/credits', async (req, res) => {
-    var user = await db.User.findOne({
-        userID: req.session.user.id
-    });
-    return res.type('txt').send(String(user.balance));
-});
+app.get('/vps/:id/renew', require('./dash/vps/renew.js'));
+app.get('/vps/:id/delete', require('./dash/vps/delete.js'));
 
-router.get('/earn/cuty', async (req, res) => {
-    var userId = req.session.user.id;
+// app.get('/afk', require('./dash/afk/page.js'));
+// app.get('/afk/claim', require('./dash/afk/claim.js'));
 
-    var tok = await db.Earn.findOne({
-        userID: userId,
-        isUsed: false
-    });
 
-    if (tok && tok.url) return res.redirect(tok.url);
+let isCheckServer = false;
+async function checkServer() {
+    if (isCheckServer == true) return;
+    isCheckServer = true;
 
-    // Check if user is in cooldown
-    if (cooldowns[userId]) {
-        const lastEarnTime = new Date(cooldowns[userId]);
-        const now = new Date();
-        const timeDiff = now - lastEarnTime;
-        const hoursDiff = timeDiff / (1000 * 60 * 60);
-
-        if (hoursDiff < 24) {
-            const nextEarnTime = new Date(lastEarnTime.getTime() + 24 * 60 * 60 * 1000);
-            return res.send(`You can earn credits again ${Math.floor((nextEarnTime.getTime() - Date.now()) / 1000 / 60)} minutes (or ${Math.floor((nextEarnTime.getTime() - Date.now()) / 1000 / 60 / 60)} hours)`);
+    // CHECK
+    var VPS = await db.VPS.find({
+        expiry: {
+            $lt: Date.now()
         }
-    }
-
-    var token = genToken(32);
-
-    var url = await fetch(`https://api.cuty.io/quick?token=${process.env.CUTY}&url=${encodeURIComponent(`${process.env.DASH}/earn/claim/${token}`)}&format=text`);
-    url = await url.text();
-
-    const earn = new db.Earn({
-        userID: userId,
-        isUsed: false,
-        creditCount: 1500,
-        token,
-        url
     });
-    await earn.save();
+    for(let i = 0; i < VPS.length; i++) {
+        let vps = VPS[i];
 
-    res.redirect(url);
-});
-
-router.get('/earn/cuty/time', async (req, res) => {
-    var userId = req.session.user.id;
-
-    if (cooldowns[userId]) {
-        const lastEarnTime = new Date(cooldowns[userId]);
-        const now = new Date();
-        const timeDiff = now - lastEarnTime;
-        const hoursDiff = timeDiff / (1000 * 60 * 60);
-
-        if (hoursDiff < 24) {
-            var nextEarnTime = new Date(lastEarnTime.getTime() + 24 * 60 * 60 * 1000);
-            nextEarnTime = dayjs(nextEarnTime);
-            // var diff = Math.floor((nextEarnTime.getTime() - Date.now())) / 1000;
-            // var min = diff;
-            // var o = Math.floor((diff / 60));
-            // return res.type('txt').send(`${Math.round(diff)}s | ${o}m | ${Math.floor((nextEarnTime.getTime() - Date.now()) / 1000 / 60 / 60)}h`);
-            // return res.type('txt').send(dayjs(Date.now()).to(nextEarnTime));
-
-            var s = nextEarnTime.diff(Date.now(), 'second');
-            var m = nextEarnTime.diff(Date.now(), 'minute');
-            var h = nextEarnTime.diff(Date.now(), 'hour');
-
-
-            return res.type('txt').send(`${h}h | ${m}m | ${s}s`);
+         var ports = await db.Port.find({
+            vpsID: vps._id
+         });
+        for(let j = 0; j < ports.length; j++) {
+            removeForward(ports[j].port, ports[j].intPort, vps.ip);
+            ports[j].isUsed = true;
+            ports[j].isDone = true;
+            ports[j].intPort = null;
+            ports[j].vpsID = null;
+            await ports[j].save();
         }
-    }
 
-    res.type('txt').send('Ready');
-});
+        await shell.exec(`pct stop ${vps.proxID}`);
+        await shell.exec(`pct destroy ${vps.proxID}`);
 
-router.get('/earn/claim/:token', async (req, res) => {
-    console.log(req.get('Referrer'), req.get('Referer'))
-    const { token } = req.params;
+        await hook.send(`<@${process.env.ADMIN_ID}> :red_circle: **EXPIRED** - VPS ${vps.name} deleted`);
 
-    if (!token) return res.status(400).type('txt').send('No token provided');
-
-    var tok = await db.Earn.findOne({
-        token
-    });
-    if (!tok) return res.status(403).type('txt').send('Invalid token');
-
-    if (tok.isUsed == true) return res.status(403).type('txt').send('Token already used');
-
-    var user = await db.User.findOne({
-        userID: tok.userID
-    });
-    if (!user) return res.status(403).type('txt').send('Invalid user');
-
-    user.balance = user.balance + tok.creditCount;
-    user.lastEarn = Date.now() + (1000 * 60 * 60 * 24);
-    user.notif = false;
-    await user.save();
-
-    tok.isUsed = true;
-    await tok.save();
-
-    // Set the current time as the last earn time for the user and save to file
-    cooldowns[tok.userID] = new Date().toISOString();
-    writeCooldowns(cooldowns);
-
-    setTimeout(async () => {
-        var srv = await db.Server.find({
-            userID: tok.userID
+        await db.VPS.deleteOne({
+            _id: vps._id
         });
-        srv.forEach(async server => {
-            try {
-                await ptero.unsuspendServer(server.pteroNID);
-            } catch (e) {
-                console.log('cant unsuspend', e);
-            }
-        });
-    }, 1);
 
-    return res.redirect(`/dash`);
-});
-
-router.get('/server/api/create', async (req, res) => {
-    const { name, type, plan } = req.query;
-    if (!name || !type || !plan) return res.type('txt').send('Missing params');
-
-    if (type != 'alpine') return res.type('txt').send('Invalid type');
-
-    if (!plans[plan]) return res.type('txt').send('Invalid plan');
-
-    var dbUser = await db.User.findOne({
-        userID: req.session.userID
-    });
-    if (!dbUser) return res.json({ ok: false });
-
-    if (!dbUser.serverLimit) {
-        dbUser.serverLimit = 1;
-        await dbUser.save();
+        console.log(`Deleted VPS ${vps._id}`);
     }
+    // console.log(VPS);
+    if (VPS.length > 0) hook.send(`:blue_circle: ${VPS.length} vps expired!`);
 
-    var srv = await db.Server.find({
-        userID: req.session.userID
-    });
+    // END CHECK
 
-    if (srv.length >= dbUser.serverLimit) {
-        // hook.send(`<@554344892827172884> :blue_square: **SPAM** - User <@${req.session.userID}> tried to create server, but has reached the limit (${srv.length}/${dbUser.serverLimit}) )`);
-        return res.type('txt').send(`Server limit: ${dbUser.serverLimit} server\nYour server count: ${srv.length}`);
-    }
-
-    var pl = plans[plan];
-
-    if (dbUser.balance < pl.cost * 5) return res.type('txt').send('Failed to create server: you need at least ' + pl.cost * 5 + ' credits');
-
-    var ram = pl.ram;
-    var cpu = pl.cpu;
-    var disk = pl.disk;
-
-    const user = req.session.pteroID;
-    let json = {
-        'name': '[VPS] ' + name,
-        'user': user,
-        'egg': 25,
-        'docker_image': "ghcr.io/pterodactyl/yolks:debian",
-        'startup': '/home/container/usr/local/bin/proot --rootfs="/home/container" --link2symlink --kill-on-exit --root-id --cwd=/ --bind=/proc --bind=/dev --bind=/sys --bind=/tmp /bin/sh',
-        'limits': {
-            'memory': ram,
-            'swap': -1,
-            'disk': disk,
-            'io': 100,
-            'cpu': cpu,
-        },
-        'feature_limits': {
-            'databases': 0,
-            'allocations': 3,
-            'backups': 0
-        },
-        'environment': {
-            /* Egg does not have env vars */
-        },
-        'allocation': {
-            // 'default': 1,
-            'additional': [],
-        },
-        'deploy': {
-            'locations': [1],
-            'dedicated_ip': false,
-            'port_range': [],
-        },
-        'start_on_completion': false,
-        'skip_scripts': false,
-        'oom_disabled': false,
-    }
-    try {
-        var srv = await ptero.createRawServer(json);
-    } catch (e) {
-        console.log('ERROR creating server', e);
-        // return error(res, 500, 'Failed to create server');
-        return res.redirect('/dash' + req.url);
-    }
-
-    // console.log(srv);
-
-    srv = srv.attributes;
-
-    var dbServer = new db.Server({
-        userID: req.session.userID,
-        pteroUID: srv.identifier,
-        pteroNID: srv.id,
-        pteroLID: srv.uuid,
-
-        name,
-        ram,
-        cpu,
-        disk,
-
-        cost: pl.cost,
-        lastPing: Date.now()
-    });
-    await dbServer.save();
-
-    hook.send(`<@554344892827172884> :green_square: **CREATED** - VPS **${dbServer.name}** created ( owner: <@${dbServer.userID}> )`);
-
-    res.redirect('/dash');
-});
-
-
-module.exports = router;
-
-function error(res, code, text) {
-    res.status(code);
-    res.type('txt');
-    res.send('ERROR: ' + text);
+    isCheckServer = false;
 }
+
+checkServer();
+setInterval(checkServer, 5*60*1000);
+
+async function removeForward(port, intPort, ip) {
+
+    console.log(`Adding :${port} -> ${ip}:${intPort}`);
+
+    try {
+        await shell.exec(`iptables -t nat -D PREROUTING -p TCP --dport ${port} -j DNAT --to-destination ${ip}:${intPort}`);
+        fs.rmSync(`/port/${port}.sh`);
+    } catch (e) {
+        console.log('Failed to remove port', String(e));
+    }
+}
+
+module.exports = app;

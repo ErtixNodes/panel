@@ -52,6 +52,10 @@
         <div class="main-content flex-grow p-4 sm:p-10">
             <main>
 
+            <br /><br /><br /><br />
+            <div id="frame" style="width: 100%;"><iframe data-aa='2312977' src='//acceptable.a-ads.com/2312977' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe><a style="display: block; text-align: right; font-size: 12px" id="frame-link" href="https://aads.com/campaigns/new/?source_id=2312977&source_type=ad_unit&partner=2312977">Advertise here</a></div>
+            <br /><br /><br /><br />
+
                 <!-- Home Section -->
                 <section id="home" class="mb-10">
                     <div class="home-box">
@@ -67,22 +71,17 @@
                             </div> -->
                         </div>
                         <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="#create">Create VPS</a>
-                        <div class="bg-gray-800 p-6 mt-6 rounded-lg">
-                            <p><strong>Panel information:</strong></p>
-                            <p><strong>URL:</strong> https://game.meegie.net/</p>
-                            <p><strong>Login:</strong> u<%- req.session.user.id %></p>
-                            <p><strong>Password:</strong> <%- pass %></p>
-                        </div>
-                        <% for(var i=0; i<servers.length; i++) { %>
+                        <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Your vps: <%- vps.length %>/<%- user.serverLimit %></h2>
+                        <% for(var i=0; i<vps.length; i++) { %>
                             <div class="server-card bg-gray-800 p-4 mt-8 rounded-lg flex flex-col sm:flex-row justify-between items-center">
                                 <div class="server-info space-y-2 text-center sm:text-left">
-                                    <div class="server-detail"><i class="fa fa-server mr-2"></i> <strong><%= servers[i].name %></strong></div>
-                                    <div class="server-detail"><i class="fa fa-tachometer-alt mr-2"></i> <span><%= (servers[i].cpu/100) %> vCPU</span></div>
-                                    <div class="server-detail"><i class="fa fa-memory mr-2"></i> <span><%= servers[i].ram/1024 %> GB ram</span></div>
-                                    <div class="server-detail"><i class="fa fa-hdd mr-2"></i> <span><%= servers[i].disk/1024 %> GB disk</span></div>
-                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span><%= servers[i].cost %> credits/minute</span></div>
+                                    <div class="server-detail"><i class="fa fa-server mr-2"></i> <strong><%= vps[i].name %></strong></div>
+                                    <div class="server-detail"><i class="fa fa-tachometer-alt mr-2"></i> <span>1 vCPU</span></div>
+                                    <div class="server-detail"><i class="fa fa-memory mr-2"></i> <span>0.5 GB ram</span></div>
+                                    <div class="server-detail"><i class="fa fa-hdd mr-2"></i> <span>3 GB disk</span></div>
+                                    <div class="server-detail"><i class="fa fa-coins mr-2"></i> <span>Expires in <%= Math.floor((vps[i].expiry-Date.now())/1000/60/60) %> hours</span></div>
                                 </div>
-                                <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mt-4 sm:mt-0" href="https://game.meegie.net/server/<%- servers[i].pteroUID %>">Manage</a>
+                                <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mt-4 sm:mt-0" href="/dash/vps/<%- vps[i].proxID %>">Manage</a>
                             </div>
                         <% } %>  
                     </div>
@@ -97,10 +96,10 @@
                             <select id="ctype" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
                                 <optgroup label="VPS">
                                     <option value="alpine">Alpine - Free</option>
-                                    <option value="debian" disabled>Debian (not available)</option>
+                                    <option value="debian">Debian - 3 credits</option>
                                 </optgroup>
                             </select>
-                            <select id="cplan" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
+                            <!--  <select id="cplan" class="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white">
                                 <optgroup label="Tiny">
                                     <option value="tiny1">128 MB ram | 0.25 vCPU | 0.5 GB disk | 1 credit/minute</option>
                                     <option value="tiny2" disabled>256 MB ram | 0.25 vCPU | 1 GB disk | 2 credits/minute</option>
@@ -112,7 +111,7 @@
                                     <option value="small2" disabled>1.5 GB ram | 0.5 vCPU | 4 GB disk | 12 credits/minute</option>
                                     <option value="small3" disabled>2 GB ram | 1 vCPU | 8 GB disk | 16 credits/minute</option>
                                 </optgroup>
-                            </select>
+                            </select> -->
                             <div class="create-buttons flex flex-col sm:flex-row justify-between">
                                 <a href="#home" class="cancel-button bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto mb-4 sm:mb-0">Cancel</a>
                                 <button onclick="create();" class="create-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Create</button>
@@ -128,16 +127,17 @@
                             <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">List of earnings</h2>
                             <ul class="earn-list mb-6">
                                 <li class="mb-4">
-                                    <a href="/dash/earn/cuty" target="_blank" class="text-blue-400 hover:underline">cuty.io</a> - 1.5k credits - <span class="timer cutytime">loading</span>
+                                    <a href="/dash/earn/link/cuty" target="_blank" class="text-blue-400 hover:underline">cuty.io</a> - 10 credits - <span class="timer cutytime">loading</span>
                                 </li>
                             </ul>
+
+                            <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Offerwall</h2>
+                            <iframe style="width:100%;height:800px;" scrolling="yes" frameborder="0" src="https://bitcotasks.com//offerwall/6g7i90lnyg61ob4w66e7hohf4ve28d/<%- req.session.userID %>"></iframe>
+
                             <a href="#home" class="back-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Back</a>
                         </div>
                     </div>
                 </section>
-
-                <script async="async" data-cfasync="false" src="//pl24093205.highratecpm.com/49ff494b61507c0a7a28e8eccd704be2/invoke.js"></script>
-                <div id="container-49ff494b61507c0a7a28e8eccd704be2"></div>
             </main>
         </div>
     </div>
@@ -212,17 +212,15 @@
 
         time();
 
-        setInterval(time, 2.5*1000);
+        setInterval(time, 60*1000);
 
         async function create() {
             var name = encodeURIComponent(String(document.getElementById('cname').value));
             var type = encodeURIComponent(String(document.getElementById('ctype').value));
-            var plan = encodeURIComponent(String(document.getElementById('cplan').value));
+            // var plan = encodeURIComponent(String(document.getElementById('cplan').value));
 
-            window.location.href = `/dash/server/api/create?name=${name}&type=${type}&plan=${plan}`;
+            window.location.href = `/dash/vps/create?name=${name}&os=${type}`;
         }
     </script>
-
-    <script type='text/javascript' src='//pl24150956.cpmrevenuegate.com/fa/04/70/fa047085f4a64ad8db1115a2ed6775af.js'></script>
 </body>
 </html>

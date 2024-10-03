@@ -8,26 +8,41 @@ const User = mongoose.model('User', {
     password: String,
 
     notif: Boolean,
-    lastEarn: Number,
-    serverLimit: Number
+    serverLimit: Number,
+
+    nextEarnCuty: Number,
+    nextAFK: Number
 });
 
-const Server = mongoose.model('Server', {
+const VPS = mongoose.model('Server', {
     userID: String,
-    pteroUID: String,
-    pteroNID: Number,
-    pteroLID: String,
-    
+    proxID: Number,
+
     name: String,
-    ram: Number,
-    cpu: Number,
-    disk: Number,
+
+    sshPort: Number,
+    password: String,
+    ip: String,
+    os: String,
 
     cost: Number,
-    lastPing: Number,
-    keep: Boolean
+    expiry: Number,
+    status: String // creating | active | error
 });
 
+const Node = mongoose.model('Node', {
+    name: String,
+    nextID: Number,
+    maxVPS: Number
+});
+
+const Port = mongoose.model('Port', {
+    port: Number,
+    isUsed: Boolean,
+    vpsID: String,
+    intPort: Number,
+    isDone: Boolean
+});
 
 // Money
 const Earn = mongoose.model('Earn', {
@@ -38,8 +53,21 @@ const Earn = mongoose.model('Earn', {
     url: String
 });
 
+// Blog
+const Blog = mongoose.model('Blog', {
+    title: String,
+    date: Number,
+    content: String,
+    id: String
+});
+
 module.exports = {
     User,
-    Server,
-    Earn
+    VPS,
+    Earn,
+    Node,
+    Port,
+    Blog,
+
+    mongoose
 };
