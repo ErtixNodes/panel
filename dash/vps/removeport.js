@@ -24,7 +24,8 @@ async function handle(req, res) {
 
     await removeForward(newPort.port, newPort.port, vps.ip);
 
-    newPort.isUsed = false;
+    newPort.isUsed = true;
+    newPort.isDone = true;
     newPort.intPort = null;
     newPort.vpsID = null;
     await newPort.save();

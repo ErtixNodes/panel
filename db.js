@@ -40,7 +40,8 @@ const Port = mongoose.model('Port', {
     port: Number,
     isUsed: Boolean,
     vpsID: String,
-    intPort: Number
+    intPort: Number,
+    isDone: Boolean
 });
 
 // Money

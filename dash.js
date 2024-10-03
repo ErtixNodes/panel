@@ -127,7 +127,8 @@ async function checkServer() {
          });
         for(let j = 0; j < ports.length; j++) {
             removeForward(ports[j].port, ports[j].intPort, vps.ip);
-            ports[j].isUsed = false;
+            ports[j].isUsed = true;
+            ports[j].isDone = true;
             ports[j].intPort = null;
             ports[j].vpsID = null;
             await ports[j].save();
