@@ -27,7 +27,11 @@ const VPS = mongoose.model('Server', {
 
     cost: Number,
     expiry: Number,
-    status: String // creating | active | error
+    status: String, // creating | active | error
+    uptimeType: String, // always | spot
+    uptimeLeft: Number, // minutes of uptime left
+    canStartAgain: Boolean, // can start the vps again after running out
+    defaultUptime: Number, // default uptime in minutes
 });
 
 const Node = mongoose.model('Node', {
