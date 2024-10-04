@@ -13,11 +13,13 @@ async function handle(req, res) {
 
     if (vps.length >= user.serverLimit) return res.send(`VPS limit exceeded. ${vps.length}/${user.serverLimit}`);
 
-    var { name, os } = req.query;
-    if (!name || !os) return res.send(`No name or os in body`);
+    var { name, os, uptime } = req.query;
+    if (!name || !os || !uptime) return res.send(`No name, os or uptime in query!`);
 
     name = String(name);
     while(name.includes('@')) name = name.replace('@', '');
+
+    if (uptime != 'always' && uptime != 'spot') return res.send('Invalid uptime');
 
     if (os != 'alpine' && os != 'debian') return res.send(`Invalid OS: ${os}`);
     if (os == 'debian' && user.balance < 3) return res.send(`You need at least 3 credits to create a debian vps!`);
@@ -72,6 +74,12 @@ async function handle(req, res) {
         expiry: dayjs().add(2, 'day'),
         status: 'creating'
     });
+    userVPS.uptimeType = uptime;
+    userVPS.canStartAgain = true;
+    if (uptime == 'spot') {
+        userVPS.uptimeLeft = 60 * 8;
+        userVPS.defaultUptime = 60 * 8;
+    }
     await userVPS.save();
 
     sshPort.vpsID = userVPS._id;

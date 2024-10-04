@@ -122,13 +122,13 @@ async function checkServer() {
             $lt: Date.now()
         }
     });
-    for(let i = 0; i < VPS.length; i++) {
+    for (let i = 0; i < VPS.length; i++) {
         let vps = VPS[i];
 
-         var ports = await db.Port.find({
+        var ports = await db.Port.find({
             vpsID: vps._id
-         });
-        for(let j = 0; j < ports.length; j++) {
+        });
+        for (let j = 0; j < ports.length; j++) {
             removeForward(ports[j].port, ports[j].intPort, vps.ip);
             ports[j].isUsed = true;
             ports[j].isDone = true;
@@ -157,7 +157,36 @@ async function checkServer() {
 }
 
 checkServer();
-setInterval(checkServer, 5*60*1000);
+setInterval(checkServer, 5 * 60 * 1000);
+
+async function checkSpot() {
+    const vps = await db.VPS.find({
+        uptimeType: 'spot',
+        canStartAgain: true
+    });
+
+    for (let i = 0; i < vps.length; i++) {
+        var VPS = vps[i];
+
+        var status = await shell.exec(`pct status ${VPS.proxID}`);
+        status = String(status.stdout).replace('status: ', '').replace('\n', '');
+
+        if (status == 'running') {
+            VPS.uptimeLeft -= 1;
+            if (VPS.uptimeLeft <= 0) {
+                await shell.exec(`pct shutdown ${VPS.proxID}`);
+                VPS.canStartAgain = false;
+
+                console.log(`[SPOT] VPS has no time left!`);
+            }
+            await VPS.save();
+
+            console.log(`[SPOT] VPS ${VPS.name} running. Uptime left: ${VPS.uptimeLeft}`);
+        }
+    }
+}
+
+setInterval(checkSpot, 60 * 1000);
 
 async function removeForward(port, intPort, ip) {
 
