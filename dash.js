@@ -178,6 +178,8 @@ async function checkSpot() {
                 await shell.exec(`pct shutdown ${VPS.proxID}`);
                 VPS.canStartAgain = false;
 
+                hook.send(`:red_square: **SPOT** - \`${VPS.proxID}\` ran out of time`);
+
                 console.log(`[SPOT] VPS has no time left!`);
             }
             await VPS.save();
@@ -197,6 +199,7 @@ async function startSpot() {
     vps.forEach(async (VPS) => {
         VPS.canStartAgain = true;
         VPS.uptimeLeft = VPS.defaultUptime;
+        hook.send(`:green_square: **SPOT** - \`${VPS.proxID}\` added ${VPS.defaultUptime} minutes!`);
         await VPS.save();
     });
 }
