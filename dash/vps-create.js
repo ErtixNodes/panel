@@ -77,8 +77,8 @@ async function handle(req, res) {
     userVPS.uptimeType = uptime;
     userVPS.canStartAgain = true;
     if (uptime == 'spot') {
-        userVPS.uptimeLeft = 60 * 8;
-        userVPS.defaultUptime = 60 * 8;
+        userVPS.uptimeLeft = 60 * 4;
+        userVPS.defaultUptime = 60 * 4;
     }
     await userVPS.save();
 
