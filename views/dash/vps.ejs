@@ -166,10 +166,17 @@
                 href="https://aads.com/campaigns/new/?source_id=2312977&source_type=ad_unit&partner=2312977">Advertise
                 here</a></div>
 
-        <% if (vps.status=='error' ) { %>
+        <% if (vps.status=='active' ) { %>
             <section id="earn">
+                <div class="bg-white shadow transition-transform transform hover:scale-105">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-server text-yellow-400 text-4xl mr-3"></i>
+                        <span class="text-lg font-semibold">STATUS: <span id="vpsstatus">Loading</span></span>
+                    </div>
+                </div>
+
                 <div class="bg-white p-8 rounded-lg shadow">
-                    <h2 class="text-2xl font-bold mb-6">List of earnings</h2>
+                    <h2 class="text-2xl font-bold mb-6"><%- vps.name %></h2>
                     <ul class="mb-6">
                         <li class="mb-4">
                             <a href="/dash/earn/link/cuty" target="_blank"
@@ -182,18 +189,11 @@
             </section>
             <% } %>
 
-                <% if (vps.status=='error' ) { %>
+                <% if (vps.status=='delete' ) { %>
                     <section id="earn">
                         <div class="bg-white p-8 rounded-lg shadow">
-                            <h2 class="text-2xl font-bold mb-6">List of earnings</h2>
-                            <ul class="mb-6">
-                                <li class="mb-4">
-                                    <a href="/dash/earn/link/cuty" target="_blank"
-                                        class="text-blue-400 hover:underline">cuty.io</a> - 10 credits - <span
-                                        class="timer" id="cutytime">loading</span>
-                                </li>
-                            </ul>
-                            <a href="#home" class="btn bg-red-600">Cancel</a>
+                            <h2 class="text-2xl font-bold mb-6">Deleting</h2>
+                            <p>Your vps will get deleted soon!</p>
                         </div>
                     </section>
                     <% } %>
@@ -201,15 +201,8 @@
                         <% if (vps.status=='error' ) { %>
                             <section id="earn">
                                 <div class="bg-white p-8 rounded-lg shadow">
-                                    <h2 class="text-2xl font-bold mb-6">List of earnings</h2>
-                                    <ul class="mb-6">
-                                        <li class="mb-4">
-                                            <a href="/dash/earn/link/cuty" target="_blank"
-                                                class="text-blue-400 hover:underline">cuty.io</a> - 10 credits - <span
-                                                class="timer" id="cutytime">loading</span>
-                                        </li>
-                                    </ul>
-                                    <a href="#home" class="btn bg-red-600">Cancel</a>
+                                    <h2 class="text-2xl font-bold mb-6">ERROR</h2>
+                                    <p>Sorry, but your vps failed to create. We recommend joining the discord server.</p>
                                 </div>
                             </section>
                             <% } %>
