@@ -23,14 +23,14 @@ async function handle(req, res) {
 
     var timeLeft = nextEarnCuty - Date.now();
 
-    if (timeLeft > 0) return res.send(`In ${Math.ceil(timeLeft/1000/60/60)} hours`);
-
     var tok = await db.Earn.findOne({
         userID: user.userID,
         isUsed: false
     });
 
     if (tok && tok.url) return res.redirect(tok.url);
+
+    if (timeLeft > 0) return res.send(`In ${Math.ceil(timeLeft/1000/60/60)} hours`);
 
     var token = genToken(32);
 
