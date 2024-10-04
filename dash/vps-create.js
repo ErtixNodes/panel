@@ -68,6 +68,10 @@ async function handle(req, res) {
         ip,
         os,
 
+        ram: 0.5,
+        disk: 3,
+        cpu: 1,
+
         sshPort: sshPort.port,
         password, // TODO: Generate password
 
@@ -79,6 +83,9 @@ async function handle(req, res) {
     if (uptime == 'spot') {
         userVPS.uptimeLeft = 60 * 4;
         userVPS.defaultUptime = 60 * 4;
+
+        userVPS.ram = 8;
+        userVPS.disk = 10;
     }
     await userVPS.save();
 

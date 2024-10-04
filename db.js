@@ -25,6 +25,10 @@ const VPS = mongoose.model('Server', {
     ip: String,
     os: String,
 
+    ram: Number,
+    disk: Number,
+    cpu: Number,
+
     cost: Number,
     expiry: Number,
     status: String, // creating | active | error
