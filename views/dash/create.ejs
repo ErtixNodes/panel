@@ -189,9 +189,9 @@
             const type = document.getElementById('ctype').value;
             const uptype = document.getElementById('uptype').value;
             console.log(`Creating VPS with name: ${name} and type: ${type} | Uptime: ${uptype}`);
-            // You can implement your VPS creation logic here
 
-
+            // TODO: use fetch call
+            window.location.href = `/dash/vps/create?name=${name}&os=${type}&uptime=${uptype}`;
         }
     </script>
 </body>
