@@ -7,6 +7,10 @@
     <title>Earn - ErtixNodes</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- SHELL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css">
+
     <style>
         body {
             background-color: #1F2937;
@@ -79,7 +83,7 @@
         }
 
         .main-content {
-            width: 12000px;
+            max-width: 12000px;
             flex-direction: column;
             align-items: center;
             padding: 2rem;
@@ -175,18 +179,128 @@
                     </div>
                 </div>
 
+                <div class="bg-white shadow transition-transform transform hover:scale-105">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-clock text-blue-400 text-4xl mr-3"></i>
+                        <span class="text-lg font-semibold">EXPIRY: in <%=
+                                Math.floor((vps.expiry-Date.now())/1000/60/60) %> hours</span>
+                    </div>
+                </div>
+
                 <div class="bg-white p-8 rounded-lg shadow">
                     <h2 class="text-2xl font-bold mb-6"><%- vps.name %></h2>
-                    <ul class="mb-6">
-                        <li class="mb-4">
-                            <a href="/dash/earn/link/cuty" target="_blank"
-                                class="text-blue-400 hover:underline">cuty.io</a> - 10 credits - <span class="timer"
-                                id="cutytime">loading</span>
-                        </li>
-                    </ul>
-                    <a href="#home" class="btn bg-red-600">Cancel</a>
+
+                    <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                        href="/dash/vps/<%- vps.proxID %>">Refresh</a>
+                    <a class="bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                        href="/dash/vps/<%- vps.proxID %>/start">Start</a>
+                    <a class="bg-red-400 hover:bg-red-300 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                        href="/dash/vps/<%- vps.proxID %>/stop">Stop</a>
+                    <a class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                        href="/dash/vps/<%- vps.proxID %>/restart">Restart</a>
+                    <a class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                        href="/dash/vps/<%- vps.proxID %>/kill">Kill</a>
+
+                    <br /><br />
+                    <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                        href="/dash/vps/<%- vps.proxID %>/renew">Renew</a>
+                    <i>Renewal costs 10 credits per day.</i>
+
+                    <br /><br />
+                    <a class="bg-red-800 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                        href="#delete">DELETE</a>
+
+                </div>
+
+                <div class="bg-white shadow transition-transform transform hover:scale-105">
+                    <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">SSH Details</h2>
+                    <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+                        <b>OS:</b> <%- vps.os %><br />
+                            <b>VPS IP:</b> 185.202.236.15<br />
+                            <b>SSH PORT:</b> <%- vps.sshPort %><br />
+                                <!-- <b>Root password:</b> <a href="#password" class="bg-blue-700 hover:bg-blue-600 text-white py-2 px-8 rounded-lg w-full sm:w-auto">View</a><br /> -->
+                                <b>Root password:</b>
+                                <pre style="display: inline;"><%- vps.password %></pre><br />
+                    </div>
+                </div>
+
+                <div class="bg-white shadow transition-transform transform hover:scale-105">
+                    <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Shell</h2>
+                    <div class="resource-card bg-gray-800 p-4 rounded-lg items-center">
+                        <div id="term" style="margin: 10px;"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white shadow transition-transform transform hover:scale-105">
+                    <h2 class="text-2xl font-bold mb-6 text-center sm:text-left">Ports</h2>
+                    <div class="resource-card p-4 rounded-lg items-center">
+                        <ul>
+                            <% for(var i=0; i<vpsPorts.length; i++) { %>
+                                <li>185.202.236.15:<%= vpsPorts[i].port %> -> :<%= vpsPorts[i].intPort %>
+                                            <% if (vpsPorts[i].intPort !=22) { %><a
+                                                    href="/dash/vps/<%- vps.proxID %>/removeport/<%= vpsPorts[i].port %>"
+                                                    class="back-button bg-red-600 hover:bg-red-500 text-white py-1 px-2 rounded-lg w-full sm:w-auto">Remove</a>
+                                </li>
+                                <% } %>
+                                    <% } %>
+                        </ul>
+
+                        <br /><br />
+
+                        <a href="/dash/vps/<%- vps.proxID %>/addport"
+                            class="back-button bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto">Add
+                            port</a>
+                    </div>
                 </div>
             </section>
+
+            <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
+            <script src="/socket.io/socket.io.js"></script>
+            <script>
+                async function time() {
+                    var res = await fetch('/dash/earn/cuty/time').then(r => r.text());
+                    // document.getElementById('cutytime').innerHTML = `(${res})`;
+                    document.querySelectorAll('.cutytime').forEach(section => {
+                        section.innerHTML = res;
+                    });
+
+                    var res = await fetch('/dash/vps/<%- vps.proxID %>/status').then(r => r.text());
+                    document.getElementById('vpsstatus').innerHTML = res;
+                }
+
+                time();
+
+                setInterval(time, 60 * 1000);
+
+                // SHELL
+                var socket = io();
+
+                socket.on('connect', () => {
+                    console.log('Connect');
+
+                    socket.emit('ID', parseInt('<%- vps.proxID %>'));
+
+                    var term = new Terminal();
+                    term.open(document.getElementById('term'));
+
+                    socket.on('data', (d) => {
+                        // d = String(d);
+                        // console.log('Received:', d);
+                        term.write(d);
+                    });
+
+                    term.onData((data) => {
+                        socket.emit('data', data);
+                    });
+
+                    term.onResize((data, data2) => {
+                        console.log(data, data2);
+                        socket.emit('resize', { cols: data.cols, rows: data.rows });
+                    });
+
+                    term.resize(64, 20);
+                });
+            </script>
             <% } %>
 
                 <% if (vps.status=='delete' ) { %>
@@ -202,25 +316,26 @@
                             <section id="earn">
                                 <div class="bg-white p-8 rounded-lg shadow">
                                     <h2 class="text-2xl font-bold mb-6">ERROR</h2>
-                                    <p>Sorry, but your vps failed to create. We recommend joining the discord server.</p>
+                                    <p>Sorry, but your vps failed to create. We recommend joining the discord server.
+                                    </p>
                                 </div>
                             </section>
                             <% } %>
 
-                                <% if (vps.status == 'create') { %>
+                                <% if (vps.status=='create' ) { %>
                                     <section id="earn">
                                         <div class="bg-white p-8 rounded-lg shadow">
                                             <h2 class="text-2xl font-bold mb-6">VPS is creating...</h2>
-                                                <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
-                                                    href="/dash/vps/<%- vps.proxID %>">Refresh</a>
+                                            <a class="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
+                                                href="/dash/vps/<%- vps.proxID %>">Refresh</a>
 
-                                                <i>Reloading page in 10 seconds...</i>
+                                            <i>Reloading page in 10 seconds...</i>
 
-                                                <script>
-                                                    setTimeout(() => {
-                                                        window.location.href = "/dash/vps/<%- vps.proxID %>";
-                                                    }, 10 * 1000);
-                                                </script>
+                                            <script>
+                                                setTimeout(() => {
+                                                    window.location.href = "/dash/vps/<%- vps.proxID %>";
+                                                }, 10 * 1000);
+                                            </script>
                                         </div>
                                     </section>
                                     <% } %>
