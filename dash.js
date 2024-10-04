@@ -1,6 +1,7 @@
 const express = require('express');
 const DiscordOauth2 = require("discord-oauth2");
 const fs = require('fs');
+const schedule = require('node-schedule');
 const shell = require('shelljs');
 const oauth = new DiscordOauth2({
     clientId: process.env.CLIENT_ID,
@@ -187,6 +188,17 @@ async function checkSpot() {
 }
 
 setInterval(checkSpot, 60 * 1000);
+
+async function startSpot() {
+    await db.VPS.updateMany({
+        uptimeType: 'spot',
+        canStartAgain: false
+    }, {
+        canStartAgain: true
+    });
+}
+
+const job = schedule.scheduleJob('0 0 * * *', startSpot);
 
 async function removeForward(port, intPort, ip) {
 
