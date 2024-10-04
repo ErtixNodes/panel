@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - ErtixNodes</title>
+    <title>Create - ErtixNodes</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -130,13 +130,6 @@
             margin-bottom: 1rem;
         }
     </style>
-    <script type="text/javascript">
-        var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-        var _url = _protocol + "ads.monetag.com/tag.js";
-        var monetag = document.createElement('script');
-        monetag.src = _url;
-        document.body.appendChild(monetag);
-    </script>
 </head>
 
 <body>
@@ -157,45 +150,49 @@
     <main class="main-content container mx-auto">
         <h2 class="font-bold mb-6">Welcome, <%- req.session.user.global_name %>!</h2>
 
-        <!-- Home Section -->
-        <section id="home" class="mb-10">
-            <div class="bg-white shadow transition-transform transform hover:scale-105">
-                <div class="flex items-center justify-center">
-                    <i class="fas fa-coins text-yellow-400 text-4xl mr-3"></i>
-                    <span class="text-lg font-semibold">Balance: <strong id="bal"><%- user.balance %></strong> credits</span>
+        <!-- Create Section -->
+        <section id="create">
+            <div class="bg-white p-8 rounded-lg shadow">
+                <h2 class="text-2xl font-bold mb-6">Create VPS</h2>
+                <b>NAME:</b>
+                <input type="text" id="cname" placeholder="VPS name" class="mb-4" required>
+
+                <b>OS:</b>
+                <select id="ctype" class="mb-4" required>
+                    <optgroup label="Linux">
+                        <option value="alpine">Alpine - Free</option>
+                        <option value="debian">Debian - 3 credits</option>
+                    </optgroup>
+                </select>
+
+                <b>VPS TYPE:</b>
+                <select id="uptype" class="mb-4" required>
+                    <optgroup label="24/7">
+                        <option value="always">24/7 - 0.5 GB ram - 1 vCPU - 3 GB disk</option>
+                    </optgroup>
+                    <optgroup label="Spot">
+                        <option value="spot">4 hours/day - 8 GB ram - 1 vCPU - 10 GB disk</option>
+                    </optgroup>
+                </select>
+
+                <div class="flex justify-between">
+                    <a href="/dash" class="btn bg-red-600">Cancel</a>
+                    <button class="btn btn-gradient" onclick="create();">Create</button>
                 </div>
             </div>
-
-            <div class="bg-white shadow transition-transform transform hover:scale-105 mt-4">
-                <div class="flex items-center justify-center">
-                    <i class="fas fa-server text-blue-500 text-4xl mr-3"></i>
-                    <span class="text-lg font-semibold"><%- vps.length %> / <%- user.serverLimit %> vps</span>
-                </div>
-            </div> 
-
-            <h2 class="text-white text-2xl font-bold">VPS:</h2>
-
-            <% for(let i = 0; i < vps.length; i++) { %>
-                <div class="bg-white p-8 rounded-lg shadow mb-2">
-                    <h3 class="text-xl font-bold mb-2"><%- vps[i].name %> - <%- vps[i].os %></h3>
-                    <p class="mb-2"><i class="fa fa-circle-question"></i> Type: <%- vps[i].uptimeType %></p>
-                    <p class="mb-2"><i class="fa fa-circle"></i> Status: <%- vps[i].status %></p>
-                    <p class="mb-2"><i class="fa fa-server"></i> <%- vps[i].ram %> GB - <%- vps[i].cpu %> vCPU - <%- vps[i].disk %> disk</p>
-                    <div class="flex justify-between">
-                        <a href="/dash/vps/<%- vps[i].proxID %>" class="btn bg-blue-500 mr-4">Manage</a>
-                        <!-- <a href="/dash/vps" class="btn bg-red-600" onclick="deleteVPS(<%- vps[i].id %>);">Renew</a> -->
-                    </div>
-                </div>
-            <% } %>
-
-            <a class="btn btn-gradient mt-6 w-full text-center" href="/dash/create"><i class="fas fa-server mr-1"></i>Create VPS</a>
         </section>
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('bal').innerText = '<%- user.balance %>';
-        });
+        function create() {
+            const name = document.getElementById('cname').value;
+            const type = document.getElementById('ctype').value;
+            const uptype = document.getElementById('uptype').value;
+            console.log(`Creating VPS with name: ${name} and type: ${type} | Uptime: ${uptype}`);
+
+            // TODO: use fetch call
+            window.location.href = `/dash/vps/create?name=${name}&os=${type}&uptime=${uptype}`;
+        }
     </script>
 </body>
 
