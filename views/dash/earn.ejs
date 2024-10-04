@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - ErtixNodes</title>
+    <title>Earn - ErtixNodes</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -130,13 +130,6 @@
             margin-bottom: 1rem;
         }
     </style>
-    <script type="text/javascript">
-        var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-        var _url = _protocol + "ads.monetag.com/tag.js";
-        var monetag = document.createElement('script');
-        monetag.src = _url;
-        document.body.appendChild(monetag);
-    </script>
 </head>
 
 <body>
@@ -157,44 +150,24 @@
     <main class="main-content container mx-auto">
         <h2 class="font-bold mb-6">Welcome, <%- req.session.user.global_name %>!</h2>
 
-        <!-- Home Section -->
-        <section id="home" class="mb-10">
-            <div class="bg-white shadow transition-transform transform hover:scale-105">
-                <div class="flex items-center justify-center">
-                    <i class="fas fa-coins text-yellow-400 text-4xl mr-3"></i>
-                    <span class="text-lg font-semibold">Balance: <strong id="bal"><%- user.balance %></strong> credits</span>
-                </div>
+        <!-- Earn Section -->
+        <section id="earn">
+            <div class="bg-white p-8 rounded-lg shadow">
+                <h2 class="text-2xl font-bold mb-6">List of earnings</h2>
+                <ul class="mb-6">
+                    <li class="mb-4">
+                        <a href="/dash/earn/link/cuty" target="_blank" class="text-blue-400 hover:underline">cuty.io</a> - 10 credits - <span class="timer" id="cutytime">loading</span>
+                    </li>
+                </ul>
+                <a href="#home" class="btn bg-red-600">Cancel</a>
             </div>
-
-            <div class="bg-white shadow transition-transform transform hover:scale-105 mt-4">
-                <div class="flex items-center justify-center">
-                    <i class="fas fa-server text-blue-500 text-4xl mr-3"></i>
-                    <span class="text-lg font-semibold"><%- vps.length %> / <%- user.serverLimit %> vps</span>
-                </div>
-            </div> 
-
-            <h2 class="text-white text-2xl font-bold">VPS:</h2>
-
-            <% for(let i = 0; i < vps.length; i++) { %>
-                <div class="bg-white p-8 rounded-lg shadow mb-2">
-                    <h3 class="text-xl font-bold mb-2"><%- vps[i].name %> - <%- vps[i].os %></h3>
-                    <p class="mb-2"><i class="fa fa-circle-question"></i> Type: <%- vps[i].uptimeType %></p>
-                    <p class="mb-2"><i class="fa fa-circle"></i> Status: <%- vps[i].status %></p>
-                    <p class="mb-2"><i class="fa fa-server"></i> <%- vps[i].ram %> GB - <%- vps[i].cpu %> vCPU - <%- vps[i].disk %> disk</p>
-                    <div class="flex justify-between">
-                        <a href="/dash/vps/<%- vps[i].proxID %>" class="btn bg-blue-500 mr-4">Manage</a>
-                        <!-- <a href="/dash/vps" class="btn bg-red-600" onclick="deleteVPS(<%- vps[i].id %>);">Renew</a> -->
-                    </div>
-                </div>
-            <% } %>
-
-            <a class="btn btn-gradient mt-6 w-full text-center" href="/dash/create"><i class="fas fa-server mr-1"></i>Create VPS</a>
         </section>
+
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('bal').innerText = '<%- user.balance %>';
+        document.addEventListener('DOMContentLoaded', async () => {
+            document.getElementById('cutytime').innerText = await fetch('/dash/earn/cuty/time').then(r => r.text());
         });
     </script>
 </body>
