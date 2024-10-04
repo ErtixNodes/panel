@@ -130,13 +130,6 @@
             margin-bottom: 1rem;
         }
     </style>
-    <script type="text/javascript">
-        var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-        var _url = _protocol + "ads.monetag.com/tag.js";
-        var monetag = document.createElement('script');
-        monetag.src = _url;
-        document.body.appendChild(monetag);
-    </script>
 </head>
 
 <body>
@@ -161,57 +154,41 @@
         <section id="create">
             <div class="bg-white p-8 rounded-lg shadow">
                 <h2 class="text-2xl font-bold mb-6">Create VPS</h2>
+                <b>NAME:</b>
                 <input type="text" id="cname" placeholder="VPS name" class="mb-4" required>
+
+                <b>OS:</b>
                 <select id="ctype" class="mb-4" required>
-                    <optgroup label="VPS">
+                    <optgroup label="Linux">
                         <option value="alpine">Alpine - Free</option>
                         <option value="debian">Debian - 3 credits</option>
                     </optgroup>
                 </select>
+
+                <b>VPS TYPE:</b>
+                <select id="uptype" class="mb-4" required>
+                    <optgroup label="24/7">
+                        <option value="always">24/7 - 0.5 GB ram - 1 vCPU - 3 GB disk</option>
+                    </optgroup>
+                    <optgroup label="Spot">
+                        <option value="spot">4 hours/day - 8 GB ram - 1 vCPU - 10 GB disk</option>
+                    </optgroup>
+                </select>
+
                 <div class="flex justify-between">
-                    <a href="#home" class="btn bg-red-600">Cancel</a>
+                    <a href="/dash" class="btn bg-red-600">Cancel</a>
                     <button class="btn btn-gradient" onclick="create();">Create</button>
                 </div>
-            </div>
-        </section>
-
-        <!-- Earn Section -->
-        <section id="earn" class="hidden">
-            <div class="bg-white p-8 rounded-lg shadow">
-                <h2 class="text-2xl font-bold mb-6">List of earnings</h2>
-                <ul class="mb-6">
-                    <li class="mb-4">
-                        <a href="/dash/earn/link/cuty" target="_blank" class="text-blue-400 hover:underline">cuty.io</a> - 10 credits - <span class="timer cutytime">loading</span>
-                    </li>
-                </ul>
-                <a href="#home" class="btn bg-red-600">Cancel</a>
-            </div>
-        </section>
-
-        <!-- AFK Section -->
-        <section id="afk" class="hidden">
-            <div class="bg-white p-8 rounded-lg shadow">
-                <h2 class="text-2xl font-bold mb-6">AFK Page</h2>
-                <h3>Next in: <span id="afk-timer">0</span> seconds</h3>
-                <div class="flex justify-between mt-4">
-                    <button id="afk-btn" class="btn btn-gradient" onclick="startAFK();">Start AFK</button>
-                    <button class="btn bg-red-600" onclick="stopAFK();">Stop AFK</button>
-                </div>
-                <div class="notification mt-4 hidden" id="afk-notification">AFK mode activated!</div>
             </div>
         </section>
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('bal').innerText = '<%- user.balance %>';
-            updateEarnings();
-        });
-
         function create() {
             const name = document.getElementById('cname').value;
             const type = document.getElementById('ctype').value;
-            console.log(`Creating VPS with name: ${name} and type: ${type}`);
+            const uptype = document.getElementById('uptype').value;
+            console.log(`Creating VPS with name: ${name} and type: ${type} | Uptime: ${uptype}`);
             // You can implement your VPS creation logic here
 
 
