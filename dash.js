@@ -194,7 +194,8 @@ async function startSpot() {
         uptimeType: 'spot',
         canStartAgain: false
     }, {
-        canStartAgain: true
+        canStartAgain: true,
+        uptimeLeft: 60*4
     });
 }
 
