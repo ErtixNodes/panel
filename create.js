@@ -3,11 +3,11 @@ const shell = require('shelljs');
 
 const { workerData } = require('worker_threads');
 
-const { name, proxID, ip, sshPort, os } = workerData;
+const { name, proxID, ip, sshPort, os, uptime } = workerData;
 
 const db = require('./db');
 
-async function main(name, proxID, ip, sshPort, os) {
+async function main(name, proxID, ip, sshPort, os, uptime) {
     console.log(`Creating ${name} with ${proxID} | ${ip} | ${sshPort.port}:22 | ${os}`);
 
     const userVPS = await db.VPS.findOne({
@@ -93,7 +93,13 @@ function getCreateCMD(path, proxID, data) {
     cmd += ` /var/lib/vz/template/cache/${path} `
     cmd += `--swap=256 `;
     cmd += `--hostname=${data.os}${proxID} `;
-    cmd += `--memory=512 `;
+    if (data.uptimeType == 'always') {
+        cmd += `--memory=512 `;
+        cmd += `--rootfs local:3 `;
+    } else {
+        cmd += `--memory=${1024*8} `;
+        cmd += `--rootfs local:10 `;
+    }
     cmd += `--cmode=shell `;
     cmd += `--net0 name=eth0,bridge=vmbr0,firewall=1,gw=10.6.0.1,ip=${data.ip}/16,rate=3 `;
     cmd += `--ostype=${data.os} `;
@@ -101,8 +107,7 @@ function getCreateCMD(path, proxID, data) {
     cmd += `--start=1 `;
     cmd += `--unprivileged=1 `;
     cmd += `--cores=1 `;
-    cmd += `--features fuse=1,nesting=1,keyctl=1 `;
-    cmd += `--rootfs local:3`;
+    cmd += `--features fuse=1,nesting=1,keyctl=1`;
 
     return cmd;
 }
@@ -117,7 +122,7 @@ async function addForward(port, intPort, ip) {
     return a;
 }
 
-main(name, proxID, ip, sshPort, os).then(() => {
+main(name, proxID, ip, sshPort, os, uptime).then(() => {
     db.mongoose.connection.close();
     console.log('DB connection closed');
 });

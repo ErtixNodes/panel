@@ -90,7 +90,7 @@ async function handle(req, res) {
         await user.save();
     }
 
-    req.hook.send(`<@${process.env.ADMIN_ID}> :green_square: **CREATE** - <@${req.session.userID}> ${name} - ${proxID} (${os} @ ${ip}) - ${sshPort.port}:22 - \`${password}\``);
+    req.hook.send(`<@${process.env.ADMIN_ID}> :green_square: **CREATE** [${uptime}] - <@${req.session.userID}> ${name} - ${proxID} (${os} @ ${ip}) - ${sshPort.port}:22 - \`${password}\``);
 
     res.redirect(`/dash/vps/${userVPS.proxID}`);
 
@@ -103,7 +103,8 @@ async function handle(req, res) {
             port: sshPort.port,
             intPort: sshPort.intPort
         },
-        os
+        os,
+        uptime
     }});
 }
 
