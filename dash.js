@@ -87,6 +87,7 @@ app.use(async (req, res, next) => {
 
 app.get('/', require('./dash/index.js'));
 app.get('/create', require('./dash/create.js'));
+app.get('/earn', require('./dash/earn.js'));
 
 app.get('/earn/cuty/time', require('./dash/time-cuty.js'));
 app.get('/earn/link/cuty', require('./dash/earn-cuty.js'));
