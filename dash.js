@@ -201,7 +201,7 @@ async function startSpot() {
     });
 }
 
-const job = schedule.scheduleJob('0 0 * * *', startSpot);
+schedule.scheduleJob('0 0 * * *', startSpot);
 
 async function removeForward(port, intPort, ip) {
 
