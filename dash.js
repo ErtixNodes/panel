@@ -206,6 +206,8 @@ async function startSpot() {
 
 schedule.scheduleJob('0 0 * * *', startSpot);
 
+startSpot();
+
 async function removeForward(port, intPort, ip) {
 
     console.log(`Adding :${port} -> ${ip}:${intPort}`);
