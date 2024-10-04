@@ -186,7 +186,7 @@
       <div class="<% if (vps.uptimeLeft >= 5) { %>bg-white<% } else { %>bg-red-600<% } %> shadow transition-transform transform hover:scale-105">
         <div class="flex items-center justify-center">
           <i class="fas fa-clock text-blue-400 text-4xl mr-3"></i>
-          <span class="text-lg font-semibold">Daily time left: <%= vps.uptimeLeft %>/<%= vps.defaultUptime %> minutes</span>
+          <span class="text-lg font-semibold">Daily time left: <%= (vps.uptimeLeft/60) %>/<%= (vps.defaultUptime/60) %> hours</span>
         </div>
       </div>
       <% } %>
