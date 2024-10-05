@@ -307,6 +307,11 @@
     <div class="bg-white p-8 rounded-lg shadow">
     <h2 class="text-2xl font-bold mb-6">Your spot vps is out of time!</h2>
     <p>You can start your vps again next day.</p>
+
+    <h3 class="mb-6">Options:</h3>
+    <a class="bg-red-800 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="./<%- vps.proxID %>/delete?sure=yes">DELETE</a><br /><br />
+
+    <a class="bg-blue-800 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto" href="./<%- vps.proxID %>/extend">[10 credits] Add 1 hour</a>
     </div>
     <% } %>
     <% } %>
