@@ -89,12 +89,11 @@ async function handle(req, res) {
         userVPS.uptimeLeft = 60 * 4;
         userVPS.defaultUptime = 60 * 4;
 
-        user.balance -= 3;
-
         userVPS.ram = 8;
         userVPS.disk = 10;
     } else {
         if (user.balance < 7) return res.send('You need at least 7 credits for 24/7 vps!');
+        user.balance -= 7;
     }
     await user.save();
     await userVPS.save();
