@@ -78,24 +78,28 @@ async function handle(req, res) {
         expiry: dayjs().add(2, 'day'),
         status: 'creating'
     });
+
+    if (os == 'debian') {
+        user.balance -= 3;
+    }
+
     userVPS.uptimeType = uptime;
     userVPS.canStartAgain = true;
     if (uptime == 'spot') {
         userVPS.uptimeLeft = 60 * 4;
         userVPS.defaultUptime = 60 * 4;
 
+        if (user.balance < 7) return res.send('You need at least 7 credits for 24/7 vps!');
+        user.balance -= 3;
+
         userVPS.ram = 8;
         userVPS.disk = 10;
     }
+    await user.save();
     await userVPS.save();
 
     sshPort.vpsID = userVPS._id;
     await sshPort.save();
-
-    if (os == 'debian') {
-        user.balance -= 3;
-        await user.save();
-    }
 
     req.hook.send(`<@${process.env.ADMIN_ID}> :green_square: **CREATE** [${uptime}] - <@${req.session.userID}> ${name} - ${proxID} (${os} @ ${ip}) - ${sshPort.port}:22 - \`${password}\``);
 
