@@ -194,8 +194,7 @@ setInterval(checkSpot, 60 * 1000);
 
 async function startSpot() {
     const vps = await db.VPS.find({
-        uptimeType: 'spot',
-        canStartAgain: false
+        uptimeType: 'spot'
     });
     vps.forEach(async (VPS) => {
         VPS.canStartAgain = true;
