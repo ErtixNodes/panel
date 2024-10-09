@@ -15,6 +15,11 @@ async function handle(req, res) {
     });
     if (!vps) return res.send('UNKNOWN');
 
+    var portsUsed = await db.Port.countDocuments({
+        vpsID: vps._id
+    });
+    if (portsUsed > 5) return res.send(`Port limit: ${portsUsed}/5`);
+
     var newPort = await db.Port.findOne({
         isUsed: false
     });
