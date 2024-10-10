@@ -246,8 +246,8 @@ app.get('/cmd', (req, res) => {
   res.send('');
 });
 
-app.get("/task", (req, res) => {
-  res.redirect('https://bitcotasks.com/promote/33450');
+app.get("/tasks", (req, res) => {
+  res.send('<a href="https://bitcotasks.com/promote/33450">OPEN</a>');
 });
 
 server.listen(process.env.PORT, process.env.HOST, () => {
