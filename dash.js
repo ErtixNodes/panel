@@ -174,7 +174,7 @@ async function checkSpot() {
         status = String(status.stdout).replace('status: ', '').replace('\n', '');
 
         if (status == 'running') {
-            VPS.uptimeLeft -= 1;
+            VPS.uptimeLeft -= 15;
             if (VPS.uptimeLeft <= 0) {
                 await shell.exec(`pct shutdown ${VPS.proxID}`);
                 VPS.canStartAgain = false;
@@ -190,7 +190,7 @@ async function checkSpot() {
     }
 }
 
-setInterval(checkSpot, 60 * 1000);
+setInterval(checkSpot, 15 * 60 * 1000);
 
 async function startSpot() {
     const vps = await db.VPS.find({
