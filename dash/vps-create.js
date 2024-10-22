@@ -75,7 +75,7 @@ async function handle(req, res) {
         sshPort: sshPort.port,
         password, // TODO: Generate password
 
-        expiry: dayjs().add(3, 'hour'),
+        expiry: dayjs().add(24, 'hour'),
         status: 'creating'
     });
 
