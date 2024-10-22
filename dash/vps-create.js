@@ -22,7 +22,7 @@ async function handle(req, res) {
     if (uptime != 'spot') return res.send('Invalid uptime');
 
     if (os != 'alpine' && os != 'debian') return res.send(`Invalid OS: ${os}`);
-    if (os == 'debian' && user.balance < 100) return res.send(`You need at least 100 credits to create a debian vps!`);
+    if (os == 'debian' && user.balance < 30) return res.send(`You need at least 30 credits to create a debian vps!`);
 
     var vpsCount = await db.VPS.countDocuments();
 
